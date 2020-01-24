@@ -1,0 +1,15 @@
+.ora{
+	color: #F88379;
+}
+
+.ora-b{
+	border-color: #F88379;
+}
+
+.span.disabled{
+	cursor: not-allowed;
+}
+
+.span.disabled > *{
+	pointer-events: none;
+}

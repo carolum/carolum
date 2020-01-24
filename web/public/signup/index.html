@@ -4,9 +4,9 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Web | Carolum</title>
-		
-		<script src="/dep/argon2-browser/lib/argon2.js"></script>
+
 		<script src="/dep/vue/vue.js"></script>
+		<script src="/dep/jquery/jquery-3.4.1.slim.js"></script>
 		
 		<link rel="stylesheet" href="/dep/tachyons/tachyons.min.css">
 		
@@ -18,16 +18,29 @@
 	  
 	  <article class="vh-100 dt w-100">
 		  <div class="dtc v-mid tc black">
-			  <div class="tc center w-75">
+			  <div class="tc center w-75 flex flex-column ba bw2 pa4">
 				  <div class="f2">
-					  <span class="fl w-100 bb bl"><span class="fl ml3 mb1">Carolum</span></span>
+					  <span class="fl w-100 bb bl ora-b"><span class="fl ml3 mb1">Carolum</span></span>
 				  </div>
-				  <div class="f3">
-					  <div class="fl ml3 mb1">
-						  <br />
-						  <span class="w-100 fl">Email: <input type="text"></span>
-					  </div>
-				  
+				  <div class="f4 flex flex-column" id="signup">
+					  <span class="mb3"></span>
+					  <input type="text" placeholder="Email" class="pl1" v-model="e" required>
+					  
+					  <span class="mb3"></span>
+					  <input type="password" placeholder="Password" class="pl1" v-on:keyup="validate" v-model="p" required>
+					  
+					  <span class="mb3"></span>
+					  <input type="password" placeholder="Confirm password" class="pl1" v-on:keyup="validate" v-model="p2" required>
+					  
+					  <small v-if="nomatch" class="red mt3 pa0">Passwords don't match!</small>
+					  
+					  <span class="mb3"></span>
+					  
+					  <span class="link dim ba ph0 pv2 mb2 dib black w-100 pointer" v-on:click="signup" v-model="b" v-bind:class="{ 'disabled': nomatch }">Sign Up</span>
+					  
+					  <span class="mb3"></span>
+					  
+					  <span id="error"></span>
 				  </div>
 			  </div>
 		  </div>
@@ -48,5 +61,7 @@
 			};
 		  firebase.initializeApp(firebaseConfig);
       </script>
+	  
+	  <script src="/signup/js/index.js"></script>
   </body>
 </html>
