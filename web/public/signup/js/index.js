@@ -1,16 +1,14 @@
-var signup = new Vue({
+new Vue({
 	el: "#signup",
 	data: {
 		e: "",
 		p:"",
 		p2:"",
-		nomatch: false,
-		b:"",
+		nomatch: false
 	},
 	methods:{
 		validate: function() {
-			this.nomatch = this.p2 !== "" ? this.p !== this.p2 : false;
-			
+			this.nomatch = this.p2 !== "" ? this.p !== this.p2 : false;	
 		},
 		signup: function(){
 			if (!this.nomatch){
@@ -36,8 +34,6 @@ var signup = new Vue({
 						}
 
 						$("#error").text(error);
-
-						console.log(error)
 					})
 			}
 		}

@@ -10,7 +10,7 @@
 		
 		<link rel="stylesheet" href="/dep/tachyons/tachyons.min.css">
 		
-		<link rel="stylesheet" href="/signup/css/index.css">
+		<link rel="stylesheet" href="/login/css/index.css">
 
 
   </head>
@@ -29,18 +29,12 @@
 					  
 					  <span class="mb3"></span>
 					  <span class="mb1"><span class="fl">Password</span></span>
-					  <input type="password" class="pl1 f4" v-on:keyup="validate" v-model="p" required>
-					  
-					  <span class="mb3"></span>
-					  <span class="mb1"><span class="fl">Confirm Password</span></span>
-					  <input type="password" class="pl1 f4" v-on:keyup="validate" v-model="p2" required>
-					  
-					  <small v-if="nomatch" class="red mt3 pa0 f4">Passwords don't match!</small>
+					  <input type="password" class="pl1 f4" v-model="p" required>
 					  
 					  <span class="mb3"></span>
 					  <span class="mb3"></span>
 					  
-					  <span class="link ba ph0 pv0 mv0 dib black w-100 pointer f3 clicky" v-on:click="signup" v-bind:class="{ 'dis': nomatch }"><p>Sign Up</p></span>
+					  <span class="link ba ph0 pv0 mv0 dib black w-100 pointer f3 clicky" v-on:click="signup"><p>Log In</p></span>
 					  
 					  <span class="mb3"></span>
 					  
@@ -66,6 +60,6 @@
 		  firebase.initializeApp(firebaseConfig);
       </script>
 	  
-	  <script src="/signup/js/index.js"></script>
+	  <script src="/login/js/index.js"></script>
   </body>
 </html>
