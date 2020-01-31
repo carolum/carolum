@@ -1,3 +1,23 @@
 svg{
 	fill: #555555;
 }
+
+.ora{
+	color: #F88379;
+}
+
+.oraborder{
+	border-color: #F88379;
+}
+
+.flex > span.dim{
+	cursor: pointer;
+}
+
+.darken{
+	color: darkgrey;
+}
+
+.darken > svg{
+	fill: darkgrey;
+}
