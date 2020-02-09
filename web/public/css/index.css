@@ -21,3 +21,22 @@ svg{
 .darken > svg{
 	fill: darkgrey;
 }
+
+textarea{
+	background: transparent;
+	resize: none;
+	border: 0 none;
+}
+
+#new input{
+	border: 0 none;
+	border-bottom: 1px solid gray;
+}
+
+article{
+	padding-top: calc(25vh / 3);
+}
+
+input:focus, textarea:focus{
+	outline: none;
+}
