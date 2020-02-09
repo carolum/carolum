@@ -33,8 +33,8 @@ textarea{
 	border-bottom: 1px solid gray;
 }
 
-article{
-	padding-top: calc(25vh / 3);
+.content{
+	width: calc(90% + 12px);
 }
 
 input:focus, textarea:focus{
