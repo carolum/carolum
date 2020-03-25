@@ -12,7 +12,13 @@ new Vue({
 				.catch(
 				function(error){
 					$("#error").text("No matching account found");
-				})
+					bad = true;
+				});
+			
+			hash(this.p, "hashsaltthing")
+			.then((h) => {
+				window.localStorage.setItem("carolum-pwhash", h.hashHex);
+			});
 		}
 	}
 });

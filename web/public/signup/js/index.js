@@ -1,4 +1,4 @@
-new Vue({
+var signup = new Vue({
 	el: "#signup",
 	data: {
 		e: "",
@@ -12,11 +12,12 @@ new Vue({
 		},
 		signup: function(){
 			if (!this.nomatch){
+				var error = "";
+				
 				firebase.auth().createUserWithEmailAndPassword(this.e, this.p)
 					.catch(
 					function(error){
-						var errorCode = error.code,
-							error = "";
+						var errorCode = error.code;
 						
 						switch(errorCode){
 							case "auth/weak-password":
@@ -34,7 +35,7 @@ new Vue({
 						}
 
 						$("#error").text(error);
-					})
+					});
 			}
 		}
 	}
