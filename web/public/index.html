@@ -32,11 +32,19 @@
 		  </div>
 
 		  <div id="dash" v-if="display" v-cloak>
-			  DASH!
+			  Recent journals
+			  <li v-for="(note, name) in getRecentJournals()">
+				  {{ name }}
+			  </li>
+			  <hr />
+			  Recent notes
+			  <li v-for="(content, notename) in getRecentNotes()">
+				  {{ notename }} - {{ content }}
+			  </li>
 		  </div>
 
 		  <div id="settings" v-if="display" v-cloak>
-			  <span onclick="firebase.auth().signOut()" class="ma4">click here to log out</span>
+			  <span onclick="firebase.auth().signOut()">click here to log out</span>
 		  </div>
 	  </div>  
 
@@ -70,10 +78,10 @@
 			};
 		  firebase.initializeApp(firebaseConfig);
       </script>
-	  
-	  <script src="/js/index.js"></script>
 	  <script src="/js/secure.js"></script>
 	  <script src="/js/dbinteract.js"></script>
+	  
+	  <script src="/js/index.js"></script>
 	  <script src="/dep/argon2-browser/lib/argon2.js"></script>
 	  <script src="/dep/aesjs/index.js"></script>
 	  

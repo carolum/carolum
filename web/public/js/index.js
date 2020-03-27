@@ -47,12 +47,37 @@ var newEntry = new Vue({
 
 var dashboard = new Vue({
 	el: "#dash",
+	data: {
+		journalNames: getFolders()[0],
+		journals: getFolders()[1],
+		noteNames: getNotes()[0],
+		notes: getNotes()[1],
+		recentLimit: 10
+	},
 	computed: {
 		display: function() { return nav.tabs === 'dash'; }
 	},
 	methods: {
 		change: function(event){
 			location.hash = "#"+event;
+		},
+		getRecentJournals: function (event) {
+			let ret = {};
+			
+			this.journalNames.slice(0,this.recentLimit).forEach((e)=>{
+				ret[e] = this.journals[e];
+			});
+			
+			return ret;
+		},
+		getRecentNotes: function (event) {
+			let ret = {};
+			
+			this.noteNames.slice(0,this.recentLimit).forEach((e)=>{
+				ret[e] = this.notes[e];
+			});
+			
+			return ret;
 		}
 	}
 });
