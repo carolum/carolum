@@ -1,0 +1,24 @@
+.ora{
+	color: #F88379;
+}
+
+textarea{
+	background: transparent;
+	resize: none;
+	border: 0 none;
+	white-space: pre-wrap;
+}
+
+#edit input{
+	border: 0 none;
+	border-bottom: 1px solid gray;
+	height: 15%;
+}
+
+.userinput{
+	height: 100%;
+}
+
+input:focus, textarea:focus{
+	outline: none;
+}

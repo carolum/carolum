@@ -33,18 +33,20 @@
 
 		  <div id="dash" v-if="display" v-cloak>
 			  Recent journals
-			  <li v-for="(note, name) in getRecentJournals()">
-				  {{ name }}
-			  </li>
+			  <journal-overview v-for="(noteids, journalname) in getRecentJournals()"
+					v-bind:noteids="noteids"
+					v-bind:journalname="journalname">
+			  </journal-overview>
 			  <hr />
 			  Recent notes
-			  <li v-for="(content, notename) in getRecentNotes()">
-				  {{ notename }} - {{ content }}
-			  </li>
+			  <note-overview v-for="(noteid, notename) in getRecentNotes()"
+					v-bind:noteid="noteid"
+					v-bind:notename="notename">
+			  </note-overview>
 		  </div>
 
 		  <div id="settings" v-if="display" v-cloak>
-			  <span onclick="firebase.auth().signOut()">click here to log out</span>
+			  <span onclick="signOut()">click here to log out</span>
 		  </div>
 	  </div>  
 
@@ -82,6 +84,7 @@
 	  <script src="/js/dbinteract.js"></script>
 	  
 	  <script src="/js/index.js"></script>
+	  
 	  <script src="/dep/argon2-browser/lib/argon2.js"></script>
 	  <script src="/dep/aesjs/index.js"></script>
 	  

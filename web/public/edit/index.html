@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Web | Carolum</title>
+		
+		<link rel="shortcut icon" href="/ico/128.ico" type="image/x-icon">
+		
+		<script src="/dep/jquery/jquery-3.4.1.slim.js"></script>
+		<script src="/dep/vue/vue.js"></script>
+		
+		<link rel="stylesheet" href="/dep/tachyons/tachyons.min.css">
+		<link rel="stylesheet" href="/edit/css/edit.css">
+
+  </head>
+  <body class="georgia">
+	  <br />
+	  <div class="content ph5 pt5 pb3 mid-gray center pa0 ma0 vh-75">
+		  <button>CRAP GO BACKKKK</button>
+		  <div id="edit" class="h-100" v-cloak>
+			  <a @click="update()">save data</a>
+			  
+			  <br />
+			  
+			  <input type="text" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" onchange="newEntry.changeContent('title', this.value)">
+			  
+			  <div class="userinput pt2">
+				  <textarea class="w-100 f3 ph3 h-100 bb" :placeholder="content.textPlaceholder" :value="content.text" onchange="newEntry.changeContent('text', this.value)">
+				  </textarea>
+			  </div>
+			  <br />
+		  </div>
+	  </div>  
+
+      <script src="/js/firebase-app.js"></script>
+	  <script src="/js/firebase-auth.js"></script>
+	  <script src="/js/firebase-database.js"></script>
+      
+      <script>
+		  const firebaseConfig = {
+			  apiKey: "AIzaSyDVnVkuM-Q5gQuZ8vdCU2g58PF2Mg5poNo",
+			  authDomain: "carolum-301eb.firebaseapp.com",
+			  databaseURL: "https://carolum-301eb.firebaseio.com",
+			  projectId: "carolum-301eb",
+			  storageBucket: "carolum-301eb.appspot.com",
+			  messagingSenderId: "710478813831",
+			};
+		  firebase.initializeApp(firebaseConfig);
+      </script>
+	  <script src="/js/secure.js"></script>
+	  <script src="/js/dbinteract.js"></script>
+	  
+	  <script src="/edit/js/edit.js"></script>
+	  
+	  <script src="/dep/argon2-browser/lib/argon2.js"></script>
+	  <script src="/dep/aesjs/index.js"></script>
+	  
+  </body>
+</html>
+
+

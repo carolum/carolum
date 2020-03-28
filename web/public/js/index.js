@@ -1,3 +1,18 @@
+Vue.component("note-overview", {
+	props: ["notename", "noteid"],
+	computed: {
+		noteurl: function(){
+			return "/edit/?id="+this.noteid;
+		}
+	},
+	template: '<li>{{ notename }} - <a :href="noteurl">{{ noteid }}</a></li>'
+});
+
+Vue.component("journal-overview", {
+	props: ["journalname", "noteids"],
+	template: '<li>{{ journalname }}</li>'
+});
+
 var nav = new Vue({
 	el: "#nav",
 	data: {
@@ -9,11 +24,6 @@ var nav = new Vue({
 		}
 	}
 });
-
-window.onhashchange = () => {
-	nav.tabs = ["new", "dash", "settings"].indexOf(location.hash.slice(1)) === -1 ? "new" : location.hash.slice(1);
-	location.hash = nav.tabs;
-};
 
 var newEntry = new Vue({
 	el: "#new",
@@ -37,7 +47,6 @@ var newEntry = new Vue({
 		},
 		update: function(event){
 			setNote(this.getData());
-			console.log("pushed data")
 		},
 		changeContent: function(key, val){
 			this.content[key] = val;
@@ -88,6 +97,11 @@ var settings = new Vue({
 		display: function() { return nav.tabs === 'settings'; }
 	}
 });
+
+window.onhashchange = () => {
+	nav.tabs = ["new", "dash", "settings"].indexOf(location.hash.slice(1)) === -1 ? "new" : location.hash.slice(1);
+	location.hash = nav.tabs;
+};
 
 firebase.auth().onAuthStateChanged(function(u){
 	if(u){

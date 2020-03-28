@@ -1,6 +1,6 @@
 // URGENT
 function getFolders(){
-	// returns a hashmap of [[foldername], {foldername:[note ID]}]
+	// returns [[foldername], {foldername:[note ID]}]
 	
 	return [
 		["someJournalNameIDK"],
@@ -10,17 +10,27 @@ function getFolders(){
 	]
 }
 
+
 function getNotes(){
-	// returns an array comprised of [[title], {title:id}]
+	// returns [[title], {title:id}]
 	
 	return [
-		["asdfasdfasdf", "123123321321", "opkjl123kj"],
+		["asdfasdfasdf", "123123321321", "opkjl123kj", "asdfasdfasdfasdfljkaskldfjalskdfjlkasjdfl"],
 		{
 			asdfasdfasdf:"asdf",
 			123123321321:"asdf2",
-			opkjl123kj:"sdjfklsdflkjsdfl"
+			opkjl123kj:"sdjfklsdflkjsdfl",
+			asdfasdfasdfasdfljkaskldfjalskdfjlkasjdfl:'ok'
 		}
 	]
+}
+
+function getNoteFromID(id){
+	// returns [title, content]
+}
+
+function setJournal(data){
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').push(data)
 }
 
 function setNote(data){
@@ -28,7 +38,18 @@ function setNote(data){
 }
 
 
+function signOut(){
+	firebase.auth().signOut();
+}
+
+
+
+
 // NONURGENT
 function verifyNameFree(name){
 	// returns a boolean whether or not a user has already made a note with a certain name
 }
+
+
+
+

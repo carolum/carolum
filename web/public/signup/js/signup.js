@@ -32,11 +32,20 @@ var signup = new Vue({
 								error = "Email already in use!";
 								break;
 								
+							default:
+								error = "Unknown error. Please report this error."
+								break;
+								
 						}
 
 						$("#error").text(error);
 					});
-			}
+				
+				hash(this.p, "hashsaltthing")
+					.then((h) => {
+						window.localStorage.setItem("carolum-pwhash", h.hashHex);
+					});
+				}
 		}
 	}
 });
