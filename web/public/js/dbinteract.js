@@ -1,36 +1,37 @@
 // URGENT
-function getFolders(){
-	// returns [[foldername], {foldername:[note ID]}]
-	
-	return [
-		["someJournalNameIDK"],
-		{
-			someJournalNameIDK: ["asdfasdfasdf", "123123321321", "opkjl123kj"]
+function updateJournalsListener(){
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').limitToLast(5).on("value", (snapshot)=>{
+		var ret = snapshot.val();
+		t = {};
+		
+		for(let [key, val] of Object.entries(ret)){
+			t[val["name"]]=val["ids"];
 		}
-	]
+		dashboard.journals=t;
+	});
 }
 
 
-function getNotes(){
-	// returns [[title], {title:id}]
-	
-	return [
-		["asdfasdfasdf", "123123321321", "opkjl123kj", "asdfasdfasdfasdfljkaskldfjalskdfjlkasjdfl"],
-		{
-			asdfasdfasdf:"asdf",
-			123123321321:"asdf2",
-			opkjl123kj:"sdjfklsdflkjsdfl",
-			asdfasdfasdfasdfljkaskldfjalskdfjlkasjdfl:'ok'
+function updateNotesListener(){
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').limitToLast(5).on("value", (snapshot)=>{
+		var ret = snapshot.val();
+		var t = {};
+		
+		for(let [key, val] of Object.entries(ret)){
+			t[val["title"]]=val["text"];
 		}
-	]
+		dashboard.notes=t;
+	});
 }
 
-function getNoteFromID(id){
-	// returns [title, content]
+function addNoteToJournal(noteID, noteTitle, journalID){
+	// data should be 
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID+"/ids").child(noteID).set({title:noteTitle, id_:noteID});
 }
 
-function setJournal(data){
-	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').push(data)
+function newJournal(name){
+	// data should be 
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').push({name:name, ids:[]})
 }
 
 function setNote(data){
@@ -38,7 +39,7 @@ function setNote(data){
 }
 
 
-function signOut(){
+function signOut(){v
 	firebase.auth().signOut();
 }
 
@@ -49,7 +50,3 @@ function signOut(){
 function verifyNameFree(name){
 	// returns a boolean whether or not a user has already made a note with a certain name
 }
-
-
-
-

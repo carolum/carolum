@@ -9,14 +9,20 @@ Vue.component("note-overview", {
 });
 
 Vue.component("journal-overview", {
-	props: ["journalname", "noteids"],
-	template: '<li>{{ journalname }}</li>'
+	props: ["journalname", "notes"],
+	methods: {
+		noteurl: function(id){
+			return "/edit?id="+id;
+		}
+	},
+	template: '<li class="journalEntry">{{ journalname }}<ul class="mt2"><li v-for="note in notes"><a :href="noteurl(note.id_)">{{ note.title}}</a></li></ul></li>'
 });
+
 
 var nav = new Vue({
 	el: "#nav",
 	data: {
-		tabs: ["new", "dash", "settings"].indexOf(location.hash.slice(1)) === -1 ? "new" : location.hash.slice(1)
+		tabs: ["new", "dash", "settings"].indexOf(location.hash.slice(1)) === -1 ? "new" : location.hash.slice(1);
 	},
 	methods: {
 		change: function(tab){
@@ -43,7 +49,7 @@ var newEntry = new Vue({
 			return {
 				title: this.content["title"],
 				text: this.content["text"]
-			}
+			};
 		},
 		update: function(event){
 			setNote(this.getData());
@@ -57,11 +63,8 @@ var newEntry = new Vue({
 var dashboard = new Vue({
 	el: "#dash",
 	data: {
-		journalNames: getFolders()[0],
-		journals: getFolders()[1],
-		noteNames: getNotes()[0],
-		notes: getNotes()[1],
-		recentLimit: 10
+		journals: {},
+		notes: {}
 	},
 	computed: {
 		display: function() { return nav.tabs === 'dash'; }
@@ -69,24 +72,6 @@ var dashboard = new Vue({
 	methods: {
 		change: function(event){
 			location.hash = "#"+event;
-		},
-		getRecentJournals: function (event) {
-			let ret = {};
-			
-			this.journalNames.slice(0,this.recentLimit).forEach((e)=>{
-				ret[e] = this.journals[e];
-			});
-			
-			return ret;
-		},
-		getRecentNotes: function (event) {
-			let ret = {};
-			
-			this.noteNames.slice(0,this.recentLimit).forEach((e)=>{
-				ret[e] = this.notes[e];
-			});
-			
-			return ret;
 		}
 	}
 });
@@ -102,11 +87,3 @@ window.onhashchange = () => {
 	nav.tabs = ["new", "dash", "settings"].indexOf(location.hash.slice(1)) === -1 ? "new" : location.hash.slice(1);
 	location.hash = nav.tabs;
 };
-
-firebase.auth().onAuthStateChanged(function(u){
-	if(u){
-		//pass for now
-	} else {
-		window.location.href = "/login";
-	}
-});

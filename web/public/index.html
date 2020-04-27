@@ -32,14 +32,22 @@
 		  </div>
 
 		  <div id="dash" v-if="display" v-cloak>
+			  <input type="text" id="newJournalName">
+			  <button onclick="newJournal(document.getElementById('newJournalName').value)">Create new journal</button>
+			  <br /><br />
+			  <input type="text" id="noteid" placeholder="noteid"><br />
+			  <input type="text" id="notename" placeholder="notename"><br />
+			  <input type="text" id="journalid" placeholder="journalid">
+			  <button onclick="addNoteToJournal(document.getElementById('noteid').value,document.getElementById('notename').value, document.getElementById('journalid').value)">Add note ID to journal</button>
+			  <hr />
 			  Recent journals
-			  <journal-overview v-for="(noteids, journalname) in getRecentJournals()"
-					v-bind:noteids="noteids"
+			  <journal-overview v-for="(notes, journalname) in journals"
+					v-bind:notes="notes"
 					v-bind:journalname="journalname">
 			  </journal-overview>
 			  <hr />
 			  Recent notes
-			  <note-overview v-for="(noteid, notename) in getRecentNotes()"
+			  <note-overview v-for="(noteid, notename) in notes"
 					v-bind:noteid="noteid"
 					v-bind:notename="notename">
 			  </note-overview>
@@ -84,6 +92,7 @@
 	  <script src="/js/dbinteract.js"></script>
 	  
 	  <script src="/js/index.js"></script>
+	  <script src="/js/universal.js"></script>
 	  
 	  <script src="/dep/argon2-browser/lib/argon2.js"></script>
 	  <script src="/dep/aesjs/index.js"></script>
