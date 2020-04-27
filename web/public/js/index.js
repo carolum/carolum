@@ -1,13 +1,3 @@
-Vue.component("note-overview", {
-	props: ["notename", "noteid"],
-	computed: {
-		noteurl: function(){
-			return "/edit/?id="+this.noteid;
-		}
-	},
-	template: '<li>{{ notename }} - <a :href="noteurl">{{ noteid }}</a></li>'
-});
-
 Vue.component("journal-overview", {
 	props: ["journalname", "notes"],
 	methods: {
@@ -15,14 +5,25 @@ Vue.component("journal-overview", {
 			return "/edit?id="+id;
 		}
 	},
-	template: '<li class="journalEntry">{{ journalname }}<ul class="mt2"><li v-for="note in notes"><a :href="noteurl(note.id_)">{{ note.title}}</a></li></ul></li>'
+	template: '<li class="journal-entry list pl0 outline pv2 ph2 mt2 mb2 mr3 mw5"><span class="b">{{ journalname }}</span><hr /><ul class="mt2 list pl0"><li v-for="note in notes"><a :href="noteurl(note.id_)">{{ note.title}}</a></li></ul></li>'
+});
+
+
+Vue.component("note-overview", {
+	props: ["noteid", "note"],
+	computed: {
+		noteurl: function(){
+			return "/edit/?id="+this.noteid;
+		}
+	},
+	template: '<li><a :href="noteurl">{{ note.title }} </a></li>'
 });
 
 
 var nav = new Vue({
 	el: "#nav",
 	data: {
-		tabs: ["new", "dash", "settings"].indexOf(location.hash.slice(1)) === -1 ? "new" : location.hash.slice(1);
+		tabs: ["new", "dash", "settings"].indexOf(location.hash.slice(1)) === -1 ? "new" : location.hash.slice(1)
 	},
 	methods: {
 		change: function(tab){

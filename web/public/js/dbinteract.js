@@ -2,9 +2,9 @@
 function updateJournalsListener(){
 	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').limitToLast(5).on("value", (snapshot)=>{
 		var ret = snapshot.val();
-		t = {};
+		var t = {};
 		
-		for(let [key, val] of Object.entries(ret)){
+		for(let [key, val] of Object.entries(ret).reverse()){
 			t[val["name"]]=val["ids"];
 		}
 		dashboard.journals=t;
@@ -17,12 +17,14 @@ function updateNotesListener(){
 		var ret = snapshot.val();
 		var t = {};
 		
-		for(let [key, val] of Object.entries(ret)){
-			t[val["title"]]=val["text"];
+		for(let [key, val] of Object.entries(ret).reverse()){
+			t[key]={text:val["text"], title:val["title"]};
 		}
 		dashboard.notes=t;
 	});
 }
+
+
 
 function addNoteToJournal(noteID, noteTitle, journalID){
 	// data should be 

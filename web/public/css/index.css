@@ -38,3 +38,17 @@ textarea{
 input:focus, textarea:focus{
 	outline: none;
 }
+
+.push{
+	height: 40px;
+}
+
+.journal-entry{
+	word-wrap: break-word;
+	min-width: 120px;
+}
+
+
+article.footer{
+	background-color: white;
+}

@@ -39,27 +39,36 @@
 			  <input type="text" id="notename" placeholder="notename"><br />
 			  <input type="text" id="journalid" placeholder="journalid">
 			  <button onclick="addNoteToJournal(document.getElementById('noteid').value,document.getElementById('notename').value, document.getElementById('journalid').value)">Add note ID to journal</button>
-			  <hr />
-			  Recent journals
-			  <journal-overview v-for="(notes, journalname) in journals"
-					v-bind:notes="notes"
-					v-bind:journalname="journalname">
-			  </journal-overview>
-			  <hr />
-			  Recent notes
-			  <note-overview v-for="(noteid, notename) in notes"
+			  <br /><br /><br />
+			  
+			  
+			  <span class="f3 w-25">Recent journals<hr /></span>
+			  <div class="flex flex-wrap">
+				  <journal-overview v-for="(notes, journalname) in journals"
+						v-bind:notes="notes"
+						v-bind:journalname="journalname">
+				  </journal-overview>
+			  </div>
+			  
+			  <br />
+			  
+			  <span class="f3">Recent notes</span>
+			  <hr class="mv2">
+			  <note-overview v-for="(note, noteid) in notes"
 					v-bind:noteid="noteid"
-					v-bind:notename="notename">
+					v-bind:note="note">
 			  </note-overview>
 		  </div>
 
 		  <div id="settings" v-if="display" v-cloak>
 			  <span onclick="signOut()">click here to log out</span>
 		  </div>
-	  </div>  
+	  </div>
 
-	  <article class="ph5 pt5 pb3 bb fixed left-0 bottom-0 right-0 mid-gray f4 vh-25">
-		  <div class="flex justify-center f5" id="nav">
+	  <span id="push"></span>
+
+	  <article class="footer ph5 pb3 fixed left-0 bottom-0 right-0 mid-gray f4">
+		  <div class="flex justify-center f5 mb4" id="nav">
 			  <span class="bl tc w-30 pt3 pb2 bt bb dim" v-bind:class="{'oraborder': tabs === 'new'}" v-on:click="nav.change('new')">
 				  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg><br />
 			  </span>
