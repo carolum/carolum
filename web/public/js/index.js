@@ -39,7 +39,7 @@ var newEntry = new Vue({
 	},
 	data: {
 		content: {
-			titlePlaceholder: (new Date()).getMonth() + "/" + (new Date()).getDate() + "/" + (new Date()).getFullYear(),
+			titlePlaceholder: (new Date()).getMonth()+1 + "/" + (new Date()).getDate() + "/" + (new Date()).getFullYear(),
 			textPlaceholder:'Today...',
 			title:"",
 			text:""
@@ -48,12 +48,13 @@ var newEntry = new Vue({
 	methods: {
 		getData: function(){
 			return {
-				title: this.content["title"],
-				text: this.content["text"]
+				title: this.content.title,
+				text: this.content.text
 			};
 		},
 		update: function(event){
-			setNote(this.getData());
+			var id = setNote(this.getData());
+			window.location.href = "/edit/?id="+id;
 		},
 		changeContent: function(key, val){
 			this.content[key] = val;
@@ -88,3 +89,13 @@ window.onhashchange = () => {
 	nav.tabs = ["new", "dash", "settings"].indexOf(location.hash.slice(1)) === -1 ? "new" : location.hash.slice(1);
 	location.hash = nav.tabs;
 };
+
+firebase.auth().onAuthStateChanged(function(u){
+	if(u){
+		//start listeners
+		updateNotesListener();
+		updateJournalsListener();
+	} else {
+		window.location.href = "/login";
+	}
+});

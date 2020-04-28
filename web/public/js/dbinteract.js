@@ -25,30 +25,41 @@ function updateNotesListener(){
 }
 
 
+function loadNoteToEdit(noteID){
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+noteID).once("value", (snapshot)=>{
+		ret = snapshot.val();
+		var t = {};
+		
+		editEntry.content.text = ret.text;
+		editEntry.content.title = ret.title;
+		
+	});
+}
+
+
 
 function addNoteToJournal(noteID, noteTitle, journalID){
 	// data should be 
-	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID+"/ids").child(noteID).set({title:noteTitle, id_:noteID});
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID+'/ids').child(noteID).set({title:noteTitle, id_:noteID});
 }
 
 function newJournal(name){
 	// data should be 
-	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').push({name:name, ids:[]})
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').push({name:name})
 }
 
 function setNote(data){
-	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').push(data)
+	return firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').push(data).key
+}
+
+function updateNote(data, noteID){
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+noteID).set(data)
 }
 
 
-function signOut(){v
+function signOut(){
 	firebase.auth().signOut();
 }
 
 
 
-
-// NONURGENT
-function verifyNameFree(name){
-	// returns a boolean whether or not a user has already made a note with a certain name
-}

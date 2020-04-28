@@ -1,22 +1,21 @@
+// from SO
+function get(name){
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+}
+
 var editEntry = new Vue({
 	el: "#edit",
 	data: {
 		content: {
-			titlePlaceholder: (new Date()).getMonth() + "/" + (new Date()).getDate() + "/" + (new Date()).getFullYear(),
-			textPlaceholder:'Today...',
 			title:"",
-			text:""
+			text:"",
+			id_:get("id")
 		}
 	},
 	methods: {
-		getData: function(){
-			return {
-				title: this.content["title"],
-				text: this.content["text"]
-			}
-		},
 		update: function(event){
-			setNote(this.getData());
+			updateNote({title:this.content.title, text:this.content.text}, this.content.id_);
 		},
 		changeContent: function(key, val){
 			this.content[key] = val;
@@ -24,4 +23,15 @@ var editEntry = new Vue({
 	}
 });
 
-console.log(document.location.href)
+firebase.auth().onAuthStateChanged(function(u){
+	if(u){
+		try{
+			loadNoteToEdit(editEntry.content.id_);
+		} catch (e){
+			editEntry.content.title = e.message;
+			editEntry.content.text = e.message;
+		}
+	} else {
+		window.location.href = "/login";
+	}
+});

@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Web | Carolum</title>
+		<title>Carolum</title>
 		
 		<link rel="shortcut icon" href="/ico/128.ico" type="image/x-icon">
 		
@@ -16,7 +16,7 @@
   </head>
   <body class="georgia">
 	  <br />
-	  <div class="content ph5 pt5 pb3 mid-gray center pa0 ma0 vh-75">
+	  <div class="content ph2 pt5 pb3 mid-gray center pa0 ma0 vh-75">
 		  <div id="new" class="h-100" v-if="display" v-cloak>
 			  <a @click="update()">save data</a>
 			  
@@ -67,7 +67,7 @@
 
 	  <span id="push"></span>
 
-	  <article class="footer ph5 pb3 fixed left-0 bottom-0 right-0 mid-gray f4">
+	  <article class="footer ph2 pb3 fixed left-0 bottom-0 right-0 mid-gray f4">
 		  <div class="flex justify-center f5 mb4" id="nav">
 			  <span class="bl tc w-30 pt3 pb2 bt bb dim" v-bind:class="{'oraborder': tabs === 'new'}" v-on:click="nav.change('new')">
 				  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg><br />
@@ -101,7 +101,6 @@
 	  <script src="/js/dbinteract.js"></script>
 	  
 	  <script src="/js/index.js"></script>
-	  <script src="/js/universal.js"></script>
 	  
 	  <script src="/dep/argon2-browser/lib/argon2.js"></script>
 	  <script src="/dep/aesjs/index.js"></script>
