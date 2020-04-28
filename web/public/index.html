@@ -32,7 +32,7 @@
 		  </div>
 
 		  <div id="dash" v-if="display" v-cloak>
-			  <input type="text" id="newJournalName">
+			  <input type="text" id="newJournalName" placeholder="journalname">
 			  <button onclick="newJournal(document.getElementById('newJournalName').value)">Create new journal</button>
 			  <br /><br />
 			  <input type="text" id="noteid" placeholder="noteid"><br />
@@ -103,7 +103,6 @@
 	  <script src="/js/index.js"></script>
 	  
 	  <script src="/dep/argon2-browser/lib/argon2.js"></script>
-	  <script src="/dep/aesjs/index.js"></script>
 	  
   </body>
 </html>

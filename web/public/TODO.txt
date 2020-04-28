@@ -1,0 +1,46 @@
+Login/signup:
+- Switch to using an actual form instead of whatever the heck I have now
+- Google OATH?
+
+
+Home page:
+- Switch to FA icons instead of hardcoding SVG
+- While content is loading/decrypting I'd like it to have a general loading icon like how Google does it
+  instead of just having blank spots for a moment
+
+
+New entries:
+- Style the save button or implement autosave
+- Add images option
+
+
+
+Dashboard:
+- Fix the footer issue and add something like a push div
+- Delete journals / notes
+- Add heatmap of notes taken, https://github.com/wa0x6e/cal-heatmap
+- Implement note dates, something like sorting most recent note by date
+- Journal last edited
+- View all journals page
+- View all notes page
+- Edit journals page
+
+
+
+Settings:
+- Password change
+- Set custom default title / text starters
+- Color theme change?
+
+
+Editing Entries:
+- Design / find a good back button
+- Images option
+
+
+
+Editing Journals (nonexistent so far):
+- Delete this journal
+- Add/remove note to this journal
+- Edit a note in this journal
+- Batch delete notes

@@ -1,11 +1,12 @@
 // URGENT
 function updateJournalsListener(){
-	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').limitToLast(5).on("value", (snapshot)=>{
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').limitToLast(5).on("value", async (snapshot)=>{
 		var ret = snapshot.val();
 		var t = {};
 		
 		for(let [key, val] of Object.entries(ret).reverse()){
-			t[val["name"]]=val["ids"];
+			var title = await decrypt(val.name);
+			t[title]=val.ids;
 		}
 		dashboard.journals=t;
 	});
@@ -13,12 +14,17 @@ function updateJournalsListener(){
 
 
 function updateNotesListener(){
-	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').limitToLast(5).on("value", (snapshot)=>{
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').limitToLast(5).on("value", async (snapshot)=>{
 		var ret = snapshot.val();
 		var t = {};
 		
 		for(let [key, val] of Object.entries(ret).reverse()){
-			t[key]={text:val["text"], title:val["title"]};
+			var decText = await decrypt(val.text);
+			var decTitle = await decrypt(val.title);
+			t[key]={
+				text: decText,
+				title: decTitle
+			};
 		}
 		dashboard.notes=t;
 	});
@@ -26,39 +32,46 @@ function updateNotesListener(){
 
 
 function loadNoteToEdit(noteID){
-	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+noteID).once("value", (snapshot)=>{
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+noteID).once("value", async (snapshot)=>{
 		ret = snapshot.val();
 		var t = {};
 		
-		editEntry.content.text = ret.text;
-		editEntry.content.title = ret.title;
+		editEntry.content.text = await decrypt(ret.text);
+		editEntry.content.title = await decrypt(ret.title);
 		
 	});
 }
 
 
-
 function addNoteToJournal(noteID, noteTitle, journalID){
-	// data should be 
-	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID+'/ids').child(noteID).set({title:noteTitle, id_:noteID});
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID+'/ids').child(noteID).set({
+		title:noteTitle, id_:noteID
+	});
 }
 
-function newJournal(name){
-	// data should be 
-	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').push({name:name})
+async function newJournal(name){
+	name = await encrypt(name);
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').push({
+		name:name
+	});
 }
 
-function setNote(data){
-	return firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').push(data).key
+async function setNote(data){
+	data["text"] = await encrypt(data["text"]);
+	data["title"] = await encrypt(data["title"]);
+	return firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').push(data).key;
 }
 
-function updateNote(data, noteID){
-	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+noteID).set(data)
+async function updateNote(data, noteID){
+	data["text"] = await encrypt(data["text"]);
+	data["title"] = await encrypt(data["title"]);
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+noteID).set(data);
 }
 
 
 function signOut(){
 	firebase.auth().signOut();
+	localStorage.removeItem("carolum-pwhash");
 }
 
 
