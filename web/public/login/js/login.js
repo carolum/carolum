@@ -24,7 +24,7 @@ var login = new Vue({
 });
 
 firebase.auth().onAuthStateChanged(function(u){
-	if(u){
+	if(u && getHash() !== null){
 		window.location.href = '/';
 	}
-})
+});

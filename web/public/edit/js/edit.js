@@ -24,7 +24,7 @@ var editEntry = new Vue({
 });
 
 firebase.auth().onAuthStateChanged(function(u){
-	if(u){
+	if(u && getHash() !== null){
 		try{
 			loadNoteToEdit(editEntry.content.id_);
 		} catch (e){

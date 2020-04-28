@@ -16,6 +16,7 @@ New entries:
 
 
 Dashboard:
+- Fix the journals getting out of order???
 - Fix the footer issue and add something like a push div
 - Delete journals / notes
 - Add heatmap of notes taken, https://github.com/wa0x6e/cal-heatmap
