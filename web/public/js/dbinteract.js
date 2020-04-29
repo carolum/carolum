@@ -4,16 +4,13 @@ function updateJournalsListener(){
 		var ret = snapshot.val();
 		var t = {};
 		
+		if (ret == null) return;
+		
 		for(let [key, val] of Object.entries(ret).reverse()){
 			var title = await decrypt(val.name);
-			try{
-				for(let [key2, val2] of Object.entries(val.ids)){
+			if (val.ids != null)
+				for(let [key2, val2] of Object.entries(val.ids))
 					val.ids[key2].title = await decrypt(val.ids[key2].title);
-				}
-			}
-			catch (e){
-				//pass
-			}
 			t[title]=val.ids;
 		}
 		dashboard.journals=t;

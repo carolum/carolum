@@ -17,9 +17,7 @@ New entries:
 
 
 Dashboard:
-- figure a better way than try/catch in updateJournalsListener, check if the ids length is 0 or not
 - tuturu :3
-- Fix the journals getting out of order???
 - Fix the footer issue and add something like a push div
 - Delete journals / notes
 - Add heatmap of notes taken, https://github.com/wa0x6e/cal-heatmap
