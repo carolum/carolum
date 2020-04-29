@@ -25,18 +25,15 @@
 					  <span class="fl w-100 ph2"><span class="fl mb1 f2">Carolum</span></span>
 				  </div>
 				  <div class="f5 flex flex-column fl ph2 w-100" id="signup">
-					  <span class="mb3"></span>
-					  <span class="mb1"><span class="fl">Email</span></span>
-					  <input type="text" class="pl1 f4" v-model="e" required>
-					  
-					  <span class="mb3"></span>
-					  <span class="mb1"><span class="fl">Password</span></span>
-					  <input type="password" class="pl1 f4" v-model="p" required>
-					  
-					  <span class="mb3"></span>
-					  <span class="mb3"></span>
-					  
-					  <span class="link ba ph0 pv0 mv0 dib black w-100 pointer f3 clicky" v-on:click="signup"><p>Log In</p></span>
+					  <form>
+						  <label class="db f4 tl mt3 fw5" for="e">Email</label>
+						  <input type="email" class="pl1 db mt1 h2 f4 w-100" v-model="e" name="e" required>
+						  
+						  <label class="db f4 tl mt3 fw5" for="p">Password</label>
+						  <input type="password" class="pl1 db mt1 mb4 h2 f4 w-100" v-model="p" name="p" required>
+
+						  <span type="submit" class="link ba ph0 pv0 mv0 dib black w-100 pointer f3 clicky" v-on:click="signup"><p>Log In</p></span>
+					  </form>
 					  
 					  <span class="mb3"></span>
 					  

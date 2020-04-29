@@ -5,7 +5,7 @@ Vue.component("journal-overview", {
 			return "/edit/?id="+id;
 		}
 	},
-	template: '<li class="journal-entry list pl0 outline pv2 ph2 mt2 mb2 mr3 mw5"><span class="b">{{ journalname }}</span><hr /><ul class="mt2 list pl0"><li v-for="note in notes"><a :href="noteurl(note.id_)">{{ note.title}}</a></li></ul></li>'
+	template: '<li class="journal-entry list pl0 outline pv2 ph2 mt2 mb2 mr3 mw5"><span class="b">{{ journalname }}</span><hr /><ul class="mt2 list pl0"><li v-for="note in notes"><a :href="noteurl(note.id_)">{{ note.title }}</a></li></ul></li>'
 });
 
 

@@ -1,5 +1,6 @@
 Login/signup:
-- Switch to using an actual form instead of whatever the heck I have now
+- Listen for Enter key presses and do input validation on forms
+- Actually use a generated salt lmao
 - Google OATH?
 
 
@@ -16,6 +17,8 @@ New entries:
 
 
 Dashboard:
+- figure a better way than try/catch in updateJournalsListener, check if the ids length is 0 or not
+- tuturu :3
 - Fix the journals getting out of order???
 - Fix the footer issue and add something like a push div
 - Delete journals / notes

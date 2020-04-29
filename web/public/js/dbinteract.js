@@ -6,6 +6,14 @@ function updateJournalsListener(){
 		
 		for(let [key, val] of Object.entries(ret).reverse()){
 			var title = await decrypt(val.name);
+			try{
+				for(let [key2, val2] of Object.entries(val.ids)){
+					val.ids[key2].title = await decrypt(val.ids[key2].title);
+				}
+			}
+			catch (e){
+				//pass
+			}
 			t[title]=val.ids;
 		}
 		dashboard.journals=t;
@@ -43,7 +51,8 @@ function loadNoteToEdit(noteID){
 }
 
 
-function addNoteToJournal(noteID, noteTitle, journalID){
+async function addNoteToJournal(noteID, noteTitle, journalID){
+	var encTitle = await encrypt(noteTitle);
 	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID+'/ids').child(noteID).set({
 		title:noteTitle, id_:noteID
 	});
