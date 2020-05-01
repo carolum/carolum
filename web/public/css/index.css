@@ -48,6 +48,10 @@ input:focus, textarea:focus{
 	min-width: 120px;
 }
 
+.journal-entry:last-child{
+	margin-right:0 !important;
+}
+
 
 article.footer{
 	background-color: white;

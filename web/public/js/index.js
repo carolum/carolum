@@ -93,8 +93,8 @@ window.onhashchange = () => {
 firebase.auth().onAuthStateChanged(function(u){
 	if(u && getHash() !== null){
 		//start listeners
-		updateNotesListener();
-		updateJournalsListener();
+		updateRecentNotesListener();
+		updateRecentJournalsListener();
 	} else {
 		window.location.href = "/login";
 	}

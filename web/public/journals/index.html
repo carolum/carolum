@@ -10,23 +10,27 @@
 		<script src="/dep/vue/vue.js"></script>
 		
 		<link rel="stylesheet" href="/dep/tachyons/tachyons.min.css">
-		<link rel="stylesheet" href="/css/edit.css">
+		<link rel="stylesheet" href="/css/index.css">
+		<link rel="stylesheet" href="/css/journals.css">
 
   </head>
   <body class="georgia">
 	  <br />
 	  <div class="content ph5 pt5 pb3 mid-gray center pa0 ma0 vh-75">
-		  <div id="edit" class="h-100" v-cloak>
-			  <a @click="update()">save data</a>
+		  <div id="journals" class="h-100" v-cloak>
 			  
 			  <br />
 			  
-			  <input type="text" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" onchange="editEntry.changeContent('title', this.value)">
+			  <span class="f3 w-25">Journals<hr /></span>
 			  
-			  <div class="userinput pt2">
-				  <textarea class="w-100 f3 ph3 h-100 bb" :placeholder="content.textPlaceholder" :value="content.text" onchange="editEntry.changeContent('text', this.value)">
-				  </textarea>
+			  <div class="flex flex-wrap" style="display: grid;">
+				  <journal-overview v-for="(notes, journalname) in journals"
+						v-bind:notes="notes"
+						v-bind:journalname="journalname">
+				  </journal-overview>
 			  </div>
+			  
+			  
 			  <br />
 		  </div>
 	  </div>  
@@ -49,7 +53,7 @@
 	  <script src="/js/secure.js"></script>
 	  <script src="/js/dbinteract.js"></script>
 	  
-	  <script src="/js/edit.js"></script>
+	  <script src="/js/journals.js"></script>
 	  
 	  <script src="/dep/argon2-browser/lib/argon2.js"></script>
 	  

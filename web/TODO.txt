@@ -5,6 +5,8 @@ Login/signup:
 
 
 Home page:
+- 404 page!
+- Design / find a good back button to go back to main menu
 - Switch to FA icons instead of hardcoding SVG
 - While content is loading/decrypting I'd like it to have a general loading icon like how Google does it
   instead of just having blank spots for a moment
@@ -23,7 +25,6 @@ Dashboard:
 - Add heatmap of notes taken, https://github.com/wa0x6e/cal-heatmap
 - Implement note dates, something like sorting most recent note by date
 - Journal last edited
-- View all journals page
 - View all notes page
 - Edit journals page
 
@@ -36,12 +37,15 @@ Settings:
 
 
 Editing Entries:
-- Design / find a good back button
 - Images option
 
 
+JournalView:
+- https://stackoverflow.com/questions/45351742/how-to-retrieve-range-of-data-in-firebase to do a "load more" kind of thing
+	- If I really have time make the dashboard.journals and journalView.journals work together but that probs is unnecessary
 
-Editing Journals (nonexistent so far):
+
+Editing Specific Journal (nonexistent so far):
 - Delete this journal
 - Add/remove note to this journal
 - Edit a note in this journal

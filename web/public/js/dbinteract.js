@@ -1,5 +1,4 @@
-// URGENT
-function updateJournalsListener(){
+function updateRecentJournalsListener(){
 	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').limitToLast(5).on("value", async (snapshot)=>{
 		var ret = snapshot.val();
 		var t = {};
@@ -17,8 +16,26 @@ function updateJournalsListener(){
 	});
 }
 
+function updateAllJournalsListener(){
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').on("value", async (snapshot)=>{
+		var ret = snapshot.val();
+		var t = {};
+		
+		if (ret == null) return;
+		
+		for(let [key, val] of Object.entries(ret).reverse()){
+			var title = await decrypt(val.name);
+			if (val.ids != null)
+				for(let [key2, val2] of Object.entries(val.ids))
+					val.ids[key2].title = await decrypt(val.ids[key2].title);
+			t[title]=val.ids;
+		}
+		journalsView.journals=t;
+	});
+}
 
-function updateNotesListener(){
+
+function updateRecentNotesListener(){
 	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').limitToLast(5).on("value", async (snapshot)=>{
 		var ret = snapshot.val();
 		var t = {};
