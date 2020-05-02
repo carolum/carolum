@@ -10,18 +10,17 @@
 		<script src="/dep/vue/vue.js"></script>
 		
 		<link rel="stylesheet" href="/dep/tachyons/tachyons.min.css">
-		<link rel="stylesheet" href="/css/index.css">
 		<link rel="stylesheet" href="/css/journals.css">
 
   </head>
   <body class="georgia">
 	  <br />
 	  <div class="content ph5 pt5 pb3 mid-gray center pa0 ma0 vh-75">
-		  <div id="journals" class="h-100" v-cloak>
+		  <div id="journals" class="h-100 w-100" v-cloak>
 			  
 			  <br />
 			  
-			  <span class="f3 w-25">Journals<hr /></span>
+			  <span class="f3">Journals<hr /></span>
 			  
 			  <div class="flex flex-wrap" style="display: grid;">
 				  <journal-overview v-for="(notes, journalname) in journals"
@@ -29,6 +28,11 @@
 						v-bind:journalname="journalname">
 				  </journal-overview>
 			  </div>
+              
+              <div v-if="hasMore" class="w-100 tc pa2 pointer" id="load-more">
+                  <span>⮟</span><br />
+                  <span>Load more</span>
+              </div>
 			  
 			  
 			  <br />

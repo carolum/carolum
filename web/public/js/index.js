@@ -16,7 +16,7 @@ Vue.component("note-overview", {
 			return "/edit/?id="+this.noteid;
 		}
 	},
-	template: '<li><a :href="noteurl">{{ note.title }} </a></li>'
+	template: '<li><a :href="noteurl" class="note-entry">{{ note.title }} </a></li>'
 });
 
 
@@ -90,9 +90,10 @@ window.onhashchange = () => {
 	location.hash = nav.tabs;
 };
 
+
 firebase.auth().onAuthStateChanged(function(u){
 	if(u && getHash() !== null){
-		//start listeners
+		// start listeners
 		updateRecentNotesListener();
 		updateRecentJournalsListener();
 	} else {

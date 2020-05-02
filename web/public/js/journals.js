@@ -1,9 +1,3 @@
-// from SO
-function get(name){
-   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
-      return decodeURIComponent(name[1]);
-}
-
 Vue.component("journal-overview", {
 	props: ["journalname", "notes"],
 	methods: {
@@ -17,8 +11,15 @@ Vue.component("journal-overview", {
 var journalsView = new Vue({
 	el: "#journals",
 	data: {
-		journals:{}
-	}
+		journals:{},
+        journalIDPointer:"",
+        hasMore: true
+	},
+    methods:{
+        loadmore: function(event){
+            loadMoreJournals(this.journalIDPointer);
+        }
+    }
 });
 
 firebase.auth().onAuthStateChanged(function(u){

@@ -1,3 +1,8 @@
+html, body{
+    min-height:100%;
+    margin:0;
+}
+
 .ora{
 	color: #F88379;
 }
@@ -39,8 +44,13 @@ input:focus, textarea:focus{
 	outline: none;
 }
 
+
+#footer{
+    height: 100px;
+}
+
 .push{
-	height: 40px;
+    height: 120px;
 }
 
 .journal-entry{
@@ -55,4 +65,8 @@ input:focus, textarea:focus{
 
 article.footer{
 	background-color: white;
+}
+
+.note-entry{
+    word-wrap:break-word;
 }

@@ -20,7 +20,6 @@ New entries:
 
 Dashboard:
 - tuturu :3
-- Fix the footer issue and add something like a push div
 - Delete journals / notes
 - Add heatmap of notes taken, https://github.com/wa0x6e/cal-heatmap
 - Implement note dates, something like sorting most recent note by date
