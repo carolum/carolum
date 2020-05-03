@@ -13,18 +13,21 @@ var journalsView = new Vue({
 	data: {
 		journals:{},
         journalIDPointer:"",
-        hasMore: true
+        hasMore: true,
+        lastID:""
 	},
     methods:{
         loadmore: function(event){
-            loadMoreJournals(this.journalIDPointer);
+            console.log("click");
+            updateAllJournalsListener(this.journalIDPointer, 5);
         }
     }
 });
 
 firebase.auth().onAuthStateChanged(function(u){
 	if(u && getHash() !== null){
-		updateAllJournalsListener();
+        setLastID();
+		updateAllJournalsListener("", 5);
 	} else {
 		window.location.href = "/login";
 	}

@@ -42,6 +42,7 @@ Editing Entries:
 JournalView:
 - https://stackoverflow.com/questions/45351742/how-to-retrieve-range-of-data-in-firebase to do a "load more" kind of thing
 	- If I really have time make the dashboard.journals and journalView.journals work together but that probs is unnecessary
+- Style the load more button it looks terrible rn heck
 
 
 Editing Specific Journal (nonexistent so far):
