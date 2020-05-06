@@ -16,7 +16,7 @@ Vue.component("note-overview", {
 			return "/edit/?id="+this.noteid;
 		}
 	},
-	template: '<li><a :href="noteurl" class="note-entry">{{ note.title }} </a></li>'
+	template: '<li class="mv2" ><a :href="noteurl" class="note-entry">{{ note.title }} </a></li>'
 });
 
 
@@ -48,7 +48,7 @@ var newEntry = new Vue({
 	methods: {
 		getData: function(){
 			return {
-				title: this.content.title,
+				title: this.content.title != "" ? this.content.title : this.content.titlePlaceholder,
 				text: this.content.text
 			};
 		},
@@ -82,6 +82,13 @@ var settings = new Vue({
 	el: "#settings",
 	computed: {
 		display: function() { return nav.tabs === 'settings'; }
+	}
+});
+
+var push = new Vue({
+	el: "#push",
+	computed: {
+		display: function() { return nav.tabs === 'dash'; }
 	}
 });
 

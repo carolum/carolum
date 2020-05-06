@@ -7,7 +7,6 @@ Login/signup:
 Home page:
 - 404 page!
 - Design / find a good back button to go back to main menu
-- Switch to FA icons instead of hardcoding SVG
 - While content is loading/decrypting I'd like it to have a general loading icon like how Google does it
   instead of just having blank spots for a moment
 
