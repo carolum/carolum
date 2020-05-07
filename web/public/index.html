@@ -14,20 +14,15 @@
 
   </head>
   <body class="georgia vh-100">
-	  <br />
-	  <div class="content ph2 pt5 pb3 mid-gray center pa0 ma0 vh-75">
+	  <div class="content ph2 pt5 pb3 mid-gray center pa0 ma0" style="height: 78vh;">
 		  <div id="new" class="h-100" v-if="display" v-cloak>
 			  <a @click="update()">save data</a>
-			  
-			  <br />
-			  
 			  <input type="text" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" onchange="newEntry.changeContent('title', this.value)">
 			  
 			  <div class="userinput pt2">
 				  <textarea class="w-100 f3 ph3 h-100 bb" :placeholder="content.textPlaceholder" :value="content.text" onchange="newEntry.changeContent('text', this.value)">
 				  </textarea>
 			  </div>
-			  <br />
 		  </div>
 
 		  <div id="dash" v-if="display" v-cloak>
@@ -41,7 +36,7 @@
 			  <br /><br /><br />
 			  
 			  
-              <span class="f3 w-25"><a href="/journals">Recent journals</a><hr /></span>
+              <span class="f3 w-100"><a href="/journals" class="no-underline ora b">Recent Journals</a><hr /></span>
 			  <div class="flex flex-wrap">
 				  <journal-overview v-for="(notes, journalname) in journals"
 						v-bind:notes="notes"
@@ -51,7 +46,7 @@
 			  
 			  <br />
 			  
-			  <span class="f3">Recent notes</span>
+              <span class="f3 w-100"><a href="/notes" class="no-underline ora b">Recent Notes</a></span>
 			  <hr class="mv2">
               <ul class="list pl0">
                   <note-overview v-for="(note, noteid) in notes"

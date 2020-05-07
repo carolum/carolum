@@ -74,7 +74,10 @@ var dashboard = new Vue({
 	methods: {
 		change: function(event){
 			location.hash = "#"+event;
-		}
+		},
+        forceRefresh: function(){
+            this.$forceUpdate();
+        }
 	}
 });
 

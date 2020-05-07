@@ -14,10 +14,10 @@ async function setJournals(mod, ret, requestSetPtr, amtExpected){
             for(let [key2, val2] of Object.entries(val.ids))
                 val.ids[key2].title = await decrypt(val.ids[key2].title);
         
-        t[title]=val.ids;
+        mod.journals[title]=val.ids;
     }
     
-    mod.journals=t;
+    mod.forceRefresh();
     
     if(requestSetPtr){
         mod.journalIDPointer = finKey;

@@ -18,8 +18,10 @@ var journalsView = new Vue({
 	},
     methods:{
         loadmore: function(event){
-            console.log("click");
             updateAllJournalsListener(this.journalIDPointer, 5);
+        },
+        forceRefresh: function(){
+            this.$forceUpdate();
         }
     }
 });
