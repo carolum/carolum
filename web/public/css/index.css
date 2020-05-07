@@ -37,7 +37,7 @@ textarea{
 }
 
 .content{
-	width: calc(90% + 12px);
+	width: calc(90%);
 }
 
 input:focus, textarea:focus{
@@ -50,7 +50,7 @@ input:focus, textarea:focus{
 }
 
 .push{
-    height: 120px;
+    height: 100px;
 }
 
 .journal-entry{
