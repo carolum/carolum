@@ -19,6 +19,10 @@ Vue.component("note-overview", {
 	template: '<li class="mv2" ><a :href="noteurl" class="note-entry">{{ note.title }} </a></li>'
 });
 
+Vue.component("modal", {
+    template: "#modal-template"
+});
+
 
 var nav = new Vue({
 	el: "#nav",
@@ -66,7 +70,9 @@ var dashboard = new Vue({
 	el: "#dash",
 	data: {
 		journals: {},
-		notes: {}
+		notes: {},
+        showJournalModal: false,
+        showNoteModal: false
 	},
 	computed: {
 		display: function() { return nav.tabs === 'dash'; }

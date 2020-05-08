@@ -1,5 +1,5 @@
 Login/signup:
-- Listen for Enter key presses and do input validation on forms
+- change enter button to submit input type
 - Actually use a generated salt lmao
 - Google OATH?
 
