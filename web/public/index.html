@@ -19,7 +19,7 @@
         <transition name="modal">
             <div class="modal-mask">
                 <div class="modal-wrapper" @click="$emit('close')">
-                    <div class="modal-container w-75 h-75" @click.stop="">
+                    <div class="modal-container w-75 w-40-m w-30-l" @click.stop="">
                         <div class="modal-header flex justify-between f3">
                             <slot name="header">
                                 
@@ -55,8 +55,6 @@
         </div>
         
         <div id="dash" v-if="display" v-cloak>
-            <input type="text" id="newJournalName" placeholder="journalname">
-            <button onclick="newJournal(document.getElementById('newJournalName').value)">Create new journal</button>
             
             <br /><br />
             <input type="text" id="noteid" placeholder="noteid"><br />
@@ -95,11 +93,22 @@
             </ul>
             
             <modal id="journalModal" v-if="showJournalModal" @close="showJournalModal = false">
-                <h3 slot="header">JOURNAL STUFF!</h3>
+                <h3 slot="header" class="mb0">Add journal</h3>
+                <div slot="body" class="pt0 mt0">
+                    <input type="text" class="w-100 pa2" id="newJournalName" placeholder="Journal Name"><br />
+                    
+                    <input class="mt3" type="checkbox" name="default-select" id="default-select">
+                    <label for="default-select">Set as default journal</label><br />
+                    
+                    <button class="mt4" onclick="newJournal(document.getElementById('newJournalName').value)">
+                        <p class="f4 mv2 ora">Create</p>
+                    </button>
+                </div>
+                
             </modal>
             
             <modal id="noteModal" v-if="showNoteModal" @close="showNoteModal = false">
-                <h3 slot="header">NOTE STUFF!!!</h3>
+                <h3 slot="header">New note</h3>
             </modal>
         </div>
         

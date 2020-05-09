@@ -19,7 +19,7 @@ html, body{
 	cursor: pointer;
 }
 
-textarea{
+#new textarea{
 	background: transparent;
 	resize: none;
 	border: 0 none;
@@ -66,6 +66,19 @@ input:focus, textarea:focus{
     word-wrap:break-word;
 }
 
+#journalModal input{
+    background: transparent;
+    border: 1px solid grey;
+}
+
+
+#journalModal button{
+    background-color: transparent;
+    background-repeat:no-repeat;
+    border: 1px solid #F88379;
+    cursor:pointer;
+}
+
 .modal-mask {
     position: fixed;
     z-index: 9998;
@@ -75,7 +88,7 @@ input:focus, textarea:focus{
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     display: table;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s;
 }
 
 .modal-wrapper {
