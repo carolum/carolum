@@ -21,8 +21,8 @@
             </span>
             
             <div class="flex flex-wrap" style="display: grid;">
-                <journal-overview v-for="(notes, journalname) in journals"
-                    v-bind:notes="notes"
+                <journal-overview v-for="(details, journalname) in journals"
+                    v-bind:details="details"
                     v-bind:journalname="journalname">
                 </journal-overview>
             </div>

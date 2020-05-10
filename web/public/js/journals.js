@@ -1,11 +1,14 @@
 Vue.component("journal-overview", {
-	props: ["journalname", "notes"],
+	props: ["journalname", "details"],
 	methods: {
 		noteurl: function(id){
-			return "/edit/?id="+id;
-		}
+			return "/edit/?t=note&id="+id;
+		},
+        journalurl: function(){
+            return "/edit/?t=journal&id="+this.details[0];
+        }
 	},
-	template: '<li class="journal-entry list pl0 outline pv2 ph2 mt3 mb3"><span class="b">{{ journalname }}</span><hr /><ul class="mt2 list pl0"><li v-for="note in notes"><a :href="noteurl(note.id_)">{{ note.title }}</a></li></ul></li>'
+	template: '<li class="journal-entry list pl0 outline pv2 ph2 mt3 mb3"><span class="b"><a :href="journalurl()">{{ journalname }}</a></span><hr /><ul class="mt2 list pl0"><li v-for="note in details[1]"><a :href="noteurl(note.id_)">{{ note.title }}</a></li></ul></li>'
 });
 
 var journalsView = new Vue({

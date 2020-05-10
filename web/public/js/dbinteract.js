@@ -14,7 +14,7 @@ async function setJournals(mod, ret, requestSetPtr, amtExpected){
             for(let [key2, val2] of Object.entries(val.ids))
                 val.ids[key2].title = await decrypt(val.ids[key2].title);
         
-        mod.journals[title]=val.ids;
+        mod.journals[title]=[key, val.ids];
     }
     
     mod.forceRefresh();
@@ -89,13 +89,15 @@ function deleteEntry(type, entryID){
 
 function loadNoteToEdit(noteID){
 	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+noteID).once("value", async (snapshot)=>{
-		ret = snapshot.val();
-		var t = {};
-		
+		var ret = snapshot.val();
+        
 		editEntry.content.text = await decrypt(ret.text);
 		editEntry.content.title = await decrypt(ret.title);
-		
 	});
+}
+
+function loadJournalToEdit(noteID){
+    
 }
 
 

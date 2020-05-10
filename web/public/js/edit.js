@@ -5,7 +5,7 @@ function get(name){
 }
 
 var editEntry = new Vue({
-	el: "#edit",
+	el: "#editNote",
 	data: {
 		content: {
 			title:"",
@@ -13,6 +13,9 @@ var editEntry = new Vue({
 			id_:get("id")
 		}
 	},
+    computed:{
+        display: function(){ return get("t") === "note"}
+    },
 	methods: {
 		update: function(event){
 			updateNote({title:this.content.title, text:this.content.text}, this.content.id_);
@@ -23,14 +26,29 @@ var editEntry = new Vue({
 	}
 });
 
+var editJournal= new Vue({
+	el: "#editJournal",
+	data: {
+		content: {
+			title:"",
+			text:"",
+			id_:get("id")
+		}
+	},
+    computed:{
+        display: function(){ return get("t") === "journal"}
+    },
+	methods: {
+		update: function(event){
+			//pass
+		}
+	}
+});
+
 firebase.auth().onAuthStateChanged(function(u){
 	if(u && getHash() !== null){
-		try{
-			loadNoteToEdit(editEntry.content.id_);
-		} catch (e){
-			editEntry.content.title = e.message;
-			editEntry.content.text = e.message;
-		}
+        if(get("t") === "note") loadNoteToEdit(editEntry.content.id_);
+        else if(get("t") === "journal") loadJournalToEdit(editJournal.content.id_)
 	} else {
 		window.location.href = "/login";
 	}

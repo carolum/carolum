@@ -24,7 +24,7 @@
                             <slot name="header">
                                 
                             </slot>
-                            <i class="fas fa-times pointer" @click="$emit('close')"></i>
+                            <i class="fas fa-times pointer" @click="$emit('close')" style="padding-top: 0.2rem"></i>
                         </div>
 
                         <div class="modal-body">
@@ -43,9 +43,8 @@
     </script>
 </head>
 <body class="georgia vh-100">
-    <div class="content ph2 pt5 pb3 mid-gray center pa0 ma0" style="height: 78vh;">
+    <div class="content ph2 pt4 pb3 mid-gray center pa0 ma0" style="height: 78vh;">
         <div id="new" class="h-100" v-if="display" v-cloak>
-            <a @click="update()">save data</a>
             <input type="text" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" onchange="newEntry.changeContent('title', this.value)">
             
             <div class="userinput pt2">
@@ -55,8 +54,6 @@
         </div>
         
         <div id="dash" v-if="display" v-cloak>
-            
-            <br /><br />
             <input type="text" id="noteid" placeholder="noteid"><br />
             <input type="text" id="notename" placeholder="notename"><br />
             <input type="text" id="journalid" placeholder="journalid">
@@ -66,13 +63,13 @@
             
             <div class="f3 w-100">
                 <a href="/journals" class="no-underline ora b">Recent Journals</a>
-                <i class="fas fa-plus ora fr pa2 pointer" @click="showJournalModal = true; showNoteModal = false;"></i>
+                <i class="fas fa-plus ora fr pa2 pointer pt0" @click="showJournalModal = true; showNoteModal = false;"></i>
                 <hr />
             </div>
             
             <div class="flex flex-wrap">
-                <journal-overview v-for="(notes, journalname) in journals"
-                    v-bind:notes="notes"
+                <journal-overview v-for="(details, journalname) in journals"
+                    v-bind:details="details"
                     v-bind:journalname="journalname">
                 </journal-overview>
             </div>
@@ -81,7 +78,7 @@
             
             <div class="f3 w-100">
                 <a href="/notes" class="no-underline ora b">Recent Notes</a>
-                <i class="fas fa-plus ora fr click pa2 pointer" @click="showNoteModal = true; showJournalModal = false;"></i>
+                <i class="fas fa-plus ora fr click pa2 pointer pt0" @click="showNoteModal = true; showJournalModal = false;"></i>
                 <hr />
             </div>
             

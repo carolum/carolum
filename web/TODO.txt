@@ -13,20 +13,28 @@ Home page:
 
 New entries:
 - figure out where to put a frickin save button
+- show default journal
 - Add images option
 
 
-
 Dashboard:
+- use a default journal
+- link styling plsnty
 - tuturu :3
 - Modals for creating new things
 - Delete journals / notes
 - Add heatmap of notes taken, https://github.com/wa0x6e/cal-heatmap
-- Implement note dates, something like sorting most recent note by date
-- Journal last edited
+- save date of entry creation along with entry
 - View all notes page
-- Edit journals page
 
+
+
+Editing Specific Journal:
+- load journal
+- Delete this journal
+- Add/remove note to this journal
+- Edit a note in this journal
+- Batch delete notes
 
 
 Settings:
@@ -43,9 +51,3 @@ Editing Entries:
 JournalView:
 - Style the load more button it looks terrible rn heck
 
-
-Editing Specific Journal (nonexistent so far):
-- Delete this journal
-- Add/remove note to this journal
-- Edit a note in this journal
-- Batch delete notes
