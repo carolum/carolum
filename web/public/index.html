@@ -43,13 +43,19 @@
     </script>
 </head>
 <body class="georgia vh-100">
-    <div class="content ph2 pt4 pb3 mid-gray center pa0 ma0" style="height: 78vh;">
-        <div id="new" class="h-100" v-if="display" v-cloak>
-            <input type="text" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" onchange="newEntry.changeContent('title', this.value)">
-            
-            <div class="userinput pt2">
-                <textarea class="w-100 f3 ph3 h-100 bb" :placeholder="content.textPlaceholder" :value="content.text" onchange="newEntry.changeContent('text', this.value)">
-                </textarea>
+    <div class="content ph2 pt4 pb3 mid-gray center pa0 ma0" style="height: 80vh;">
+        <div id="new" class="h-100 w-100" v-if="display" v-cloak>
+            <div class="h-100 w-100">
+                <input type="text" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" onchange="newEntry.changeContent('title', this.value)">
+
+                <div class="userinput pt2">
+                    <textarea class="w-100 f3 ph3 h-100" :placeholder="content.textPlaceholder" :value="content.text" onchange="newEntry.changeContent('text', this.value)">
+                    </textarea>
+                </div>
+                
+                <div class="bottombar fr pa0 ma0">
+                    <i class="fas fa-save save-icon" @click="update()"></i>
+                </div>
             </div>
         </div>
         
@@ -118,8 +124,8 @@
         </div>
     </div>
 
-    <article class="footer ph2 pb3 fixed left-0 bottom-0 right-0 mid-gray f4" id="footer">
-        <div class="flex justify-center f5 mb4" id="nav">
+    <article class="footer ph2 fixed left-0 bottom-0 right-0 mid-gray f4" id="footer">
+        <div class="flex justify-center f5" id="nav">
             <span class="bl tc w-30 pt3 pb2 bt bb dim" v-bind:class="{'oraborder': tabs === 'new'}" @click="nav.change('new')">
             <i class="fas fa-sticky-note fa-2x" v-bind:class="{'ora': tabs === 'new'}"></i>
             </span>

@@ -12,15 +12,15 @@
     
     <link rel="stylesheet" href="/css/edit.css">
 </head>
-<body class="georgia">
-    <div class="content ph5 pt5 pb3 mid-gray center pa0 ma0 vh-75">
+<body class="georgia vh-100">
+    <div class="content ph2 pt4 pb3 mid-gray center pa0 ma0 h-100">
         <div id="editNote" class="h-100" v-if="display" v-cloak>
-            <a @click="update()">save data</a>
             
             <input type="text" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" onchange="editEntry.changeContent('title', this.value)">
             
+            
             <div class="userinput pt2">
-                <textarea class="w-100 f3 ph3 h-100 bb" :placeholder="content.textPlaceholder" :value="content.text" onchange="editEntry.changeContent('text', this.value)">
+                <textarea class="w-100 f3 ph3 h-100" :placeholder="content.textPlaceholder" :value="content.text" onchange="newEntry.changeContent('text', this.value)">
                 </textarea>
             </div>
         </div>

@@ -32,12 +32,46 @@ html, body{
 	height: 15%;
 }
 
+#new .save-icon{
+    background: #F88379;
+    padding:10px;
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 50%;
+    position: relative;
+    bottom: -10px;
+    font-size: 30px;
+    color: white;
+}
+
+@media screen and (min-width: 30em){
+    #new .save-icon{
+        padding:10px;
+        width: 40px;
+        height: 40px;
+        font-size: 40px;
+        color: white;
+    }
+}
+
+@media screen and (min-width: 60em) and (min-height: 835px){
+    #new .save-icon{
+        color: white;
+        font-size: 50px;
+        padding:20px;
+        width: 50px;
+        height: 50px;
+    }
+}
+
 .userinput{
 	height: 85%;
 }
 
 .content{
-	width: calc(90%);
+	width: 90%;
 }
 
 input:focus, textarea:focus{
@@ -45,17 +79,17 @@ input:focus, textarea:focus{
 }
 
 #footer{
-    height: 100px;
+    height: 75px;
     background-color: white;
 }
 
 .push{
-    height: 100px;
+    height: 75px;
 }
 
 .journal-entry{
 	word-wrap: break-word;
-	min-width: 120px;
+	min-width: 170px;
 }
 
 .journal-entry:last-child{

@@ -60,6 +60,7 @@ var newEntry = new Vue({
 			};
 		},
 		update: async function(event){
+            if(this.getData().text === "") return;
 			var id = await setNote(this.getData());
 			window.location.href = "/edit/?t=note&id="+id;
 		},
