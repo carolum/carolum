@@ -1,3 +1,21 @@
+/*
+Flow:
+
+User signs up / logs in
+-> Argon2id hash
+-> Generate RSA-OAEP keypair and encrypt with public key
+-> Store object into IndexedDB
+   ^ this will encrypt the AES-GCM key
+
+On decrypt(ct):
+-> Fetch object from IndexedDB
+-> Decrypt with RSA-OAEP private key
+   ^ this will give back the AES-GCM key
+-> Decrypt ct with AES-GCM key
+
+*/
+//import { openDB, deleteDB, wrap, unwrap } from 'https://unpkg.com/idb?module';
+
 function hash(p, s){
 	return argon2.hash({
 		pass:p,
@@ -7,108 +25,68 @@ function hash(p, s){
 		type:2
 	})
 	.then(h=>{return h;})
-	.catch((e)=>{throw "Hashing error " + e;});
-}
-
-function getHash(){
-	return window.localStorage.getItem("carolum-pwhash");
-}
-
-function getUint8Hash(){
-	return new Uint8Array(getHash().match(/.{2}/g).map(byte => parseInt(byte, 16)));
+	.catch(e=>{throw "Hashing error " + e;});
 }
 
 // big mcthankies to https://gist.github.com/saulshanabrook/b74984677bccd08b028b30d9968623f5
 
-function callOnStore(fn_) {
-	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-
-	var open = indexedDB.open("carolum-db", 1);
-
-	open.onupgradeneeded = function() {
-	    var db = open.result;
-	    var store = db.createObjectStore("keyObject", {keyPath: "id"});
-	};
-
-
-	open.onsuccess = function() {
-	    var db = open.result;
-	    var tx = db.transaction("keyObject", "readwrite");
-	    var store = tx.objectStore("keyObject");
-
-	    fn_(store);
-
-	    tx.oncomplete = function() {
-	        db.close();
-	    };
-	}
-}
-
-function makeRSAKeypair(){
-	return window.crypto.subtle.generateKey(
-        {
-            name: "RSA-OAEP",
-            modulusLength: 4096,
-            publicExponent: new Uint8Array([1,0,1]),
-            hash: {name: "SHA-256"},
+async function saveRSAKeys(keys, encrypted) {
+    let db = openDB('carolum-db', 1, {
+        upgrade(db) {
+            let store = db.createObjectStore('carolumRSA-Key');
         },
-        false,
-        ["encrypt", "decrypt"]
-   )
-}
+    });
 
-function encryptWithRSAKey(data, keys) {
-	return window.crypto.subtle.encrypt(
-        {name: "RSA-OAEP"},
-        keys.publicKey,
-        data
-    );
-}
-
-
-async function decryptWithRSAKey(data, keys) {
-	return new Uint8Array(await window.crypto.subtle.decrypt(
-	    {
-	        name: "RSA-OAEP",
-	    },
-	    keys.privateKey,
-	    data
-	));
-}
-
-
-async function encryptWithRSAAndSave(data) {
-	var keys = await makeRSAKeypair();
-	var encrypted = await encryptWithRSAKey(data, keys);
-	callOnStore(function (store) {
-		store.put({id: 1, keys: keys, encrypted: encrypted});
-	})
-}
-
-
-function decryptWithRSAFromSaved(fn_){
+    (await db).put('carolumRSA-Key', {
+        keys:keys,
+        encrypted:encrypted
+    }, 1);
     
-    callOnStore(async function (store) {
-        var getData = store.get(1);
-        
-        var ret;
-        
-        getData.onsuccess = async function() {
-            var keys = getData.result.keys;
-            var encrypted = getData.result.encrypted;
-            ret = await decryptWithRSAKey(encrypted, keys);
-            fn_(ret);
-        };
-	});
+    await db.done;
 }
 
+
+
+async function encryptSaveRSA(data) {
+    data = new TextEncoder().encode(data);
+    
+	var keys = await makeRSAKeypair();
+    
+	var encrypted = await encryptRSA(data, keys);
+    
+    saveRSAKeys(keys, encrypted);
+}
+
+
+async function decryptRSAFromSave(){
+    let db = openDB('carolum-db', 1);
+    var ret = await (await db).get("carolumRSA-Key", 1);
+    
+    await db.done;
+    
+    return await decryptRSA(ret.encrypted, ret.keys);
+    
+    return ret;
+}
+
+
+// POC for enc / decryption. WOO
+async function test(){
+    await encryptSaveRSA("hello");
+    
+    var decrypted = await decryptRSAFromSave();
+    return decrypted;
+}
 
 
 async function encrypt(pt){
-	var iv = crypto.getRandomValues(new Uint8Array(12));
+    var ptUint8 = new TextEncoder().encode(pt);
+    
+    var hexKey = await getAESKey();
 
-	var hashUint8 = getUint8Hash();
-	var ptUint8 = new TextEncoder().encode(pt);
+    var hashUint8 = new Uint8Array(hexKey.match(/.{2}/g).map(byte => parseInt(byte, 16)));
+    
+    var iv = crypto.getRandomValues(new Uint8Array(12));
 	
 	var key = await crypto.subtle.importKey('raw', hashUint8, {name:'AES-GCM', iv:iv}, false, ['encrypt']);
 	
@@ -122,13 +100,12 @@ async function encrypt(pt){
 }
 
 
-
 async function decrypt(ct){
     var iv = ct.slice(0,24).match(/.{2}/g).map(byte => parseInt(byte, 16));
 	
-	var hashUint8 = getUint8Hash();
+    var hexKey = await getAESKey();
 
-    var key = await crypto.subtle.importKey('raw', hashUint8, {name:'AES-GCM', iv:new Uint8Array(iv)}, false, ['decrypt']);
+    var key = await crypto.subtle.importKey('raw', hexKey, {name:'AES-GCM', iv:new Uint8Array(iv)}, false, ['decrypt']);
 	
 	var ctDecoded = atob(ct.slice(24))
 
@@ -138,4 +115,38 @@ async function decrypt(ct){
     var pt = new TextDecoder().decode(ptBuff);
 
     return pt;
+}
+
+
+function makeRSAKeypair(){
+	return window.crypto.subtle.generateKey(
+        {
+            name: "RSA-OAEP",
+            modulusLength: 2048,
+            publicExponent: new Uint8Array([1,0,1]),
+            hash: {name: "SHA-256"},
+        },
+        false,
+        ["encrypt", "decrypt"]
+   )
+}
+
+
+function encryptRSA(data, keys) {
+	return window.crypto.subtle.encrypt(
+        {name: "RSA-OAEP"},
+        keys.publicKey,
+        data
+    );
+}
+
+
+async function decryptRSA(data, keys) {
+	return new Uint8Array(await window.crypto.subtle.decrypt(
+	    {
+	        name: "RSA-OAEP",
+	    },
+	    keys.privateKey,
+	    data
+	));
 }

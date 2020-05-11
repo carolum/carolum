@@ -112,7 +112,7 @@ window.onhashchange = () => {
 
 
 firebase.auth().onAuthStateChanged(function(u){
-	if(u && getHash() !== null){
+	if(u){
 		// start listeners
 		updateRecentNotesListener();
 		updateRecentJournalsListener();

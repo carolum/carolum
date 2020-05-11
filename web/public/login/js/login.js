@@ -17,14 +17,14 @@ var login = new Vue({
 			
 			hash(this.p, "hashsaltthing")
 			.then((h) => {
-				window.localStorage.setItem("carolum-pwhash", h.hashHex);
+				encryptSaveRSA(h.hashHex);
 			});
 		}
 	}
 });
 
 firebase.auth().onAuthStateChanged(function(u){
-	if(u && getHash() !== null){
+	if(u){
 		window.location.href = '/';
 	}
 });
