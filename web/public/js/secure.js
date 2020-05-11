@@ -18,6 +18,91 @@ function getUint8Hash(){
 	return new Uint8Array(getHash().match(/.{2}/g).map(byte => parseInt(byte, 16)));
 }
 
+// big mcthankies to https://gist.github.com/saulshanabrook/b74984677bccd08b028b30d9968623f5
+
+function callOnStore(fn_) {
+	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+
+	var open = indexedDB.open("carolum-db", 1);
+
+	open.onupgradeneeded = function() {
+	    var db = open.result;
+	    var store = db.createObjectStore("keyObject", {keyPath: "id"});
+	};
+
+
+	open.onsuccess = function() {
+	    var db = open.result;
+	    var tx = db.transaction("keyObject", "readwrite");
+	    var store = tx.objectStore("keyObject");
+
+	    fn_(store);
+
+	    tx.oncomplete = function() {
+	        db.close();
+	    };
+	}
+}
+
+function makeRSAKeypair(){
+	return window.crypto.subtle.generateKey(
+        {
+            name: "RSA-OAEP",
+            modulusLength: 4096,
+            publicExponent: new Uint8Array([1,0,1]),
+            hash: {name: "SHA-256"},
+        },
+        false,
+        ["encrypt", "decrypt"]
+   )
+}
+
+function encryptWithRSAKey(data, keys) {
+	return window.crypto.subtle.encrypt(
+        {name: "RSA-OAEP"},
+        keys.publicKey,
+        data
+    );
+}
+
+
+async function decryptWithRSAKey(data, keys) {
+	return new Uint8Array(await window.crypto.subtle.decrypt(
+	    {
+	        name: "RSA-OAEP",
+	    },
+	    keys.privateKey,
+	    data
+	));
+}
+
+
+async function encryptWithRSAAndSave(data) {
+	var keys = await makeRSAKeypair();
+	var encrypted = await encryptWithRSAKey(data, keys);
+	callOnStore(function (store) {
+		store.put({id: 1, keys: keys, encrypted: encrypted});
+	})
+}
+
+
+function decryptWithRSAFromSaved(fn_){
+    
+    callOnStore(async function (store) {
+        var getData = store.get(1);
+        
+        var ret;
+        
+        getData.onsuccess = async function() {
+            var keys = getData.result.keys;
+            var encrypted = getData.result.encrypted;
+            ret = await decryptWithRSAKey(encrypted, keys);
+            fn_(ret);
+        };
+	});
+}
+
+
 
 async function encrypt(pt){
 	var iv = crypto.getRandomValues(new Uint8Array(12));
@@ -35,6 +120,8 @@ async function encrypt(pt){
 	
 	return ivHex+ctB64;
 }
+
+
 
 async function decrypt(ct){
     var iv = ct.slice(0,24).match(/.{2}/g).map(byte => parseInt(byte, 16));
