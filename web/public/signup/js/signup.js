@@ -43,7 +43,7 @@ var signup = new Vue({
 				
 				hash(this.p, "hashsaltthing")
 					.then((h) => {
-						window.localStorage.setItem("carolum-pwhash", h.hashHex);
+						encryptSaveRSA(h.hashHex);
 					});
 				}
 		}
@@ -51,7 +51,7 @@ var signup = new Vue({
 });
 
 firebase.auth().onAuthStateChanged(function(u){
-	if(u && getHash() !== null){
+	if(u){
 		window.location.href = '/';
 	}
 });

@@ -46,7 +46,7 @@ var editJournal= new Vue({
 });
 
 firebase.auth().onAuthStateChanged(function(u){
-	if(u && getHash() !== null){
+	if(u){
         if(get("t") === "note") loadNoteToEdit(editEntry.content.id_);
         else if(get("t") === "journal") loadJournalToEdit(editJournal.content.id_)
 	} else {

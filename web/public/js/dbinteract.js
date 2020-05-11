@@ -31,6 +31,28 @@ function updateRecentJournalsListener(){
 	});
 }
 
+function updateRecentNotesListener(){
+	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').orderByKey().limitToLast(5).on("value", async (snapshot)=>{
+		var ret = snapshot.val();
+		var t = {};
+        
+        if(ret == null){
+            return;
+        }
+		
+		for(let [key, val] of Object.entries(ret).reverse()){
+			var decText = await decrypt(val.text);
+			var decTitle = await decrypt(val.title);
+			t[key]={
+				text: decText,
+				title: decTitle
+			};
+		}
+		dashboard.notes=t;
+        dashboard.forceRefresh();
+	});
+}
+
 
 async function updateAllJournalsListener(ptr, amt){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals');
@@ -63,23 +85,6 @@ async function setLastID(){
     journalsView.lastID = lastID;
 }
 
-
-function updateRecentNotesListener(){
-	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').orderByKey().limitToLast(5).on("value", async (snapshot)=>{
-		var ret = snapshot.val();
-		var t = {};
-		
-		for(let [key, val] of Object.entries(ret).reverse()){
-			var decText = await decrypt(val.text);
-			var decTitle = await decrypt(val.title);
-			t[key]={
-				text: decText,
-				title: decTitle
-			};
-		}
-		dashboard.notes=t;
-	});
-}
 
 
 function deleteEntry(type, entryID){

@@ -64,9 +64,7 @@ async function decryptRSAFromSave(){
     
     await db.done;
     
-    return await decryptRSA(ret.encrypted, ret.keys);
-    
-    return ret;
+    return new TextDecoder().decode(await decryptRSA(ret.encrypted, ret.keys));
 }
 
 
@@ -82,7 +80,7 @@ async function test(){
 async function encrypt(pt){
     var ptUint8 = new TextEncoder().encode(pt);
     
-    var hexKey = await getAESKey();
+    var hexKey = await decryptRSAFromSave();
 
     var hashUint8 = new Uint8Array(hexKey.match(/.{2}/g).map(byte => parseInt(byte, 16)));
     
@@ -103,7 +101,7 @@ async function encrypt(pt){
 async function decrypt(ct){
     var iv = ct.slice(0,24).match(/.{2}/g).map(byte => parseInt(byte, 16));
 	
-    var hexKey = await getAESKey();
+    hexKey = toUint8(await decryptRSAFromSave());
 
     var key = await crypto.subtle.importKey('raw', hexKey, {name:'AES-GCM', iv:new Uint8Array(iv)}, false, ['decrypt']);
 	
@@ -149,4 +147,9 @@ async function decryptRSA(data, keys) {
 	    keys.privateKey,
 	    data
 	));
+}
+
+
+function toUint8(c){
+	return new Uint8Array(c.match(/.{2}/g).map(byte => parseInt(byte, 16)));
 }
