@@ -90,6 +90,7 @@ input:focus, textarea:focus{
 .journal-entry{
 	word-wrap: break-word;
 	min-width: 170px;
+    min-height: 90px;
 }
 
 .journal-entry:last-child{
