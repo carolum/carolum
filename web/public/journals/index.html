@@ -8,6 +8,8 @@
     
     <script src="/dep/vue/vue.js"></script>
     <script src="/dep/argon2-browser/lib/argon2.js"></script>
+    <script src="/dep/idb/index.js"></script>
+    
     <link rel="stylesheet" href="/dep/tachyons/tachyons.min.css">
     
     <link rel="stylesheet" href="/css/journals.css">
@@ -20,7 +22,7 @@
                 <hr />
             </span>
             
-            <div class="flex flex-wrap" style="display: grid;">
+            <div class="grid">
                 <journal-overview v-for="(details, journalname) in journals"
                     v-bind:details="details"
                     v-bind:journalname="journalname">

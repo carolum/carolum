@@ -59,7 +59,7 @@ var newEntry = new Vue({
 				text: this.content.text
 			};
 		},
-		update: async function(event){
+		update: async function(){
             if(this.getData().text === "") return;
 			var id = await setNote(this.getData());
 			window.location.href = "/edit/?t=note&id="+id;
@@ -82,9 +82,6 @@ var dashboard = new Vue({
 		display: function() { return nav.tabs === 'dash'; }
 	},
 	methods: {
-		change: function(event){
-			location.hash = "#"+event;
-		},
         forceRefresh: function(){
             this.$forceUpdate();
         }

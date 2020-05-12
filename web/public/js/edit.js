@@ -17,7 +17,7 @@ var editEntry = new Vue({
         display: function(){ return get("t") === "note"}
     },
 	methods: {
-		update: function(event){
+		update: function(){
 			updateNote({title:this.content.title, text:this.content.text}, this.content.id_);
 		},
 		changeContent: function(key, val){
@@ -29,19 +29,23 @@ var editEntry = new Vue({
 var editJournal= new Vue({
 	el: "#editJournal",
 	data: {
-		content: {
+        content: {
 			title:"",
 			text:"",
 			id_:get("id")
-		}
+		},
+		hasMore: true
 	},
     computed:{
         display: function(){ return get("t") === "journal"}
     },
 	methods: {
-		update: function(event){
-			//pass
-		}
+		update: function(){
+			console.log("updaet");
+		},
+        loadmore: function(){
+            console.log("no");
+        }
 	}
 });
 

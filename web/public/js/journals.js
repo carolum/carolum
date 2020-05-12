@@ -20,7 +20,7 @@ var journalsView = new Vue({
         lastID:""
 	},
     methods:{
-        loadmore: function(event){
+        loadmore: function(){
             updateAllJournalsListener(this.journalIDPointer, 5);
         },
         forceRefresh: function(){
@@ -30,7 +30,7 @@ var journalsView = new Vue({
 });
 
 firebase.auth().onAuthStateChanged(function(u){
-	if(u && getHash() !== null){
+	if(u){
         setLastID();
 		updateAllJournalsListener("", 5);
 	} else {

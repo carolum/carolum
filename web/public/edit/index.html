@@ -28,7 +28,19 @@
         </div>
         
         <div id="editJournal" class="h-100" v-if="display" v-cloak>
-            haha jk... unless??
+            <span class="f3">
+                Journals
+                <hr />
+            </span>
+            
+            <div class="flex flex-wrap">
+                ok this is where i put da list of notes
+            </div>
+            
+            <div v-if="hasMore" class="w-100 tc pa2 pointer" id="load-more">
+                <span>⮟</span><br />
+                <span @click="loadmore()">Load more</span>
+            </div>
         </div>
     </div>
     
