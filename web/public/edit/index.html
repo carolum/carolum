@@ -18,11 +18,11 @@
     <div class="content ph2 pt4 pb3 mid-gray center pa0 ma0 h-100">
         <div id="editNote" class="h-100" v-if="display" v-cloak>
             
-            <input type="text" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" onchange="editEntry.changeContent('title', this.value)">
+            <input type="text" id="noteTitle" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" oninput="editEntry.changeContent('title', this.value); editEntry.startAutoSave()">
             
             
             <div class="userinput pt2">
-                <textarea class="w-100 f3 ph3 h-100" :placeholder="content.textPlaceholder" :value="content.text" onchange="newEntry.changeContent('text', this.value)">
+                <textarea class="w-100 f3 ph3 h-100" id="noteText" :placeholder="content.textPlaceholder" :value="content.text" oninput="editEntry.changeContent('text', this.value); editEntry.startAutoSave()">
                 </textarea>
             </div>
         </div>

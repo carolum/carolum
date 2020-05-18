@@ -11,7 +11,8 @@ var editEntry = new Vue({
 			title:"",
 			text:"",
 			id_:get("id")
-		}
+		},
+        autoSaveTimeoutID:""
 	},
     computed:{
         display: function(){ return get("t") === "note"}
@@ -19,10 +20,17 @@ var editEntry = new Vue({
 	methods: {
 		update: function(){
 			updateNote({title:this.content.title, text:this.content.text}, this.content.id_);
+            console.log("save");
 		},
 		changeContent: function(key, val){
 			this.content[key] = val;
-		}
+		},
+        startAutoSave: function(){
+            if(this.autoSaveTimeoutID) clearTimeout(this.autoSaveTimeoutID);
+            
+            this.autoSaveTimeoutID = setTimeout(this.update, 1000);
+            
+        }
 	}
 });
 
