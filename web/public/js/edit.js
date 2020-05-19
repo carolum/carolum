@@ -26,8 +26,6 @@ var editEntry = new Vue({
             this.toggleLoader();
             
             this.toggleCheck(1);
-            
-            console.log("saved");
 		},
         toggleCheck: function(y){            
             this.showCheck = !this.showCheck;
@@ -41,9 +39,7 @@ var editEntry = new Vue({
 			this.content[key] = val;
 		},
         startAutoSave: function(){
-            console.log("started");
             if(this.autoSaveTimeoutID) clearTimeout(this.autoSaveTimeoutID);
-            
             
             if(!this.showLoader) this.toggleLoader();
             
