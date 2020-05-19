@@ -2,10 +2,6 @@
 	color: #F88379;
 }
 
-.content{
-    width: 90%;
-}
-
 #editNote textarea{
 	background: transparent;
 	resize: none;

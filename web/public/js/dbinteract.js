@@ -101,8 +101,8 @@ function loadNoteToEdit(noteID){
 	});
 }
 
-function loadJournalToEdit(noteID){
-    
+async function loadJournalToEdit(journalID){
+    console.log("spice");
 }
 
 

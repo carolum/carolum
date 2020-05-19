@@ -4,6 +4,22 @@ function get(name){
       return decodeURIComponent(name[1]);
 }
 
+
+Vue.component("note-overview", {
+	props: ["journalname", "details"],
+	methods: {
+		noteurl: function(id){
+			return "/edit/?t=note&id="+id;
+		},
+        journalurl: function(){
+            return "/edit/?t=journal&id="+this.details[0];
+        }
+	},
+	template: '<li class="journal-entry list pl0 outline pv2 ph2 mt3 mb3" style="width: 45%; margin-right: auto;"><span class="b"><a :href="journalurl()">{{ journalname }}</a></span><hr /><ul class="mt2 list pl0"><li v-for="note in details[1]"><a :href="noteurl(note.id_)">{{ note.title }}</a></li></ul></li>'
+});
+
+
+
 var editEntry = new Vue({
 	el: "#editNote",
 	data: {
@@ -48,6 +64,8 @@ var editEntry = new Vue({
 	}
 });
 
+
+
 var editJournal= new Vue({
 	el: "#editJournal",
 	data: {
@@ -56,7 +74,8 @@ var editJournal= new Vue({
 			text:"",
 			id_:get("id")
 		},
-		hasMore: true
+		hasMore: true,
+        notes:{}
 	},
     computed:{
         display: function(){ return get("t") === "journal"}
