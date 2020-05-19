@@ -12,24 +12,38 @@ var editEntry = new Vue({
 			text:"",
 			id_:get("id")
 		},
-        autoSaveTimeoutID:""
+        autoSaveTimeoutID:"",
+        showLoader: false,
+        showCheck: false
 	},
     computed:{
         display: function(){ return get("t") === "note"}
     },
 	methods: {
-		update: function(){
-			updateNote({title:this.content.title, text:this.content.text}, this.content.id_);
-            console.log("save");
+		update: async function(){
+			await updateNote({title:this.content.title, text:this.content.text}, this.content.id_);
+            
+            this.toggleLoader();
+            
+            this.toggleCheck(1);
 		},
+        toggleCheck: function(y){            
+            this.showCheck = !this.showCheck;
+            
+            if(y) setTimeout(editEntry.toggleCheck, 1000, 0);
+        },
+        toggleLoader: function(){
+            this.showLoader = !this.showLoader;
+        },
 		changeContent: function(key, val){
 			this.content[key] = val;
 		},
         startAutoSave: function(){
             if(this.autoSaveTimeoutID) clearTimeout(this.autoSaveTimeoutID);
             
-            this.autoSaveTimeoutID = setTimeout(this.update, 1000);
+            if(!this.showLoader) this.toggleLoader();
             
+            this.autoSaveTimeoutID = setTimeout(this.update, 1000);
         }
 	}
 });
