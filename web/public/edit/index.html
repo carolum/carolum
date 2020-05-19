@@ -25,6 +25,17 @@
                 <textarea class="w-100 f3 ph3 h-100" id="noteText" :placeholder="content.textPlaceholder" :value="content.text" oninput="editEntry.changeContent('text', this.value); editEntry.startAutoSave()">
                 </textarea>
             </div>
+            
+            <transition name="fade">
+                
+                <div id="save-loading" v-if="showLoader" class="loader">
+                </div>
+                
+                <div id="save-check" v-if="showCheck" class="fas fa-check green">
+                </div>
+                
+            </transition>
+            
         </div>
         
         <div id="editJournal" class="h-100" v-if="display" v-cloak>
@@ -47,6 +58,8 @@
     <script src="/js/firebase-app.js"></script>
     <script src="/js/firebase-auth.js"></script>
     <script src="/js/firebase-database.js"></script>
+    
+    <script src="https://kit.fontawesome.com/afa150793f.js" crossorigin="anonymous"></script>
     
     <script>
         const firebaseConfig = {
