@@ -69,13 +69,11 @@ var editEntry = new Vue({
 var editJournal= new Vue({
 	el: "#editJournal",
 	data: {
-        content: {
-			title:"",
-			text:"",
-			id_:get("id")
-		},
-		hasMore: true,
-        notes:{}
+        title: "",
+        id_: get("id"),
+        notes:{},
+        hasMore: true,
+        journalPointer: ""
 	},
     computed:{
         display: function(){ return get("t") === "journal"}
@@ -93,7 +91,7 @@ var editJournal= new Vue({
 firebase.auth().onAuthStateChanged(function(u){
 	if(u){
         if(get("t") === "note") loadNoteToEdit(editEntry.content.id_);
-        else if(get("t") === "journal") loadJournalToEdit(editJournal.content.id_)
+        else if(get("t") === "journal") loadJournalToEdit(editJournal.id_, "", 5)
 	} else {
 		window.location.href = "/login";
 	}

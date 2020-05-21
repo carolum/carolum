@@ -101,8 +101,20 @@ function loadNoteToEdit(noteID){
 	});
 }
 
-async function loadJournalToEdit(journalID){
-    console.log("spice");
+function loadJournalToEdit(journalID, ptr, amt){
+    firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID).once("value", async (snapshot)=>{
+		ret = snapshot.val();
+        
+        editEntry.title = await decrypt(ret.name);
+        
+        if(ret.ids == null) return;
+        
+        for(let [key, val] of Object.entries(ret.ids).reverse()){
+            
+            console.log(key, val);
+            
+        }
+	});
 }
 
 
