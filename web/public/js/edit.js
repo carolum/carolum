@@ -6,16 +6,13 @@ function get(name){
 
 
 Vue.component("note-overview", {
-	props: ["journalname", "details"],
-	methods: {
-		noteurl: function(id){
-			return "/edit/?t=note&id="+id;
-		},
-        journalurl: function(){
-            return "/edit/?t=journal&id="+this.details[0];
-        }
+	props: ["noteid", "note"],
+	computed: {
+		noteurl: function(){
+			return "/edit/?t=note&id="+this.noteid;
+		}
 	},
-	template: '<li class="journal-entry list pl0 outline pv2 ph2 mt3 mb3" style="width: 45%; margin-right: auto;"><span class="b"><a :href="journalurl()">{{ journalname }}</a></span><hr /><ul class="mt2 list pl0"><li v-for="note in details[1]"><a :href="noteurl(note.id_)">{{ note.title }}</a></li></ul></li>'
+	template: '<li class="mv2"><a :href="noteurl" class="note-entry">{{ note.title }}</a></li>'
 });
 
 
@@ -73,7 +70,8 @@ var editJournal= new Vue({
         id_: get("id"),
         notes:{},
         hasMore: true,
-        journalPointer: ""
+        journalIDPointer: "",
+        lastID:""
 	},
     computed:{
         display: function(){ return get("t") === "journal"}
@@ -91,7 +89,10 @@ var editJournal= new Vue({
 firebase.auth().onAuthStateChanged(function(u){
 	if(u){
         if(get("t") === "note") loadNoteToEdit(editEntry.content.id_);
-        else if(get("t") === "journal") loadJournalToEdit(editJournal.id_, "", 5)
+        else if(get("t") === "journal"){
+            setLastNoteIDInJournal(get("id"));
+            loadJournalToEdit(editJournal.id_, "", 5);
+        }
 	} else {
 		window.location.href = "/login";
 	}

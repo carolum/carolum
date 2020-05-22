@@ -19,7 +19,7 @@ Vue.component("note-overview", {
 			return "/edit/?t=note&id="+this.noteid;
 		}
 	},
-	template: '<li class="mv2" ><a :href="noteurl" class="note-entry">{{ note.title }} </a></li>'
+	template: '<li class="mv2"><a :href="noteurl" class="note-entry">{{ note.title }}</a></li>'
 });
 
 Vue.component("modal", {
@@ -80,11 +80,6 @@ var dashboard = new Vue({
 	},
 	computed: {
 		display: function() { return nav.tabs === 'dash'; }
-	},
-	methods: {
-        forceRefresh: function(){
-            this.$forceUpdate();
-        }
 	}
 });
 
