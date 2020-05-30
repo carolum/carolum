@@ -69,7 +69,7 @@ var editJournal= new Vue({
         title: "",
         id_: get("id"),
         notes:{},
-        hasMore: true,
+        hasMore: false,
         journalIDPointer: "",
         lastID:""
 	},

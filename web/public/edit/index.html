@@ -39,8 +39,9 @@
         </div>
         
         <div id="editJournal" class="h-100" v-if="display" v-cloak>
-            <span class="f3">
-                Journals
+            <span class="f3 ph2">
+                <span>Journals</span>
+                <i class="fas fa-plus ora fr pa2 pointer pt0" @click="showJournalModal = true; showNoteModal = false;"></i>
                 <hr />
             </span>
             

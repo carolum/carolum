@@ -86,6 +86,12 @@ async function setLastID(){
 }
 
 
+async function setDefaultJournalID(ID){
+    var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/data/');
+    ref.child("defaultJournal").set(ID);    
+}
+
+
 async function setLastNoteIDInJournal(journalID){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID+'/ids');
     
@@ -120,7 +126,7 @@ async function setNotes(mod, ret, requestSetPtr, amtExpected){
 
     if(ret.ids == null) return;
     
-    finKey = "";
+    var finKey = "";
 
     for(let [key, val] of Object.entries(ret.ids).reverse()){
         
@@ -169,11 +175,15 @@ async function addNoteToJournal(noteID, noteTitle, journalID){
 	});
 }
 
-async function newJournal(name){
-	name = await encrypt(name);
-	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').push({
+async function newJournal(name, isDefault){
+	var name = await encrypt(name);
+	var pushedObject = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').push({
 		name:name
 	});
+    
+    if(isDefault){
+        setDefaultJournalID(pushedObject.key);
+    }
 }
 
 async function setNote(data){
