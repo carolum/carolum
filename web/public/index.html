@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/dep/tachyons/tachyons.min.css">
 
     <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/modal.css">
 
     <script type="text/x-template" id="modal-template">
         <transition name="modal">
@@ -70,7 +71,7 @@
             <br /><br /><br />
             
             <div class="f3 w-100">
-                <a href="/journals" class="no-underline ora b">Recent Journals</a>
+                <a href="/journals" class="no-underline b">Recent Journals</a>
                 <i class="fas fa-plus ora fr pa2 pointer pt0" @click="showJournalModal = true; showNoteModal = false;"></i>
                 <hr />
             </div>
@@ -85,7 +86,7 @@
             <br />
             
             <div class="f3 w-100">
-                <a href="/notes" class="no-underline ora b">Recent Notes</a>
+                <a href="/notes" class="no-underline b">Recent Notes</a>
                 <i class="fas fa-plus ora fr click pa2 pointer pt0" @click="showNoteModal = true; showJournalModal = false;"></i>
                 <hr />
             </div>
@@ -109,7 +110,6 @@
                         <p class="f4 mv2 ora">Create</p>
                     </button>
                 </div>
-                
             </modal>
             
             <modal id="noteModal" v-if="showNoteModal" @close="showNoteModal = false">

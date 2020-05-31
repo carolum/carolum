@@ -115,8 +115,8 @@ function loadNoteToEdit(noteID){
 	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+noteID).once("value", async (snapshot)=>{
 		var ret = snapshot.val();
         
-		editEntry.content.text = await decrypt(ret.text);
-		editEntry.content.title = await decrypt(ret.title);
+		editNote.content.text = await decrypt(ret.text);
+		editNote.content.title = await decrypt(ret.title);
 	});
 }
 

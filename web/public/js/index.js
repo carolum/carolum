@@ -5,21 +5,27 @@ Vue.component("journal-overview", {
 			return "/edit/?t=note&id="+id;
 		},
         journalurl: function(){
-            return "/edit/?t=journal&id="+this.details[0];
+            return "/edit/?t=journal&id="+this.getID();
+        },
+        getID: function(){
+            return this.details[0];
         }
 	},
-	template: '<div class="journal-entry outline pv2 ph2 mt2 mb2 mr3 mw5"><span class="b"><a :href="journalurl()">{{ journalname }}</a></span><hr /><ul class="mt2 list pl0"><li v-for="note in details[1]"><a :href="noteurl(note.id_)">{{ note.title }}</a></li></ul></div>'
+	template: '<div class="journal-entry outline pv2 ph2 mt2 mb2 mr3 mw5" :id="getID()"><span class="b"><a :href="journalurl()">{{ journalname }}</a></span><hr /><ul class="mt2 list pl0"><li v-for="note in details[1]"><a :href="noteurl(note.id_)">{{ note.title }}</a></li></ul></div>'
 });
 
 
 Vue.component("note-overview", {
 	props: ["noteid", "note"],
-	computed: {
+	methods: {
 		noteurl: function(){
 			return "/edit/?t=note&id="+this.noteid;
-		}
+		},
+        getID: function(){
+            return this.noteid;
+        }
 	},
-	template: '<li class="mv2"><a :href="noteurl" class="note-entry">{{ note.title }}</a></li>'
+	template: '<li class="mv2 pv1"><a :href="noteurl()" :id="getID()" class="note-entry">{{ note.title }}</a></li>'
 });
 
 Vue.component("modal", {

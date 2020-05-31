@@ -12,12 +12,15 @@ Vue.component("note-overview", {
 			return "/edit/?t=note&id="+this.noteid;
 		}
 	},
-	template: '<li class="mv2"><a :href="noteurl" class="note-entry">{{ note.title }}</a></li>'
+	template: '<li><a :href="noteurl" class="note-entry">{{ note.title }}</a></li>'
+});
+
+Vue.component("modal", {
+    template: "#modal-template"
 });
 
 
-
-var editEntry = new Vue({
+var editNote = new Vue({
 	el: "#editNote",
 	data: {
 		content: {
@@ -43,7 +46,7 @@ var editEntry = new Vue({
         toggleCheck: function(y){            
             this.showCheck = !this.showCheck;
             
-            if(y) setTimeout(editEntry.toggleCheck, 1000, 0);
+            if(y) setTimeout(editNote.toggleCheck, 1000, 0);
         },
         toggleLoader: function(){
             this.showLoader = !this.showLoader;
@@ -71,7 +74,8 @@ var editJournal= new Vue({
         notes:{},
         hasMore: false,
         journalIDPointer: "",
-        lastID:""
+        lastID:"",
+        showNewNoteModal: false
 	},
     computed:{
         display: function(){ return get("t") === "journal"}
@@ -88,7 +92,7 @@ var editJournal= new Vue({
 
 firebase.auth().onAuthStateChanged(function(u){
 	if(u){
-        if(get("t") === "note") loadNoteToEdit(editEntry.content.id_);
+        if(get("t") === "note") loadNoteToEdit(editNote.content.id_);
         else if(get("t") === "journal"){
             setLastNoteIDInJournal(get("id"));
             loadJournalToEdit(editJournal.id_, "", 5);

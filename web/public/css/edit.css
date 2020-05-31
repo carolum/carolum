@@ -2,6 +2,15 @@
 	color: #F88379;
 }
 
+a{
+    text-decoration: none;
+    color: #F88379;
+}
+
+a:visited{
+    color: #F88379;
+}
+
 #editNote textarea{
 	background: transparent;
 	resize: none;
@@ -13,6 +22,12 @@
 	border: 0 none;
 	border-bottom: 1px solid gray;
 	height: 15%;
+}
+
+#editJournal span input{
+    border: 0 none;
+    padding: 0;
+    margin: 0;
 }
 
 .userinput{
