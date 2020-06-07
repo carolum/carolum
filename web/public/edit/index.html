@@ -51,7 +51,7 @@
             
             
             <div class="userinput pt2">
-                <textarea class="w-100 f3 ph3 h-100" id="noteText" :placeholder="content.textPlaceholder" :value="content.text" oninput="editNote.changeContent('text', this.value); editNote.startAutoSave()">
+                <textarea class="w-100 f3 ph3 h-100" id="noteText" :placeholder="content.textPlaceholder" :value="content.text" oninput="editNote.changeContent('text', this.value); editNote.startAutoSave();">
                 </textarea>
             </div>
             
@@ -92,7 +92,7 @@
                 <div slot="body" class="pt0 mt0">
                     <input type="text" class="w-100 pa2" id="newNoteName" placeholder="Note Title"><br />
                     
-                    <button class="mt4" onclick="console.log('clicc')">
+                    <button class="mt4" @click="createNote()">
                         <p class="f4 mv2 ora">Create</p>
                     </button>
                 </div>

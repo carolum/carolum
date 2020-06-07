@@ -8,20 +8,13 @@ html, body{
 }
 
 a{
+    cursor:pointer;
     text-decoration: none;
-    color: #F88379;
-}
-
-a:visited{
-    color: #F88379;
+    color: black;
 }
 
 .oraborder{
 	border-color: #F88379;
-}
-
-.oraborder > svg{
-	fill: #F88379;
 }
 
 .flex > span.dim{

@@ -186,6 +186,17 @@ async function newJournal(name, isDefault){
     }
 }
 
+async function newNote(name){
+    var name = await encrypt(name);
+    var fillerText = await encrypt("");
+    var pushedObject = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').push({
+        title:name,
+        text:fillerText
+    });
+    
+    return [name, pushedObject.key];
+}
+
 async function setNote(data){
 	data["text"] = await encrypt(data["text"]);
 	data["title"] = await encrypt(data["title"]);

@@ -4,11 +4,11 @@
 
 a{
     text-decoration: none;
-    color: #F88379;
+    color: black;
 }
 
 a:visited{
-    color: #F88379;
+    color: black;
 }
 
 #editNote textarea{

@@ -81,8 +81,11 @@ var editJournal= new Vue({
         display: function(){ return get("t") === "journal"}
     },
 	methods: {
-		update: function(){
-			console.log("updaet");
+		createNote: async function(){
+			var nameAndID = await newNote(document.getElementById("newNoteName").value);
+            addNoteToJournal(nameAndID[1], nameAndID[0], this.id_)
+            
+            window.location.href = "/edit/?t=note&id="+nameAndID[1];
 		},
         loadmore: function(){
             console.log("no");
