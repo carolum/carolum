@@ -1,6 +1,4 @@
 async function setJournals(mod, ret, requestSetPtr, amtExpected){
-    var t = {};
-
     if (ret == null) return;
     
     var finKey = "";
@@ -10,11 +8,16 @@ async function setJournals(mod, ret, requestSetPtr, amtExpected){
         
         if(requestSetPtr) finKey = key;
         
-        if (val.ids != null)
-            for(let [key2, val2] of Object.entries(val.ids))
-                val.ids[key2].title = await decrypt(val.ids[key2].title);
+        var t = {};
         
-        mod.journals[title]=[key, val.ids];
+        if (val.ids != null){            
+            for(let [key2, val2] of Object.entries(val.ids).slice(0, 5)){
+                t[key2] = {};
+                t[key2].title = await decrypt(val.ids[key2].title);
+            }                
+        }
+        
+        mod.journals[title]=[key, t];
     }
     
     mod.$forceUpdate();;
