@@ -68,6 +68,23 @@ a{
     }
 }
 
+
+.modal-container{
+    width: 17em;
+}
+
+@media screen and (min-width: 30em){
+    .modal-container{
+        width: 20em;
+    }
+}
+
+@media screen and (min-width: 60em){
+    .modal-container{
+        width: 40em;
+    }
+}
+
 .userinput{
 	height: 85%;
 }

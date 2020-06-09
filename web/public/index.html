@@ -17,6 +17,16 @@
 
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/modal.css">
+    
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+      crossorigin="anonymous">
+    </script>
+    
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
     <script type="text/x-template" id="modal-template">
         <transition name="modal">
@@ -87,7 +97,7 @@
             
             <div class="f3 w-100">
                 <a href="/notes" class="no-underline b ora">Recent Notes</a>
-                <i class="fas fa-plus ora fr click pa2 pointer pt0" @click="showNoteModal = true; showJournalModal = false;"></i>
+                <i class="fas fa-plus ora fr click pa2 pointer pt0" @click="showNoteModal = true; showJournalModal = false"></i>
                 <hr />
             </div>
             
@@ -98,7 +108,7 @@
                 </note-overview>
             </ul>
             
-            <modal id="journalModal" v-if="showJournalModal" @close="showJournalModal = false">
+            <modal id="journalModal" v-show="showJournalModal" @close="showJournalModal = false">
                 <h3 slot="header" class="mb0">New journal</h3>
                 <div slot="body" class="pt0 mt0">
                     <input type="text" class="w-100 pa2" id="newJournalName" placeholder="Journal Name"><br />
@@ -112,8 +122,24 @@
                 </div>
             </modal>
             
-            <modal id="noteModal" v-if="showNoteModal" @close="showNoteModal = false">
+            <modal id="noteModal" v-show="showNoteModal" @close="showNoteModal = false">
                 <h3 slot="header">New note</h3>
+                <div slot="body" class="pt0 mt0">
+                    <input type="text" class="w-100 pa2" id="newNoteName" placeholder="Note Name"><br /><br />
+
+                    <select id="dash-journal-selector" style="width: 100%;">
+                        <option></option>
+                        <option value="asdf">asdf</option>
+                        <option value="fda">aasdfasdfasdfasf</option>
+                        <option value="thing">tjomg</option>
+                    </select>
+                    
+                    <br />
+                
+                    <button class="mt4" onclick="newJournal(document.getElementById('newJournalName').value, document.getElementById('default-select').checked)">
+                        <p class="f4 mv2 ora">Create</p>
+                    </button>
+                </div>
             </modal>
         </div>
         

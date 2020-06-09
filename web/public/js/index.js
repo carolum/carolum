@@ -114,6 +114,16 @@ firebase.auth().onAuthStateChanged(function(u){
 		// start listeners
 		updateRecentNotesListener();
 		updateRecentJournalsListener();
+        
+        $(document).ready(function(){
+            $("#dash-journal-selector").select2({
+                dropdownParent: $('#noteModal'),
+                placeholder: "Journal selection",
+                width:"resolve"
+            });
+            
+            console.log(1);
+        })
 	} else {
 		window.location.href = "/login";
 	}
