@@ -68,23 +68,6 @@ a{
     }
 }
 
-
-.modal-container{
-    width: 17em;
-}
-
-@media screen and (min-width: 30em){
-    .modal-container{
-        width: 20em;
-    }
-}
-
-@media screen and (min-width: 60em){
-    .modal-container{
-        width: 40em;
-    }
-}
-
 .userinput{
 	height: 85%;
 }
@@ -126,7 +109,7 @@ input:focus, textarea:focus{
 }
 
 
-#journalModal button{
+#journalModal button, #noteModal button{
     background-color: transparent;
     background-repeat:no-repeat;
     border: 1px solid #F88379;

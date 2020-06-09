@@ -121,8 +121,6 @@ firebase.auth().onAuthStateChanged(function(u){
                 placeholder: "Journal selection",
                 width:"resolve"
             });
-            
-            console.log(1);
         })
 	} else {
 		window.location.href = "/login";

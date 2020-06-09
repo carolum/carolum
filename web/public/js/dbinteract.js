@@ -1,7 +1,9 @@
-async function setJournals(mod, ret, requestSetPtr, amtExpected){
+async function setJournals(mod, ret, requestSetPtr, amtExpected, hardSet=false){
     if (ret == null) return;
     
     var finKey = "";
+    
+    if(hardSet) var build = {};
 
     for(let [key, val] of Object.entries(ret).reverse()){
         var title = await decrypt(val.name);
@@ -17,8 +19,12 @@ async function setJournals(mod, ret, requestSetPtr, amtExpected){
             }                
         }
         
-        mod.journals[title]=[key, t];
+        
+        if (hardSet) build[title]=[key, t];
+        else mod.journals[title]=[key, t];
     }
+    
+    if (hardSet) mod.journals = build;
     
     mod.$forceUpdate();;
     
@@ -30,7 +36,7 @@ async function setJournals(mod, ret, requestSetPtr, amtExpected){
 
 function updateRecentJournalsListener(){
 	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').orderByKey().limitToLast(5).on("value", (snapshot)=>{
-		setJournals(dashboard, snapshot.val(), false, 5);
+		setJournals(dashboard, snapshot.val(), false, 5, true);
 	});
 }
 
