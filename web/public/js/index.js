@@ -11,7 +11,7 @@ Vue.component("journal-overview", {
             return this.details[0];
         }
 	},
-	template: '<div class="journal-entry outline pv2 ph2 mt2 mb2 mr3 mw5" :id="getID()"><span class="b"><a :href="journalurl()">{{ journalname }}</a></span><hr /><ul class="mt2 list pl0"><li v-for="note in details[1]"><a :href="noteurl(note.id_)">{{ note.title }}</a></li></ul></div>'
+	template: '<div class="journal-entry outline pv2 ph2 mt2 mb2 mr3 mw5" :id="getID()"><span class="b"><a :href="journalurl()">{{ journalname }}</a></span><hr /><ul class="mt2 list pl0"><li class="pt2" v-for="note in details[1]"><a :href="noteurl(note.id_)">{{ note.title }}</a></li></ul></div>'
 });
 
 

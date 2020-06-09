@@ -116,7 +116,7 @@
                     <input class="mt3" type="checkbox" name="default-select" id="default-select">
                     <label for="default-select">Set as default journal</label><br />
                     
-                    <button class="mt4" onclick="newJournal(document.getElementById('newJournalName').value, document.getElementById('default-select').checked)">
+                    <button class="mt4" @click="newJournal(document.getElementById('newJournalName').value, document.getElementById('default-select').checked); showJournalModal=false">
                         <p class="f4 mv2 ora">Create</p>
                     </button>
                 </div>
@@ -136,7 +136,7 @@
                     
                     <br />
                 
-                    <button class="mt4" onclick="newJournal(document.getElementById('newJournalName').value, document.getElementById('default-select').checked)">
+                    <button class="mt4" @click="newJournal(document.getElementById('newJournalName').value, document.getElementById('default-select').checked); showNoteModal=false">
                         <p class="f4 mv2 ora">Create</p>
                     </button>
                 </div>
