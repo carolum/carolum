@@ -95,7 +95,9 @@ var editJournal= new Vue({
 
 firebase.auth().onAuthStateChanged(function(u){
 	if(u){
-        if(get("t") === "note") loadNoteToEdit(editNote.content.id_);
+        if(get("t") === "note"){
+            loadNoteToEdit(editNote.content.id_);
+        }
         else if(get("t") === "journal"){
             setLastNoteIDInJournal(get("id"));
             loadJournalToEdit(editJournal.id_, "", 5);

@@ -16,11 +16,30 @@
 </head>
 <body class="georgia">
     <div class="content ph5 pt5 pb3 mid-gray center pa0 ma0 vh-75">
-        <div id="journals" class="h-100 w-100" v-cloak>
-            <span class="f3">
-                Journals
-                <hr />
-            </span>
+        <div id="notes" class="h-100 w-100" v-if="display">
+            <span class="f3">Notes</span>
+            
+            <hr />
+            
+            <div class="flex flex-wrap flex-between">
+                <ul class="list pl0">
+                    <note-overview v-for="(note, noteid) in notes"
+                        v-bind:noteid="noteid"
+                        v-bind:note="note">
+                    </note-overview>
+                </ul>
+            </div>
+            
+            <div v-if="hasMore" class="w-100 tc pa2 pointer" id="load-more">
+                <span>⮟</span><br />
+                <span @click="loadmore()">Load more</span>
+            </div>
+        </div>
+        
+        
+        <div id="journals" class="h-100 w-100" v-if="display">
+            <span class="f3">Journals</span>
+            <hr />
             
             <div class="flex flex-wrap flex-between">
                 <journal-overview v-for="(details, journalname) in journals"

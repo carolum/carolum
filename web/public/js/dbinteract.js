@@ -35,6 +35,59 @@ async function setJournals(mod, ret, requestSetPtr, amtExpected, hardSet=false){
     }
 }
 
+async function setNotes(mod, ret, requestSetPtr, amtExpected, hardSet=false){
+    if (ret == null) return;
+    
+    var finKey = "";
+    
+    if(hardSet) var build = {};
+
+    for(let [key, val] of Object.entries(ret).reverse()){
+        var title = await decrypt(val.title);
+        
+        var text = await decrypt(val.text);
+        
+        if(requestSetPtr) finKey = key;        
+        
+        if (hardSet) build[key]={title:title, text:text};
+        
+        else mod.notes[key]={title:title, text:text};
+    }
+    
+    if (hardSet) mod.notes = build;
+    
+    mod.$forceUpdate();;
+    
+    if(requestSetPtr){
+        mod.noteIDPointer = finKey;
+        mod.hasMore = mod.lastID != finKey; 
+    }
+}
+
+async function setNotesFromJournal(mod, ret, requestSetPtr, amtExpected){    
+    mod.title = await decrypt(ret.name);
+
+    if(ret.ids == null) return;
+    
+    var finKey = "";
+
+    for(let [key, val] of Object.entries(ret.ids).reverse()){
+        
+        
+        if(requestSetPtr) finKey = key;
+
+        var title = await decrypt(val.title);
+
+        mod.notes[key] = {title: title}
+    }
+
+    mod.$forceUpdate();
+    
+    mod.journalIDPointer = finKey;
+    mod.hasMore = mod.lastID != finKey;
+}
+
+
 function updateRecentJournalsListener(){
 	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').orderByKey().limitToLast(5).on("value", (snapshot)=>{
 		setJournals(dashboard, snapshot.val(), false, 5, true);
@@ -83,7 +136,28 @@ async function updateAllJournalsListener(ptr, amt){
     }
 }
 
-async function setLastID(){
+
+async function updateAllNotesListener(ptr, amt){
+    var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').orderByKey();
+    
+    if(ptr == ""){
+        ref.limitToLast(amt).once("value", async (snapshot)=>{
+            await setNotes(notesView, snapshot.val(), true, amt);
+        });
+        
+    } else {
+        ref.endAt(ptr).limitToLast(amt+1).once("value", async (snapshot)=>{
+            var ret = snapshot.val();
+            
+            delete ret[ptr]
+            
+            await setNotes(notesView, ret, true, amt);
+        });
+    }
+}
+
+
+async function setLastJournalID(){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals');
     
     var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value", (snapshot)=>{
@@ -93,6 +167,19 @@ async function setLastID(){
     var lastID = Object.keys(lastIDSnapshot.val())[0]
     
     journalsView.lastID = lastID;
+}
+
+
+async function setLastNoteID(){
+    var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes');
+    
+    var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value", (snapshot)=>{
+        return 0;
+    });
+    
+    var lastID = Object.keys(lastIDSnapshot.val())[0]
+    
+    notesView.lastID = lastID;
 }
 
 
@@ -131,30 +218,6 @@ function loadNoteToEdit(noteID){
 }
 
 
-async function setNotes(mod, ret, requestSetPtr, amtExpected){    
-    mod.title = await decrypt(ret.name);
-
-    if(ret.ids == null) return;
-    
-    var finKey = "";
-
-    for(let [key, val] of Object.entries(ret.ids).reverse()){
-        
-        
-        if(requestSetPtr) finKey = key;
-
-        var title = await decrypt(val.title);
-
-        mod.notes[key] = {title: title}
-    }
-
-    mod.$forceUpdate();
-    
-    mod.journalIDPointer = finKey;
-    mod.hasMore = mod.lastID != finKey;
-}
-
-
 function loadJournalToEdit(journalID, ptr, amt){
     var parentRef = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID);
     
@@ -162,7 +225,7 @@ function loadJournalToEdit(journalID, ptr, amt){
     
     if (ptr == ""){
         firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID).once("value", async (snapshot)=>{
-           setNotes(editJournal, snapshot.val(), true, 5);
+           setNotesFromJournal(editJournal, snapshot.val(), true, 5);
         });
         
     } else {
@@ -174,7 +237,6 @@ function loadJournalToEdit(journalID, ptr, amt){
             await setJournals(journalsView, ret, true, amt);
         });
     }
-    
 }
 
 
