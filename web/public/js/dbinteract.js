@@ -15,7 +15,8 @@ async function setJournals(mod, ret, requestSetPtr, amtExpected, hardSet=false){
         if (val.ids != null){            
             for(let [key2, val2] of Object.entries(val.ids).slice(0, 5)){
                 t[key2] = {};
-                t[key2].title = await decrypt(val.ids[key2].title);
+                t[key2].title = await decrypt(val2.title);
+                t[key2].id_ = val2.id_;
             }                
         }
         
