@@ -1,25 +1,3 @@
-// from SO
-function get(name){
-   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
-      return decodeURIComponent(name[1]);
-}
-
-
-Vue.component("note-overview", {
-	props: ["noteid", "note"],
-	computed: {
-		noteurl: function(){
-			return "/edit/?t=note&id="+this.noteid;
-		}
-	},
-	template: '<li><a :href="noteurl" class="note-entry">{{ note.title }}</a></li>'
-});
-
-Vue.component("modal", {
-    template: "#modal-template"
-});
-
-
 var editNote = new Vue({
 	el: "#editNote",
 	data: {

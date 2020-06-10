@@ -44,7 +44,7 @@
     </script>
 </head>
 <body class="georgia">
-    <div class="content ph5 pt5 pb3 mid-gray center pa0 ma0 vh-75">
+    <div class="content ph5 pt5 pb3 mid-gray center vh-75">
         <div id="editNote" class="h-100" v-if="display" v-cloak>
             
             <input type="text" id="noteTitle" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" oninput="editNote.changeContent('title', this.value); editNote.startAutoSave()">
@@ -120,6 +120,7 @@
     
     <script src="/js/secure.js"></script>
     <script src="/js/dbinteract.js"></script>
+    <script src="/js/components.js"></script>
     <script src="/js/edit.js"></script>
 </body>
 </html>

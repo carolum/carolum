@@ -56,7 +56,7 @@
     </script>
 </head>
 <body class="georgia vh-100">
-    <div class="content ph2 pt4 pb3 mid-gray center pa0 ma0" style="height: 80vh;">
+    <div class="content ph2 pt4 pb3 mid-gray center" style="height: 80vh;">
         <div id="new" class="h-100 w-100" v-if="display" v-cloak>
             <div class="h-100 w-100">
                 <input type="text" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" onchange="newEntry.changeContent('title', this.value)">
@@ -188,6 +188,7 @@
 
     <script src="/js/secure.js"></script>
     <script src="/js/dbinteract.js"></script>
+    <script src="/js/components.js"></script>
     <script src="/js/index.js"></script>
 </body>
 </html>
