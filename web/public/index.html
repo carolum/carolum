@@ -57,7 +57,7 @@
 </head>
 <body class="georgia vh-100">
     <div class="content ph2 pt4 pb3 mid-gray center" style="height: 80vh;">
-        <div id="new" class="h-100 w-100" v-if="display" v-cloak>
+        <div id="new" class="h-100 w-100" v-show="display" v-cloak>
             <div class="h-100 w-100">
                 <input type="text" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" onchange="newEntry.changeContent('title', this.value)">
 
@@ -72,7 +72,7 @@
             </div>
         </div>
         
-        <div id="dash" v-if="display" v-cloak>
+        <div id="dash" v-show="display" v-cloak>
             <input type="text" id="noteid" placeholder="noteid"><br />
             <input type="text" id="notename" placeholder="notename"><br />
             <input type="text" id="journalid" placeholder="journalid">
@@ -123,15 +123,14 @@
             </modal>
             
             <modal id="noteModal" v-show="showNoteModal" @close="showNoteModal = false">
-                <h3 slot="header">New note</h3>
+                <h3 slot="header" class="mb0">New note</h3>
                 <div slot="body" class="pt0 mt0">
                     <input type="text" class="w-100 pa2" id="newNoteName" placeholder="Note Name"><br /><br />
 
                     <select id="dash-journal-selector" style="width: 100%;">
-                        <option></option>
-                        <option value="asdf">asdf</option>
-                        <option value="fda">aasdfasdfasdfasf</option>
-                        <option value="thing">tjomg</option>
+                        <option v-for="journal in journalSelection" v-bind:value="journal.id">
+                            {{ journal.name }}
+                        </option>
                     </select>
                     
                     <br />
@@ -143,9 +142,9 @@
             </modal>
         </div>
         
-        <div id="push" class="push" v-if="display"></div>
+        <div id="push" class="push" v-show="display"></div>
         
-        <div id="settings" v-if="display" v-cloak>
+        <div id="settings" v-show="display" v-cloak>
             <div class="outline red pv2 ph3 pointer" onclick="signOut()">
                 <span class="f2">Logout</span><i class="fas fa-sign-out-alt fa-2x fr mt1"></i>
             </div>

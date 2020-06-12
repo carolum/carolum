@@ -88,13 +88,13 @@ async function setNotesFromJournal(mod, ret, requestSetPtr, amtExpected){
 }
 
 
-function updateRecentJournalsListener(){
+async function updateRecentJournalsListener(){
 	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').orderByKey().limitToLast(5).on("value", (snapshot)=>{
 		setJournals(dashboard, snapshot.val(), false, 5, true);
 	});
 }
 
-function updateRecentNotesListener(){
+async function updateRecentNotesListener(){
 	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').orderByKey().limitToLast(5).on("value", async (snapshot)=>{
 		var ret = snapshot.val();
 		var t = {};
@@ -115,7 +115,6 @@ function updateRecentNotesListener(){
         dashboard.$forceUpdate();
 	});
 }
-
 
 async function updateAllJournalsListener(ptr, amt){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').orderByKey();
@@ -157,6 +156,44 @@ async function updateAllNotesListener(ptr, amt){
 }
 
 
+async function setJournalSelectors(){
+    var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid);
+    
+    var defaultJournalKey = await ref.child("data/defaultJournal").once("value", (snapshot)=>{
+        return 0;
+    });
+
+    var defaultJournal = await ref.child("journals/"+defaultJournalKey.val()).once("value", (snapshot)=>{
+        return 0;
+    });
+    
+    
+    var journalSelection = [
+        {
+            name: await decrypt(defaultJournal.val().name),
+            id: defaultJournalKey.val()
+        }
+    ];
+    
+    
+    var allJournals = await ref.child("journals").once("value", (snapshot)=>{
+        return 0;
+    });
+    
+    for(let [key, val] of Object.entries(allJournals.val())){
+        if(key === defaultJournalKey.val()) continue;
+        
+        journalSelection.push({
+            name: await decrypt(val.name),
+            id: key
+        });
+    }
+    
+    dashboard.journalSelection = journalSelection;
+    
+    dashboard.$forceUpdate();
+}
+
 async function setLastJournalID(){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals');
     
@@ -164,7 +201,7 @@ async function setLastJournalID(){
         return 0;
     });
     
-    var lastID = Object.keys(lastIDSnapshot.val())[0]
+    var lastID = Object.keys(lastIDSnapshot.val())[0];
     
     journalsView.lastID = lastID;
 }
@@ -177,7 +214,7 @@ async function setLastNoteID(){
         return 0;
     });
     
-    var lastID = Object.keys(lastIDSnapshot.val())[0]
+    var lastID = Object.keys(lastIDSnapshot.val())[0];
     
     notesView.lastID = lastID;
 }
@@ -284,7 +321,6 @@ async function updateNote(data, noteID){
 
 function signOut(){
 	firebase.auth().signOut();
-	localStorage.removeItem("carolum-pwhash");
 }
 
 

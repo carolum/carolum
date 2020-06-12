@@ -47,7 +47,8 @@ var dashboard = new Vue({
 		journals: {},
 		notes: {},
         showJournalModal: false,
-        showNoteModal: false
+        showNoteModal: false,
+        journalSelection: ""
 	},
 	computed: {
 		display: function() { return nav.tabs === 'dash'; }
@@ -80,13 +81,15 @@ firebase.auth().onAuthStateChanged(function(u){
 		updateRecentNotesListener();
 		updateRecentJournalsListener();
         
+        setJournalSelectors();
+        
         $(document).ready(function(){
             $("#dash-journal-selector").select2({
                 dropdownParent: $('#noteModal'),
                 placeholder: "Journal selection",
                 width:"resolve"
             });
-        })
+        });
 	} else {
 		window.location.href = "/login";
 	}
