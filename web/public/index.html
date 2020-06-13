@@ -145,7 +145,7 @@
         <div id="push" class="push" v-show="display"></div>
         
         <div id="settings" v-show="display" v-cloak>
-            <div class="outline red pv2 ph3 pointer" onclick="signOut()">
+            <div class="outline red pv2 ph3 pointer" @click="logout()">
                 <span class="f2">Logout</span><i class="fas fa-sign-out-alt fa-2x fr mt1"></i>
             </div>
         </div>

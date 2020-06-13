@@ -319,9 +319,4 @@ async function updateNote(data, noteID){
 }
 
 
-function signOut(){
-	firebase.auth().signOut();
-}
-
-
 

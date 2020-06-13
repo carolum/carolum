@@ -28,13 +28,21 @@ function hash(p, s){
 	.catch(e=>{throw "Hashing error " + e;});
 }
 
-// big mcthankies to https://gist.github.com/saulshanabrook/b74984677bccd08b028b30d9968623f5
+
+async function clearRSAKeys(){
+    await deleteDB("carolum-db", {
+        blocked() {
+            console.log("ok");
+        }
+    });
+}
+
 
 async function saveRSAKeys(keys, encrypted) {
     let db = openDB('carolum-db', 1, {
         upgrade(db) {
             let store = db.createObjectStore('carolumRSA-Key');
-        },
+        }
     });
 
     (await db).put('carolumRSA-Key', {
@@ -43,6 +51,8 @@ async function saveRSAKeys(keys, encrypted) {
     }, 1);
     
     await db.done;
+    
+    (await db).close();
 }
 
 
@@ -63,6 +73,8 @@ async function decryptRSAFromSave(){
     var ret = await (await db).get("carolumRSA-Key", 1);
     
     await db.done;
+    
+    (await db).close();
     
     return new TextDecoder().decode(await decryptRSA(ret.encrypted, ret.keys));
 }

@@ -59,7 +59,13 @@ var settings = new Vue({
 	el: "#settings",
 	computed: {
 		display: function() { return nav.tabs === 'settings'; }
-	}
+	},
+    methods: {
+        logout: async function(){
+            await clearRSAKeys();
+            firebase.auth().signOut();
+        }
+    }
 });
 
 var push = new Vue({
