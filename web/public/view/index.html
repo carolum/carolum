@@ -13,30 +13,32 @@
     <link rel="stylesheet" href="/dep/tachyons/tachyons.min.css">
     
     <link rel="stylesheet" href="/css/view.css">
+    
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+      crossorigin="anonymous">
+    </script>
 </head>
 
 <body class="georgia">
     <div class="content ph5 pt5 pb3 mid-gray center vh-75">
         <div id="notes" class="h-100 w-100" v-if="display">
-            <span class="f3">Notes</span>
+            <span class="ora f2">Notes</span>
             
             <hr />
             
             <div class="flex flex-wrap flex-between mb5">
-                <note-overview v-for="(note, noteid) in notes"
+                <note-detailed v-for="(note, noteid) in notes"
                     v-bind:noteid="noteid"
                     v-bind:note="note">
-                </note-overview>
-            </div>
-            
-            <div v-if="hasMore" class="w-100 tc pa0 ma0 pointer" id="load-more">
-                <p @click="loadmore()" class="w-100 h-100"><span>⮟</span><br />Load more</p>
+                </note-detailed>
             </div>
         </div>
         
         
         <div id="journals" class="h-100 w-100" v-if="display">
-            <span class="f3">Journals</span>
+            <span class="ora f2">Journals</span>
             <hr />
             
             <div class="flex flex-wrap flex-between mb5">
@@ -44,10 +46,6 @@
                     v-bind:details="details"
                     v-bind:journalname="journalname">
                 </journal-detailed>
-            </div>
-            
-            <div v-if="hasMore" class="w-100 tc pa0 ma0 pointer" id="load-more">
-                <p @click="loadmore()" class="w-100 h-100"><span>⮟</span><br />Load more</p>
             </div>
         </div>
     </div>
