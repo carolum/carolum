@@ -10,3 +10,13 @@ a{
 a:visited{
     color: black;
 }
+
+.journal-entry, .note-entry{
+	word-wrap: break-word;
+	min-width: 170px;
+    min-height: 90px;
+}
+
+.journal-entry:last-child, .note-entry:last-child{
+	margin-right:0 !important;
+}

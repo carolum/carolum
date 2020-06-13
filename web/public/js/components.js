@@ -43,9 +43,13 @@ Vue.component("note-overview", {
             return this.noteid;
         }
 	},
-	template: '<li class="mv2 pv1"><a :href="noteurl()" :id="getID()" class="note-entry">{{ note.title }}</a></li>'
+	template: '<li class="mv2 pv1 list pl0" style="width: 45%; margin-right: auto;"><a :href="noteurl()" :id="getID()" class="note-entry"><div class="outline ph3 mt0 pv3"><p class="b bb w-100 ma0 pb1">{{ note.title }}</p><p class="mh0 mb0 mt2">{{ note.text }}</p></div></a></li>'
 });
 
 Vue.component("modal", {
     template: "#modal-template"
 });
+
+
+
+
