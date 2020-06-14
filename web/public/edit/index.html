@@ -43,15 +43,15 @@
         </transition>
     </script>
 </head>
-<body class="georgia">
-    <div class="content ph5 pt5 pb3 mid-gray center vh-75">
+<body class="georgia vh-100">
+    <div class="content ph3 ph5-ns pt4 pb1 pb3-ns mid-gray center h-100">
         <div id="editNote" class="h-100" v-if="display" v-cloak>
             
-            <input type="text" id="noteTitle" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" oninput="editNote.changeContent('title', this.value); editNote.startAutoSave()">
+            <input type="text" id="noteTitle" :placeholder="content.titlePlaceholder" :value="content.title" class="f2 f1-ns ph3 pt1 pb2 w-100" oninput="editNote.changeContent('title', this.value); editNote.startAutoSave()">
             
             
             <div class="userinput pt2">
-                <textarea class="w-100 f3 ph3 h-100" id="noteText" :placeholder="content.textPlaceholder" :value="content.text" oninput="editNote.changeContent('text', this.value); editNote.startAutoSave();">
+                <textarea class="w-100 f4 f3-ns ph3 h-100" id="noteText" :placeholder="content.textPlaceholder" :value="content.text" oninput="editNote.changeContent('text', this.value); editNote.startAutoSave();">
                 </textarea>
             </div>
             

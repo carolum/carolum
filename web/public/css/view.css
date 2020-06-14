@@ -25,3 +25,7 @@ a:visited{
 .journal-entry:last-child, .note-entry:last-child{
 	margin-right:0 !important;
 }
+
+.note-detailed-text{
+    white-space: pre-wrap;
+}

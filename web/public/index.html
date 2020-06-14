@@ -59,10 +59,10 @@
     <div class="content ph2 pt4 pb3 mid-gray center" style="height: 80vh;">
         <div id="new" class="h-100 w-100" v-show="display" v-cloak>
             <div class="h-100 w-100">
-                <input type="text" :placeholder="content.titlePlaceholder" :value="content.title" class="f1 ph3 pt1 pb2 w-100" onchange="newEntry.changeContent('title', this.value)">
+                <input type="text" :placeholder="content.titlePlaceholder" :value="content.title" class="f2 f1-ns ph3 pt1 pb2 w-100" onchange="newEntry.changeContent('title', this.value)">
 
                 <div class="userinput pt2">
-                    <textarea class="w-100 f3 ph3 h-100" :placeholder="content.textPlaceholder" :value="content.text" onchange="newEntry.changeContent('text', this.value)">
+                    <textarea class="w-100 f4 f3-ns ph3 h-100" :placeholder="content.textPlaceholder" :value="content.text" onchange="newEntry.changeContent('text', this.value)">
                     </textarea>
                 </div>
                 
@@ -73,14 +73,16 @@
         </div>
         
         <div id="dash" v-show="display" v-cloak>
+            <!--
             <input type="text" id="noteid" placeholder="noteid"><br />
             <input type="text" id="notename" placeholder="notename"><br />
             <input type="text" id="journalid" placeholder="journalid">
             <button onclick="addNoteToJournal(document.getElementById('noteid').value,document.getElementById('notename').value, document.getElementById('journalid').value)">Add note ID to journal</button>
             
             <br /><br /><br />
+-->
             
-            <div class="f3 w-100">
+            <div class="w-100 f3">
                 <a href="/view/?t=journal" class="no-underline b ora">Recent Journals</a>
                 <i class="fas fa-plus ora fr pa2 pointer pt0" @click="showJournalModal = true; showNoteModal = false;"></i>
                 <hr />
@@ -95,7 +97,7 @@
             
             <br />
             
-            <div class="f3 w-100">
+            <div class="w-100 f3">
                 <a href="/view/?t=note" class="no-underline b ora">Recent Notes</a>
                 <i class="fas fa-plus ora fr click pa2 pointer pt0" @click="showNoteModal = true; showJournalModal = false"></i>
                 <hr />
