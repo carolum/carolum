@@ -32,8 +32,8 @@
             
             <div class="flex flex-wrap flex-between mb5">
                 <note-detailed v-for="(note, noteid) in notes"
-                    v-bind:noteid="noteid"
-                    v-bind:note="note">
+                    :noteid="noteid"
+                    :note="note">
                 </note-detailed>
             </div>
         </div>
@@ -45,8 +45,8 @@
             
             <div class="flex flex-wrap flex-between mb5">
                 <journal-detailed v-for="(details, journalname) in journals"
-                    v-bind:details="details"
-                    v-bind:journalname="journalname">
+                    :details="details"
+                    :journalname="journalname">
                 </journal-detailed>
             </div>
         </div>

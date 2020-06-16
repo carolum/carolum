@@ -48,7 +48,10 @@ var dashboard = new Vue({
 		notes: {},
         showJournalModal: false,
         showNoteModal: false,
-        journalSelection: ""
+        newnote:{
+            journalSelection: [],
+            journalID:""
+        }
 	},
 	computed: {
 		display: function() { return nav.tabs === 'dash'; }

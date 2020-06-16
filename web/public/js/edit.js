@@ -53,7 +53,8 @@ var editJournal= new Vue({
         hasMore: false,
         journalIDPointer: "",
         lastID:"",
-        showNewNoteModal: false
+        showNewNoteModal: false,
+        error: ""
 	},
     computed:{
         display: function(){ return get("t") === "journal"}

@@ -199,7 +199,8 @@ async function setJournalSelectors(){
         });
     }
     
-    dashboard.journalSelection = journalSelection;
+    dashboard.newnote.journalSelection = journalSelection;
+    dashboard.newnote.journalID = journalSelection[0].id;
     
     dashboard.$forceUpdate();
 }
@@ -235,6 +236,11 @@ async function setLastNoteIDInJournal(journalID){
     var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value", (snapshot)=>{
         return 0;
     });
+    
+    if(lastIDSnapshot.val() == null){
+        editJournal.error = "There doesn't seem to be anything here...";
+        return;
+    }
     
     var lastID = Object.keys(lastIDSnapshot.val())[0]
     

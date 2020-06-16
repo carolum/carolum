@@ -91,8 +91,8 @@
             
             <div class="flex flex-wrap">
                 <journal-overview v-for="(details, journalname) in journals"
-                    v-bind:details="details"
-                    v-bind:journalname="journalname">
+                    :details="details"
+                    :journalname="journalname">
                 </journal-overview>
             </div>
             
@@ -106,8 +106,8 @@
             
             <ul class="list pl0">
                 <note-overview v-for="(note, noteid) in notes"
-                    v-bind:noteid="noteid"
-                    v-bind:note="note">
+                    :noteid="noteid"
+                    :note="note">
                 </note-overview>
             </ul>
             
@@ -130,8 +130,8 @@
                 <div slot="body" class="pt0 mt0">
                     <input type="text" class="w-100 pa2" id="newNoteName" placeholder="Note Name"><br /><br />
 
-                    <select id="dash-journal-selector" style="width: 100%;">
-                        <option v-for="journal in journalSelection" v-bind:value="journal.id">
+                    <select id="dash-journal-selector" style="width: 100%;" onchange="dashboard.newnote.journalID=this.value">
+                        <option v-for="journal in newnote.journalSelection" :value="journal.id">
                             {{ journal.name }}
                         </option>
                     </select>
@@ -156,16 +156,16 @@
 
     <article class="footer ph2 fixed left-0 bottom-0 right-0 mid-gray f4" id="footer">
         <div class="flex justify-center f5" id="nav">
-            <span class="bl tc w-30 pt3 pb2 bt bb dim" v-bind:class="{'oraborder': tabs === 'new'}" @click="nav.change('new')">
-            <i class="fas fa-sticky-note fa-2x" v-bind:class="{'ora': tabs === 'new'}"></i>
+            <span class="bl tc w-30 pt3 pb2 bt bb dim":class="{'oraborder': tabs === 'new'}" @click="nav.change('new')">
+            <i class="fas fa-sticky-note fa-2x" :class="{'ora': tabs === 'new'}"></i>
             </span>
             
-            <span class="tc w-30 pt3 pb2 bt bb dim" v-bind:class="{'oraborder': tabs === 'dash'}" @click="nav.change('dash')">
-            <i class="fas fa-home fa-2x" v-bind:class="{'ora': tabs === 'dash'}"></i>
+            <span class="tc w-30 pt3 pb2 bt bb dim" :class="{'oraborder': tabs === 'dash'}" @click="nav.change('dash')">
+            <i class="fas fa-home fa-2x" :class="{'ora': tabs === 'dash'}"></i>
             </span>
             
-            <span class="br tc w-30 pt3 pb2 bt bb dim" v-bind:class="{'oraborder': tabs === 'settings'}" @click="nav.change('settings')">
-            <i class="fas fa-user-cog fa-2x" v-bind:class="{'ora': tabs === 'settings'}"></i>
+            <span class="br tc w-30 pt3 pb2 bt bb dim" :class="{'oraborder': tabs === 'settings'}" @click="nav.change('settings')">
+            <i class="fas fa-user-cog fa-2x" :class="{'ora': tabs === 'settings'}"></i>
             </span>
         </div>
     </article>
