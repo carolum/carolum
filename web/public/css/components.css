@@ -1,0 +1,44 @@
+.journal-overview{
+	word-wrap: break-word;
+	min-width: 120px;
+    min-height: 70px;
+}
+
+@media screen and (min-width: 30em){
+    .journal-overview{
+        min-width: 170px;
+        min-height: 90px;
+    }
+}
+
+.journal-overview:last-child{
+	margin-right:0 !important;
+}
+
+.note-overview, .note-detailed{
+    word-wrap:break-word;
+}
+
+.journal-detailed, .note-detailed{
+	word-wrap: break-word;
+	min-width: 170px;
+    min-height: 90px;
+}
+
+.journal-detailed:last-child, .note-detailed:last-child{
+	margin-right:0 !important;
+}
+
+.note-detailed{
+    word-wrap:break-word;
+}
+
+.journal-detailed{
+    width: 100%;
+}
+
+@media screen and (min-width: 30em){
+    .journal-detailed{
+        width: 45%;
+    }
+}

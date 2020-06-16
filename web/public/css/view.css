@@ -2,6 +2,9 @@
 	color: #F88379;
 }
 
+.content{
+    width: 90%;
+}
 
 #load-more{
     background-image: linear-gradient(#F88379 0%, rgba(0,0,0,0) 50%);
@@ -14,28 +17,4 @@ a{
 
 a:visited{
     color: black;
-}
-
-.journal-entry, .note-entry{
-	word-wrap: break-word;
-	min-width: 170px;
-    min-height: 90px;
-}
-
-.journal-entry:last-child, .note-entry:last-child{
-	margin-right:0 !important;
-}
-
-.note-entry{
-    word-wrap:break-word;
-}
-
-.journal-entry{
-    width: 100%;
-}
-
-@media screen and (min-width: 30em){
-    .journal-entry{
-        width: 45%;
-    }
 }

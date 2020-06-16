@@ -89,27 +89,6 @@ input:focus, textarea:focus{
     height: 75px;
 }
 
-.journal-entry{
-	word-wrap: break-word;
-	min-width: 120px;
-    min-height: 70px;
-}
-
-@media screen and (min-width: 30em){
-    .journal-entry{
-        min-width: 170px;
-        min-height: 90px;
-    }
-}
-
-.journal-entry:last-child{
-	margin-right:0 !important;
-}
-
-.note-entry{
-    word-wrap:break-word;
-}
-
 #journalModal input{
     background: transparent;
     border: 1px solid grey;

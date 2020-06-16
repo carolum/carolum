@@ -73,7 +73,6 @@ input:focus, textarea:focus{
     opacity: 0;
 }
 
-.note-entry{
-    word-wrap:break-word;
+.content{
+    width: 90%;
 }
-

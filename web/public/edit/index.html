@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="/dep/tachyons/tachyons.min.css">
     
     <link rel="stylesheet" href="/css/edit.css">
-    
     <link rel="stylesheet" href="/css/modal.css">
+    <link rel="stylesheet" href="/css/components.css">
     
     <script type="text/x-template" id="modal-template">
         <transition name="modal">
@@ -44,7 +44,7 @@
     </script>
 </head>
 <body class="georgia vh-100">
-    <div class="content ph3 ph5-ns pt4 pb1 pb3-ns mid-gray center h-100">
+    <div class="content ph2 pt4 pb3 mid-gray center" style="height: 80vh;">
         <div id="editNote" class="h-100" v-if="display" v-cloak>
             
             <input type="text" id="noteTitle" :placeholder="content.titlePlaceholder" :value="content.title" class="f2 f1-ns ph3 pt1 pb2 w-100" oninput="editNote.changeContent('title', this.value); editNote.startAutoSave()">

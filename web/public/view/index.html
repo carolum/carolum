@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="/dep/tachyons/tachyons.min.css">
     
     <link rel="stylesheet" href="/css/view.css">
+    <link rel="stylesheet" href="/css/modal.css">
+    <link rel="stylesheet" href="/css/components.css">
     
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -22,9 +24,9 @@
 </head>
 
 <body class="georgia vh-100">
-    <div class="content ph3 ph5-ns pt4 pb1 pb3-ns mid-gray center h-100">
+    <div class="content ph2 pt4 pb3 mid-gray center" style="height: 80vh;">
         <div id="notes" class="h-100 w-100" v-if="display">
-            <span class="ora f2">Notes</span>
+            <span class="b ora f3">Notes</span>
             
             <hr />
             
@@ -38,7 +40,7 @@
         
         
         <div id="journals" class="h-100 w-100" v-if="display">
-            <span class="ora f2">Journals</span>
+            <span class="b ora f3">Journals</span>
             <hr />
             
             <div class="flex flex-wrap flex-between mb5">
