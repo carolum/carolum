@@ -1,14 +1,12 @@
 async function setJournals(mod, ret, requestSetPtr, amtExpected, hardSet=false){
     if (ret == null) return;
     
-    var finKey = "";
-    
     if(hardSet) var build = {};
+    
+    let key, val;
 
-    for(let [key, val] of Object.entries(ret).reverse()){
+    for([key, val] of Object.entries(ret).reverse()){
         var title = await decrypt(val.name);
-        
-        if(requestSetPtr) finKey = key;
         
         var t = {};
         
@@ -30,15 +28,13 @@ async function setJournals(mod, ret, requestSetPtr, amtExpected, hardSet=false){
     mod.$forceUpdate();;
     
     if(requestSetPtr){
-        mod.journalIDPointer = finKey;
-        mod.hasMore = mod.lastID != finKey; 
+        mod.journalIDPointer = key;
+        mod.hasMore = mod.lastID != key; 
     }
 }
 
 async function setNotes(mod, ret, requestSetPtr, amtExpected, hardSet=false){
     if (ret == null) return;
-    
-    var finKey = "";
     
     if(hardSet) var build = {};
 
@@ -46,9 +42,7 @@ async function setNotes(mod, ret, requestSetPtr, amtExpected, hardSet=false){
         var title = await decrypt(val.title);
         
         var text = await decrypt(val.text);
-        
-        if(requestSetPtr) finKey = key;        
-        
+
         if (hardSet) build[key]={title:title, text:text};
         
         else mod.notes[key]={title:title, text:text};
@@ -59,8 +53,8 @@ async function setNotes(mod, ret, requestSetPtr, amtExpected, hardSet=false){
     mod.$forceUpdate();;
     
     if(requestSetPtr){
-        mod.noteIDPointer = finKey;
-        mod.hasMore = mod.lastID != finKey; 
+        mod.noteIDPointer = key;
+        mod.hasMore = mod.lastID != key; 
     }
 }
 
@@ -69,22 +63,34 @@ async function setNotesFromJournal(mod, ret, requestSetPtr, amtExpected){
 
     if(ret.ids == null) return;
     
-    var finKey = "";
+    var title = "",
+        text = "",
+        noteObject,
+        noteData;
+    
+    let key, val;
 
-    for(let [key, val] of Object.entries(ret.ids).reverse()){
+    for([key, val] of Object.entries(ret.ids).reverse()){
         
+        noteObject = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+key).once("value", (snapshot)=>{
+           return 0; 
+        });
         
-        if(requestSetPtr) finKey = key;
+        noteData = noteObject.val();
+        
+        title = await decrypt(noteData.title);
+        text = await decrypt(noteData.text);
 
-        var title = await decrypt(val.title);
-
-        mod.notes[key] = {title: title}
+        mod.notes[key] = {
+            title: title,
+            text:text
+        };
     }
 
     mod.$forceUpdate();
     
-    mod.journalIDPointer = finKey;
-    mod.hasMore = mod.lastID != finKey;
+    mod.journalIDPointer = key;
+    mod.hasMore = mod.lastID != key;
 }
 
 
@@ -172,6 +178,10 @@ async function setJournalSelectors(){
         {
             name: await decrypt(defaultJournal.val().name),
             id: defaultJournalKey.val()
+        },
+        {
+            name: "No Journal",
+            id: "none"
         }
     ];
     
@@ -219,13 +229,6 @@ async function setLastNoteID(){
     notesView.lastID = lastID;
 }
 
-
-async function setDefaultJournalID(ID){
-    var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/data/');
-    ref.child("defaultJournal").set(ID);    
-}
-
-
 async function setLastNoteIDInJournal(journalID){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID+'/ids');
     
@@ -237,6 +240,14 @@ async function setLastNoteIDInJournal(journalID){
     
     editJournal.lastID = lastID;
 }
+
+
+
+async function setDefaultJournalID(ID){
+    var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/data/');
+    ref.child("defaultJournal").set(ID);    
+}
+
 
 
 
@@ -262,7 +273,7 @@ function loadJournalToEdit(journalID, ptr, amt){
     
     if (ptr == ""){
         firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID).once("value", async (snapshot)=>{
-           setNotesFromJournal(editJournal, snapshot.val(), true, 5);
+           await setNotesFromJournal(editJournal, snapshot.val(), true, 5);
         });
         
     } else {
@@ -271,7 +282,7 @@ function loadJournalToEdit(journalID, ptr, amt){
 
             delete ret[ptr]
 
-            await setJournals(journalsView, ret, true, amt);
+            await setNotesFromJournal(journalsView, ret, true, amt);
         });
     }
 }

@@ -26,6 +26,16 @@ a:visited{
 	margin-right:0 !important;
 }
 
-.note-detailed-text{
-    white-space: pre-wrap;
+.note-entry{
+    word-wrap:break-word;
+}
+
+.journal-entry{
+    width: 100%;
+}
+
+@media screen and (min-width: 30em){
+    .journal-entry{
+        width: 45%;
+    }
 }

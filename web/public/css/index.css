@@ -91,8 +91,15 @@ input:focus, textarea:focus{
 
 .journal-entry{
 	word-wrap: break-word;
-	min-width: 170px;
-    min-height: 90px;
+	min-width: 120px;
+    min-height: 70px;
+}
+
+@media screen and (min-width: 30em){
+    .journal-entry{
+        min-width: 170px;
+        min-height: 90px;
+    }
 }
 
 .journal-entry:last-child{

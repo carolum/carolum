@@ -75,12 +75,12 @@
             
             <hr />
             
-            <ul class="list pl0 ph2">
-                <note-overview v-for="(note, noteid) in notes"
+            <div class="flex flex-wrap flex-between mb5">
+                <note-detailed v-for="(note, noteid) in notes"
                     v-bind:noteid="noteid"
                     v-bind:note="note">
-                </note-overview>
-            </ul>
+                </note-detailed>
+            </div>
             
             <div v-if="hasMore" class="w-100 tc pa2 pointer" id="load-more">
                 <span>⮟</span><br />
