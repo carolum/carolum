@@ -32,27 +32,27 @@ function hash(p, s){
 async function clearRSAKeys(){
     await deleteDB("carolum-db", {
         blocked() {
-            console.log("ok");
+            console.log("db deletion blocked");
         }
     });
 }
 
 
 async function saveRSAKeys(keys, encrypted) {
-    let db = openDB('carolum-db', 1, {
+    await clearRSAKeys();
+    
+    let db = await openDB('carolum-db', 1, {
         upgrade(db) {
             let store = db.createObjectStore('carolumRSA-Key');
         }
     });
 
-    (await db).put('carolumRSA-Key', {
+    db.put('carolumRSA-Key', {
         keys:keys,
         encrypted:encrypted
     }, 1);
     
-    await db.done;
-    
-    (await db).close();
+    db.close();
 }
 
 
@@ -69,23 +69,12 @@ async function encryptSaveRSA(data) {
 
 
 async function decryptRSAFromSave(){
-    let db = openDB('carolum-db', 1);
-    var ret = await (await db).get("carolumRSA-Key", 1);
+    let db = await openDB('carolum-db', 1);
+    var ret = await db.get("carolumRSA-Key", 1);
     
-    await db.done;
-    
-    (await db).close();
+    db.close();
     
     return new TextDecoder().decode(await decryptRSA(ret.encrypted, ret.keys));
-}
-
-
-// POC for enc / decryption. WOO
-async function test(){
-    await encryptSaveRSA("hello");
-    
-    var decrypted = await decryptRSAFromSave();
-    return decrypted;
 }
 
 
