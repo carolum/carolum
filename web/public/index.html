@@ -60,10 +60,10 @@
     <div class="content ph2 pt4 pb3 mid-gray center" style="height: 80vh;">
         <div id="new" class="h-100 w-100" v-show="display" v-cloak>
             <div class="h-100 w-100">
-                <input type="text" :placeholder="content.titlePlaceholder" :value="content.title" class="f2 f1-ns ph3 pt1 pb2 w-100" onchange="newEntry.changeContent('title', this.value)">
+                <input type="text" class="f2 f1-ns ph3 pt1 pb2 w-100" :placeholder="content.titlePlaceholder" v-model="content.title">
 
                 <div class="userinput pt2">
-                    <textarea class="w-100 f4 f3-ns ph3 h-100" :placeholder="content.textPlaceholder" :value="content.text" onchange="newEntry.changeContent('text', this.value)">
+                    <textarea class="w-100 f4 f3-ns ph3 h-100" :placeholder="content.textPlaceholder" v-model="content.text">
                     </textarea>
                 </div>
                 

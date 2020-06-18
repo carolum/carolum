@@ -29,9 +29,6 @@ var editNote = new Vue({
         toggleLoader: function(){
             this.showLoader = !this.showLoader;
         },
-		changeContent: function(key, val){
-			this.content[key] = val;
-		},
         startAutoSave: function(){
             if(this.autoSaveTimeoutID) clearTimeout(this.autoSaveTimeoutID);
             

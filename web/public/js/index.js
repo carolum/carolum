@@ -34,9 +34,6 @@ var newEntry = new Vue({
             if(this.getData().text === "") return;
 			var id = await setNote(this.getData());
 			window.location.href = "/edit/?t=note&id="+id;
-		},
-		changeContent: function(key, val){
-			this.content[key] = val;
 		}
 	}
 });
