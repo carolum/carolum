@@ -45,14 +45,42 @@ var dashboard = new Vue({
 		notes: {},
         showJournalModal: false,
         showNoteModal: false,
-        newnote:{
+        newNoteData:{
             journalSelection: [],
-            journalID:""
+            journalID:"",
+            newNoteName:""
+        },
+        newJournalData:{
+            newJournalName:"",
+            newJournalDefault:""
         }
 	},
 	computed: {
 		display: function() { return nav.tabs === 'dash'; }
-	}
+	},
+    methods: {
+        createJournal: function(){
+            newJournal(this.newJournalData.newJournalName, this.newJournalData.newJournalDefault);
+            
+            this.showJournalModal = false;
+            
+            setJournalSelectors();
+            setTimeout(this.refreshJournalSelector, 250)
+        },
+        createNote: async function(){
+            var nameAndID = await newNote(this.newNoteData.newNoteName, this.newNoteData.journalID);
+            
+            window.location.href = "/edit/?t=note&id="+nameAndID[1];
+            
+            this.showNoteModal = false;
+        },
+        refreshJournalSelector: function(){
+            $("#dash-journal-selector").select2({
+                dropdownParent: $('#noteModal'),
+                width:"resolve"
+            });
+        }
+    }
 });
 
 var settings = new Vue({
@@ -80,23 +108,18 @@ window.onhashchange = () => {
 	location.hash = nav.tabs;
 };
 
-
 firebase.auth().onAuthStateChanged(function(u){
-	if(u){
-		// start listeners
-		updateRecentNotesListener();
-		updateRecentJournalsListener();
-        
+    if(u){
+        // start listeners
+        updateRecentNotesListener();
+        updateRecentJournalsListener();
+
         setJournalSelectors();
-        
+
         $(document).ready(function(){
-            $("#dash-journal-selector").select2({
-                dropdownParent: $('#noteModal'),
-                placeholder: "Journal selection",
-                width:"resolve"
-            });
+            dashboard.refreshJournalSelector();
         });
-	} else {
-		window.location.href = "/login";
-	}
+    } else {
+        window.location.href = "/login";
+    }
 });

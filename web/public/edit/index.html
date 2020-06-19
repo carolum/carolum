@@ -47,11 +47,11 @@
     <div class="content ph2 pt4 pb3 mid-gray center" style="height: 100vh;">
         <div id="editNote" class="h-100" v-if="display" v-cloak>
             
-            <input type="text" class="f2 f1-ns ph3 pt1 pb2 w-100" id="noteTitle" :placeholder="content.titlePlaceholder" oninput="editNote.startAutoSave()" v-model="content.title">
+            <input type="text" class="f2 f1-ns ph3 pt1 pb2 w-100" id="noteTitle" :placeholder="content.titlePlaceholder" @input="startAutoSave()" v-model="content.title">
             
             
             <div class="userinput pt2 h-100">
-                <textarea class="w-100 f4 f3-ns ph3 h-100" id="noteText" :placeholder="content.textPlaceholder" oninput="editNote.startAutoSave();" v-model="content.text">
+                <textarea class="w-100 f4 f3-ns ph3 h-100" id="noteText" :placeholder="content.textPlaceholder" @input="startAutoSave()" v-model="content.text">
                 </textarea>
             </div>
             
@@ -91,7 +91,7 @@
             <modal id="createNewNoteInJournal" v-if="showNewNoteModal" @close="showNewNoteModal = false">
                 <h3 slot="header" class="mb0">Create note</h3>
                 <div slot="body" class="pt0 mt0">
-                    <input type="text" class="w-100 pa2" id="newNoteName" placeholder="Note Title"><br />
+                    <input type="text" class="w-100 pa2" id="newNoteName" v-model="newNoteName" placeholder="Note Title"><br />
                     
                     <button class="mt4" @click="createNote()">
                         <p class="f4 mv2 ora">Create</p>

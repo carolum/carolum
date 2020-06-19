@@ -25,6 +25,10 @@
       crossorigin="anonymous">
     </script>
     
+    <script src="/js/secure.js"></script>
+    <script src="/js/dbinteract.js"></script>
+    <script src="/js/components.js"></script>
+    
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
@@ -114,31 +118,34 @@
             <modal id="journalModal" v-show="showJournalModal" @close="showJournalModal = false">
                 <h3 slot="header" class="mb0">New journal</h3>
                 <div slot="body" class="pt0 mt0">
-                    <input type="text" class="w-100 pa2" id="newJournalName" placeholder="Journal Name"><br />
+                    <input type="text" class="w-100 pa2" id="newJournalName" placeholder="Journal Name" v-model="newJournalData.newJournalName"><br />
                     
-                    <input class="mt3" type="checkbox" name="default-select" id="default-select">
+                    <input class="mt3" type="checkbox" name="default-select" id="default-select" v-model="newJournalData.newJournalDefault">
                     <label for="default-select">Set as default journal</label><br />
                     
-                    <button class="mt4" @click="newJournal(document.getElementById('newJournalName').value, document.getElementById('default-select').checked); showJournalModal=false">
+                    <button class="mt4" @click="createJournal()">
                         <p class="f4 mv2 ora">Create</p>
                     </button>
+                    
+                    <br />
+                    <p id="error" class="red mt3"></p>
                 </div>
             </modal>
             
             <modal id="noteModal" v-show="showNoteModal" @close="showNoteModal = false">
                 <h3 slot="header" class="mb0">New note</h3>
                 <div slot="body" class="pt0 mt0">
-                    <input type="text" class="w-100 pa2" id="newNoteName" placeholder="Note Name"><br /><br />
+                    <input type="text" class="w-100 pa2" id="newNoteName" placeholder="Note Name" v-model="newNoteData.newNoteName"><br /><br />
 
-                    <select id="dash-journal-selector" style="width: 100%;" onchange="dashboard.newnote.journalID=this.value">
-                        <option v-for="journal in newnote.journalSelection" :value="journal.id">
+                    <select id="dash-journal-selector" style="width: 100%;" onchange="dashboard.newNoteData.journalID=this.value">
+                        <option v-for="journal in newNoteData.journalSelection" :value="journal.id">
                             {{ journal.name }}
                         </option>
                     </select>
                     
                     <br />
                 
-                    <button class="mt4" @click="newJournal(document.getElementById('newJournalName').value, document.getElementById('default-select').checked); showNoteModal=false">
+                    <button class="mt4" @click="createNote()">
                         <p class="f4 mv2 ora">Create</p>
                     </button>
                 </div>
@@ -188,9 +195,6 @@
         firebase.initializeApp(firebaseConfig);
     </script>
 
-    <script src="/js/secure.js"></script>
-    <script src="/js/dbinteract.js"></script>
-    <script src="/js/components.js"></script>
     <script src="/js/index.js"></script>
 </body>
 </html>

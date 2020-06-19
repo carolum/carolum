@@ -12,7 +12,6 @@ var login = new Vue({
 				.catch(
 				function(error){
 					$("#error").text("No matching account found");
-					bad = true;
 				});
 			
 			hash(this.p, "hashsaltthing")
