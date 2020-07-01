@@ -53,7 +53,7 @@ var editJournal= new Vue({
         showNewNoteModal: false,
         error: "",
         newNoteName:"",
-        nonotesinjournal: false;
+        nonotesinjournal: false
 	},
     computed:{
         display: function(){ return get("t") === "journal"}
