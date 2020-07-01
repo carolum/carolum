@@ -13,7 +13,8 @@ var notesView = new Vue({
 		notes:{},
         noteIDPointer:"",
         hasMore: true,
-        lastID:""
+        lastID:"",
+        nonotes: false
 	},
     computed:{
         display: function(){ return get("t") === "note"}
@@ -31,7 +32,8 @@ var journalsView = new Vue({
 		journals:{},
         journalIDPointer:"",
         hasMore: true,
-        lastID:""
+        lastID: "",
+        nojournals: false
 	},
     computed:{
         display: function(){ return get("t") === "journal"}

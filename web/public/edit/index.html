@@ -81,6 +81,7 @@
                     :noteid="noteid"
                     :note="note">
                 </note-detailed>
+                <p v-if="nonotesinjournal">Nothing here yet...</p>
             </div>
             
             <div v-if="hasMore" class="w-100 tc pa2 pointer" id="load-more">

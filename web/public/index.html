@@ -98,6 +98,8 @@
                     :details="details"
                     :journalname="journalname">
                 </journal-overview>
+                
+                <p v-if="nojournals">Nothing here yet...</p>
             </div>
             
             <br />
@@ -113,6 +115,8 @@
                     :noteid="noteid"
                     :note="note">
                 </note-overview>
+                
+                <p v-if="nonotes">Nothing here yet...</p>
             </ul>
             
             <modal id="journalModal" v-show="showJournalModal" @close="showJournalModal = false">

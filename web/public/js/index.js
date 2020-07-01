@@ -53,7 +53,9 @@ var dashboard = new Vue({
         newJournalData:{
             newJournalName:"",
             newJournalDefault:""
-        }
+        },
+        nojournals: false,
+        nonotes: false
 	},
 	computed: {
 		display: function() { return nav.tabs === 'dash'; }
@@ -62,13 +64,15 @@ var dashboard = new Vue({
         createJournal: function(){
             newJournal(this.newJournalData.newJournalName, this.newJournalData.newJournalDefault);
             
+            this.nonotes = true;
+            
             this.showJournalModal = false;
             
             setJournalSelectors();
             setTimeout(this.refreshJournalSelector, 250)
         },
         createNote: async function(){
-            var nameAndID = await newNote(this.newNoteData.newNoteName, this.newNoteData.journalID);
+            var nameAndID = await newNote(this.newNoteData.newNoteName, this.newNoteData.journalID, this.nonotes);
             
             window.location.href = "/edit/?t=note&id="+nameAndID[1];
             

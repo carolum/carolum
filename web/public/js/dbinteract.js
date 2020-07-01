@@ -1,5 +1,8 @@
 async function setJournals(mod, ret, requestSetPtr, amtExpected, hardSet=false){
-    if (ret == null) return;
+    if (ret == null){
+        mod.nojournals = true;
+        return;
+    }
     
     if(hardSet) var build = {};
     
@@ -34,7 +37,10 @@ async function setJournals(mod, ret, requestSetPtr, amtExpected, hardSet=false){
 }
 
 async function setNotes(mod, ret, requestSetPtr, amtExpected, hardSet=false){
-    if (ret == null) return;
+    if (ret == null){
+        mod.nonotes = true;
+        return;
+    }
     
     if(hardSet) var build = {};
 
@@ -106,6 +112,7 @@ async function updateRecentNotesListener(){
 		var t = {};
         
         if(ret == null){
+            dashboard.nonotes = true;
             return;
         }
 		
@@ -165,7 +172,7 @@ async function updateAllNotesListener(ptr, amt){
 async function setJournalSelectors(){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid);
     
-    var journalSelection = [];
+    journalSelection = [];
     
     var defaultJournalKey = await ref.child("data/defaultJournal").once("value", (snapshot)=>{
         return 0;
@@ -193,13 +200,15 @@ async function setJournalSelectors(){
         return 0;
     });
     
-    for(let [key, val] of Object.entries(allJournals.val())){
-        if(key === defaultJournalKey.val()) continue;
-        
-        journalSelection.push({
-            name: await decrypt(val.name),
-            id: key
-        });
+    if(allJournals.val() != null){
+        for(let [key, val] of Object.entries(allJournals.val())){
+            if(key === defaultJournalKey.val()) continue;
+
+            journalSelection.push({
+                name: await decrypt(val.name),
+                id: key
+            });
+        }
     }
     
     dashboard.newNoteData.journalSelection = journalSelection;
@@ -215,9 +224,11 @@ async function setLastJournalID(){
         return 0;
     });
     
-    var lastID = Object.keys(lastIDSnapshot.val())[0];
-    
-    journalsView.lastID = lastID;
+    if(lastIDSnapshot.val() == null){
+        journalsView.lastID = "";
+    } else {
+        journalsView = Object.keys(lastIDSnapshot.val())[0];
+    }
 }
 
 
@@ -228,9 +239,11 @@ async function setLastNoteID(){
         return 0;
     });
     
-    var lastID = Object.keys(lastIDSnapshot.val())[0];
-    
-    notesView.lastID = lastID;
+    if(lastIDSnapshot.val() == null){
+        notesView.lastID = "";
+    } else {
+        notesView.lastID = Object.keys(lastIDSnapshot.val())[0];
+    }
 }
 
 async function setLastNoteIDInJournal(journalID){
@@ -319,6 +332,7 @@ async function newJournal(name, isDefault){
 async function newNote(name, journalID){
     var encName = await encrypt(name);
     var fillerText = await encrypt("");
+    
     var pushedObject = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').push({
         title:encName,
         text:fillerText
@@ -341,6 +355,18 @@ async function updateNote(data, noteID){
 	data["text"] = await encrypt(data["text"]);
 	data["title"] = await encrypt(data["title"]);
 	await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+noteID).set(data);
+}
+
+async function getSalt(){
+    var salt = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/userdata/salt').once("value", function(){
+        return 0;
+    });
+    
+    return salt.val();
+}
+
+async function setSalt(salt){
+    await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/userdata/salt').set(salt);
 }
 
 

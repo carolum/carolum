@@ -52,7 +52,8 @@ var editJournal= new Vue({
         lastID:"",
         showNewNoteModal: false,
         error: "",
-        newNoteName:""
+        newNoteName:"",
+        nonotesinjournal: false;
 	},
     computed:{
         display: function(){ return get("t") === "journal"}
@@ -60,6 +61,8 @@ var editJournal= new Vue({
 	methods: {
 		createNote: async function(){
 			var nameAndID = await newNote(this.newNoteName, this.id_);
+            
+            this.nonotes = true;
             
             window.location.href = "/edit/?t=note&id="+nameAndID[1];
 		},

@@ -35,6 +35,8 @@
                     :noteid="noteid"
                     :note="note">
                 </note-detailed>
+                
+                <p v-if="nonotes">Nothing here yet...</p>
             </div>
         </div>
         
@@ -48,6 +50,7 @@
                     :details="details"
                     :journalname="journalname">
                 </journal-detailed>
+                <p v-if="nojournals">Nothing here yet...</p>
             </div>
         </div>
     </div>

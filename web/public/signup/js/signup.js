@@ -4,7 +4,8 @@ var signup = new Vue({
 		e: "",
 		p:"",
 		p2:"",
-		nomatch: false
+		nomatch: false,
+        salt:generateSalt(32)
 	},
 	methods:{
 		validate: function() {
@@ -41,17 +42,19 @@ var signup = new Vue({
 						$("#error").text(error);
 					});
 				
-				hash(this.p, "hashsaltthing")
-					.then((h) => {
-						encryptSaveRSA(h.hashHex);
-					});
-				}
+				hash_argon2(this.p, this.salt)
+                .then((h) => {
+                    encryptSaveRSA(h.hashHex);
+                });
+            }
 		}
 	}
 });
 
-firebase.auth().onAuthStateChanged(function(u){
+firebase.auth().onAuthStateChanged(async function(u){
 	if(u){
-		window.location.href = '/';
+        await setSalt(signup.salt);
+		
+        window.location.href = '/';
 	}
 });

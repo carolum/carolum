@@ -16,7 +16,15 @@ On decrypt(ct):
 */
 //import { openDB, deleteDB, wrap, unwrap } from 'https://unpkg.com/idb?module';
 
-function hash(p, s){
+
+function generateSalt(l){
+    var ret = new Uint32Array(l);
+    window.crypto.getRandomValues(ret);
+    
+    return String.fromCharCode.apply(null, ret);
+}
+
+async function hash_argon2(p, s){
 	return argon2.hash({
 		pass:p,
 		salt:s,
@@ -64,7 +72,7 @@ async function encryptSaveRSA(data) {
     
 	var encrypted = await encryptRSA(data, keys);
     
-    saveRSAKeys(keys, encrypted);
+    await saveRSAKeys(keys, encrypted);
 }
 
 

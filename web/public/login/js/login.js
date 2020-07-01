@@ -13,17 +13,18 @@ var login = new Vue({
 				function(error){
 					$("#error").text("No matching account found");
 				});
-			
-			hash(this.p, "hashsaltthing")
-			.then((h) => {
-				encryptSaveRSA(h.hashHex);
-			});
 		}
 	}
 });
 
-firebase.auth().onAuthStateChanged(function(u){
+firebase.auth().onAuthStateChanged(async function(u){
 	if(u){
+        var salt = await getSalt();
+        
+        var h = await hash_argon2(login.p, salt);
+        
+        await encryptSaveRSA(h.hashHex);
+        
 		window.location.href = '/';
 	}
 });
