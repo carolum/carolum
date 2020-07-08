@@ -1,6 +1,9 @@
 async function setJournals(mod, ret, requestSetPtr, amtExpected, hardSet=false){
     if (ret == null){
         mod.nojournals = true;
+		mod.journals = {}
+		mod.$forceUpdate();
+		
         return;
     }
     
@@ -78,9 +81,7 @@ async function setNotesFromJournal(mod, ret, requestSetPtr, amtExpected){
 
     for([key, val] of Object.entries(ret.ids).reverse()){
         
-        noteObject = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+key).once("value", (snapshot)=>{
-           return 0; 
-        });
+        noteObject = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+key).once("value", ()=>{});
         
         noteData = noteObject.val();
         
@@ -110,11 +111,14 @@ async function updateRecentNotesListener(){
 	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').orderByKey().limitToLast(5).on("value", async (snapshot)=>{
 		var ret = snapshot.val();
 		var t = {};
-        
-        if(ret == null){
-            dashboard.nonotes = true;
-            return;
-        }
+		
+		if(ret == null){
+			dashboard.nonotes = true;
+			dashboard.notes = {};
+			dashboard.$forceUpdate();
+			
+			return;
+		}
 		
 		for(let [key, val] of Object.entries(ret).reverse()){
 			var decText = await decrypt(val.text);
@@ -172,33 +176,27 @@ async function updateAllNotesListener(ptr, amt){
 async function setJournalSelectors(){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid);
     
-    journalSelection = [];
+    var journalSelection = [];
     
-    var defaultJournalKey = await ref.child("data/defaultJournal").once("value", (snapshot)=>{
-        return 0;
-    });
+    var defaultJournalKey = await ref.child("data/defaultJournal").once("value", ()=>{});
     
     if(defaultJournalKey.val() != null){
-        var defaultJournal = await ref.child("journals/"+defaultJournalKey.val()).once("value", (snapshot)=>{
-            return 0;
-        });
+        var defaultJournal = await ref.child("journals/"+defaultJournalKey.val()).once("value", ()=>{});
         
-        if(defaultJournalKey.val().name != null){
+        if(defaultJournal.val().name != null){
             journalSelection.push({
                 name: await decrypt(defaultJournal.val().name),
                 id: defaultJournalKey.val()
             });
         }
-    }    
-        
+    }
+    
     journalSelection.push({
         name: "No Journal",
-        id: "none"
+        id: ""
     });
-        
-    var allJournals = await ref.child("journals").once("value", (snapshot)=>{
-        return 0;
-    });
+	
+	var allJournals = await ref.child("journals").once("value", ()=>{});
     
     if(allJournals.val() != null){
         for(let [key, val] of Object.entries(allJournals.val())){
@@ -220,9 +218,7 @@ async function setJournalSelectors(){
 async function setLastJournalID(){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals');
     
-    var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value", (snapshot)=>{
-        return 0;
-    });
+    var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value", ()=>{});
     
     if(lastIDSnapshot.val() == null){
         journalsView.lastID = "";
@@ -235,9 +231,7 @@ async function setLastJournalID(){
 async function setLastNoteID(){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes');
     
-    var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value", (snapshot)=>{
-        return 0;
-    });
+    var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value", ()=>{});
     
     if(lastIDSnapshot.val() == null){
         notesView.lastID = "";
@@ -249,9 +243,7 @@ async function setLastNoteID(){
 async function setLastNoteIDInJournal(journalID){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID+'/ids');
     
-    var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value", (snapshot)=>{
-        return 0;
-    });
+    var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value", ()=>{});
     
     if(lastIDSnapshot.val() == null){
         editJournal.error = "There doesn't seem to be anything here...";
@@ -273,8 +265,29 @@ async function setDefaultJournalID(ID){
 
 
 
-function deleteEntry(type, entryID){
-    firebase.database().ref("/users/"+firebase.auth().currentUser.uid+"/"+type+"/"+entryID).remove();
+async function deleteNote(noteID){
+    var ref = firebase.database().ref("/users/"+firebase.auth().currentUser.uid+"/notes/"+noteID);
+    
+    var noteData = await ref.once("value", ()=>{});
+    
+    var journalID = await decrypt(noteData.val().journal);
+    
+    if(!(journalID == ""|| journalID == null)){
+        deleteFromJournal(journalID, noteID);
+    }
+    
+    ref.remove();
+}
+
+
+async function deleteFromJournal(journalID, noteID){
+    var ref = firebase.database().ref("/users/"+firebase.auth().currentUser.uid+"/journals/"+journalID+"/ids/"+noteID);
+    
+    ref.remove();
+}
+
+async function deleteJournal(journalID){
+    firebase.database().ref("/users/"+firebase.auth().currentUser.uid+"/journals/"+journalID).remove();
 }
 
 
@@ -332,13 +345,15 @@ async function newJournal(name, isDefault){
 async function newNote(name, journalID){
     var encName = await encrypt(name);
     var fillerText = await encrypt("");
+	var encryptedjournalID = await encrypt(journalID);
     
     var pushedObject = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').push({
         title:encName,
-        text:fillerText
+        text:fillerText,
+		journal:encryptedjournalID
     });
     
-    if(journalID != "none"){
+    if(journalID != ""){
         await addNoteToJournal(pushedObject.key, name, journalID);
     }
     
@@ -358,9 +373,7 @@ async function updateNote(data, noteID){
 }
 
 async function getSalt(){
-    var salt = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/userdata/salt').once("value", function(){
-        return 0;
-    });
+    var salt = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/userdata/salt').once("value", ()=>{});
     
     return salt.val();
 }

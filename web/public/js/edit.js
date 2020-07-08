@@ -4,6 +4,7 @@ var editNote = new Vue({
 		content: {
 			title:"",
 			text:"",
+            textPlaceholder:"Today...",
 			id_:get("id")
 		},
         autoSaveTimeoutID:"",
@@ -35,6 +36,9 @@ var editNote = new Vue({
             if(!this.showLoader) this.toggleLoader();
             
             this.autoSaveTimeoutID = setTimeout(this.update, 1000);
+        },
+        back: function(){
+            window.history.back();
         }
 	}
 });

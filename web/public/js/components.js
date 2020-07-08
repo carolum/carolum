@@ -59,7 +59,7 @@ Vue.component("note-overview", {
             return this.noteid;
         }
 	},
-	template: '<li class="mv2 pv1 f4 note-overview"><a :href="noteurl()" :id="getID()">{{ note.title }}</a></li>'
+	template: '<li class="mv2 pv1 f4 note-overview" :id="getID()"><a :href="noteurl()">{{ note.title }}</a><i class="fr f4 ph2 fas fa-trash pointer" onclick="deleteNote(this.parentNode.id)"></i></li>'
 });
 
 
