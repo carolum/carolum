@@ -42,12 +42,17 @@ async function setJournals(mod, ret, requestSetPtr, amtExpected, hardSet=false){
 async function setNotes(mod, ret, requestSetPtr, amtExpected, hardSet=false){
     if (ret == null){
         mod.nonotes = true;
+        mod.notes = {};
+        mod.$forceUpdate();
+        
         return;
     }
     
     if(hardSet) var build = {};
-
-    for(let [key, val] of Object.entries(ret).reverse()){
+    
+    let key, val;
+    
+    for([key, val] of Object.entries(ret).reverse()){
         var title = await decrypt(val.title);
         
         var text = await decrypt(val.text);
@@ -138,7 +143,7 @@ async function updateAllJournalsListener(ptr, amt){
     
     if(ptr == ""){
         ref.limitToLast(amt).once("value", async (snapshot)=>{
-            await setJournals(journalsView, snapshot.val(), true, amt);
+            await setJournals(journalsView, snapshot.val(), true, amt, true);
         });
         
     } else {
@@ -147,7 +152,7 @@ async function updateAllJournalsListener(ptr, amt){
             
             delete ret[ptr]
             
-            await setJournals(journalsView, ret, true, amt);
+            await setJournals(journalsView, ret, true, amt, true);
         });
     }
 }
@@ -157,12 +162,12 @@ async function updateAllNotesListener(ptr, amt){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').orderByKey();
     
     if(ptr == ""){
-        ref.limitToLast(amt).once("value", async (snapshot)=>{
+        ref.limitToLast(amt).on("value", async (snapshot)=>{
             await setNotes(notesView, snapshot.val(), true, amt);
         });
         
     } else {
-        ref.endAt(ptr).limitToLast(amt+1).once("value", async (snapshot)=>{
+        ref.endAt(ptr).limitToLast(amt+1).on("value", async (snapshot)=>{
             var ret = snapshot.val();
             
             delete ret[ptr]

@@ -30,7 +30,7 @@ Vue.component("note-detailed", {
             return t.split(" ").slice(0, 50).join(" ") + (t.split(" ").length > 50 ? "..." : "");
         }
 	},
-	template: '<li class="mv2 pv1 list pl0 note-detailed" style="width: 45%; margin-right: auto;"><a :href="noteurl()" :id="getID()"><div class="outline ph3 mt0 pv3"><p class="f4 bb w-100 ma0 pb1">{{ note.title }}</p><p class="mh0 mb0 mt2 note-detailed-text">{{ processText(note.text) }}</p></div></a></li>'
+	template: '<li class="mv2 pv1 list pl0 note-detailed" style="width: 45%; margin-right: auto;"><div class="outline ph3 mt0 pv3"><p class="f4 bb w-100 ma0 pb1" :id="getID()"><a :href="noteurl()">{{ note.title }}</a><i class="fr f5 ph2 mt1 fas fa-trash pointer" onclick="deleteNote(this.parentNode.id)"></i></p><a :href="noteurl()"><p class="mh0 mb0 mt2 note-detailed-text">{{ processText(note.text) }}</p></a></div></li>'
 });
 
 Vue.component("journal-overview", {
