@@ -46,7 +46,7 @@ Vue.component("journal-overview", {
             return this.details[0];
         }
 	},
-	template: '<div class="journal-overview outline pv2 ph2 mt2 mb2 mr3 mw5" :id="getID()"><span class="f4"><a :href="journalurl()">{{ journalname }}</a></span><hr /><ul class="mt2 list pl0"><li class="pt2 f5" v-for="note in details[1]"><a :href="noteurl(note.id_)">{{ note.title }}</a></li></ul></div>'
+	template: '<div class="journal-overview outline pv2 ph2 mt2 mb2 mr3 mw5" :id="getID()"><span class="f4"><a :href="journalurl()">{{ journalname }}</a><i class="fr f5 mt1 ph2 fas fa-trash pointer" onclick="deleteJournal(this.parentNode.parentNode.id)"></span><hr /><ul class="mt2 list pl0"><li class="pt2 f5" v-for="note in details[1]"><a :href="noteurl(note.id_)">{{ note.title }}</a></li></ul></div>'
 });
 
 Vue.component("note-overview", {

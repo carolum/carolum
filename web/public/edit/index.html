@@ -78,12 +78,11 @@
             <hr />
             
             <div class="flex flex-wrap flex-between mb5">
-                <p class="pv2 ph2 mt3 mb3 mid-gray f3" v-if="error != ''">{{ error }}</p>
                 <note-detailed v-for="(note, noteid) in notes"
                     :noteid="noteid"
                     :note="note">
                 </note-detailed>
-                <p v-if="nonotesinjournal">Nothing here yet...</p>
+                <p v-if="nonotes">Nothing here yet...</p>
             </div>
             
             <div v-if="hasMore" class="w-100 tc pa2 pointer" id="load-more">

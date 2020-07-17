@@ -75,7 +75,13 @@ async function setNotes(mod, ret, requestSetPtr, amtExpected, hardSet=false){
 async function setNotesFromJournal(mod, ret, requestSetPtr, amtExpected){    
     mod.title = await decrypt(ret.name);
 
-    if(ret.ids == null) return;
+    if(ret.ids == null){
+        mod.nonotes = true;
+        mod.notes = {}
+        mod.$forceUpdate();
+        
+        return;
+    };
     
     var title = "",
         text = "",
@@ -86,7 +92,7 @@ async function setNotesFromJournal(mod, ret, requestSetPtr, amtExpected){
 
     for([key, val] of Object.entries(ret.ids).reverse()){
         
-        noteObject = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+key).once("value", ()=>{});
+        noteObject = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+key).once("value");
         
         noteData = noteObject.val();
         
@@ -183,10 +189,10 @@ async function setJournalSelectors(){
     
     var journalSelection = [];
     
-    var defaultJournalKey = await ref.child("data/defaultJournal").once("value", ()=>{});
+    var defaultJournalKey = await ref.child("data/defaultJournal").once("value");
     
     if(defaultJournalKey.val() != null){
-        var defaultJournal = await ref.child("journals/"+defaultJournalKey.val()).once("value", ()=>{});
+        var defaultJournal = await ref.child("journals/"+defaultJournalKey.val()).once("value");
         
         if(defaultJournal.val().name != null){
             journalSelection.push({
@@ -201,7 +207,7 @@ async function setJournalSelectors(){
         id: ""
     });
 	
-	var allJournals = await ref.child("journals").once("value", ()=>{});
+	var allJournals = await ref.child("journals").once("value");
     
     if(allJournals.val() != null){
         for(let [key, val] of Object.entries(allJournals.val())){
@@ -223,7 +229,7 @@ async function setJournalSelectors(){
 async function setLastJournalID(){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals');
     
-    var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value", ()=>{});
+    var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value");
     
     if(lastIDSnapshot.val() == null){
         journalsView.lastID = "";
@@ -236,7 +242,7 @@ async function setLastJournalID(){
 async function setLastNoteID(){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes');
     
-    var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value", ()=>{});
+    var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value");
     
     if(lastIDSnapshot.val() == null){
         notesView.lastID = "";
@@ -248,12 +254,9 @@ async function setLastNoteID(){
 async function setLastNoteIDInJournal(journalID){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID+'/ids');
     
-    var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value", ()=>{});
+    var lastIDSnapshot = await ref.orderByKey().limitToFirst(1).once("value");
     
-    if(lastIDSnapshot.val() == null){
-        editJournal.error = "There doesn't seem to be anything here...";
-        return;
-    }
+    if(lastIDSnapshot.val() == null) return;
     
     var lastID = Object.keys(lastIDSnapshot.val())[0]
     
@@ -273,7 +276,7 @@ async function setDefaultJournalID(ID){
 async function deleteNote(noteID){
     var ref = firebase.database().ref("/users/"+firebase.auth().currentUser.uid+"/notes/"+noteID);
     
-    var noteData = await ref.once("value", ()=>{});
+    var noteData = await ref.once("value");
     
     var journalID = await decrypt(noteData.val().journal);
     
@@ -292,7 +295,23 @@ async function deleteFromJournal(journalID, noteID){
 }
 
 async function deleteJournal(journalID){
-    firebase.database().ref("/users/"+firebase.auth().currentUser.uid+"/journals/"+journalID).remove();
+    var ref = firebase.database().ref("/users/"+firebase.auth().currentUser.uid+"/journals/"+journalID);
+    
+    var noteChildrenObj = await ref.child("ids").once("value");
+    
+    var noteChildrenIDs = noteChildrenObj.val();
+    
+    for(var noteID in noteChildrenIDs){
+        var childRef = firebase.database().ref("/users/"+firebase.auth().currentUser.uid+"/notes/"+noteID).child("journal");
+        
+        var noJournal = await encrypt("");
+        
+        await childRef.set(noJournal);
+    };
+    
+    ref.remove();
+    
+    await setDefaultJournalID("");
 }
 
 
@@ -312,16 +331,16 @@ function loadJournalToEdit(journalID, ptr, amt){
     var ref = ptr == "" ? parentRef.limitToLast(amt) : parentRef.limitToLast(amt+1)
     
     if (ptr == ""){
-        firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID).once("value", async (snapshot)=>{
+        firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID).on("value", async (snapshot)=>{
            await setNotesFromJournal(editJournal, snapshot.val(), true, 5);
         });
         
     } else {
-        firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID).once("value", async (snapshot)=>{
+        firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID).on("value", async (snapshot)=>{
             var ret = snapshot.val();
 
-            delete ret[ptr]
-
+            delete ret[ptr];
+            
             await setNotesFromJournal(journalsView, ret, true, amt);
         });
     }
@@ -343,7 +362,7 @@ async function newJournal(name, isDefault){
 	});
     
     if(isDefault){
-        setDefaultJournalID(pushedObject.key);
+        await setDefaultJournalID(pushedObject.key);
     }
 }
 
@@ -378,7 +397,7 @@ async function updateNote(data, noteID){
 }
 
 async function getSalt(){
-    var salt = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/userdata/salt').once("value", ()=>{});
+    var salt = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/userdata/salt').once("value");
     
     return salt.val();
 }
