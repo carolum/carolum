@@ -7,6 +7,9 @@ function get(name){
 Vue.component("journal-detailed", {
 	props: ["journalname", "details"],
 	methods: {
+		getID: function(){
+			return this.details[0];
+		},
 		noteurl: function(id){
 			return "/edit/?t=note&id="+id;
 		},
@@ -14,7 +17,7 @@ Vue.component("journal-detailed", {
             return "/edit/?t=journal&id="+this.details[0];
         }
 	},
-	template: '<li class="journal-detailed list pl0 outline pv2 ph2 mt3 mb3" style="margin-right: auto;"><span class="f3"><a :href="journalurl()">{{ journalname }}</a></span><hr /><ul class="mt2 list pl0"><li class="pt2 f5" v-for="note in details[1]"><a :href="noteurl(note.id_)">{{ note.title }}</a></li></ul></li>'
+	template: '<li class="journal-detailed list pl0 outline pv2 ph2 mt3 mb3" style="margin-right: auto;" :id="getID()"><span class="f3"><a :href="journalurl()">{{ journalname }}</a><i class="fr f5 ph2 mt1 fas fa-trash pointer" onclick="deleteJournal(this.parentNode.parentNode.id)"></span><hr /><ul class="mt2 list pl0"><li class="pt2 f5" v-for="note in details[1]"><a :href="noteurl(note.id_)">{{ note.title }}</a></li></ul></li>'
 });
 
 Vue.component("note-detailed", {

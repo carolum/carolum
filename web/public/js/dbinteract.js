@@ -148,12 +148,12 @@ async function updateAllJournalsListener(ptr, amt){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals').orderByKey();
     
     if(ptr == ""){
-        ref.limitToLast(amt).once("value", async (snapshot)=>{
+        ref.limitToLast(amt).on("value", async (snapshot)=>{
             await setJournals(journalsView, snapshot.val(), true, amt, true);
         });
         
     } else {
-        ref.endAt(ptr).limitToLast(amt+1).once("value", async (snapshot)=>{
+        ref.endAt(ptr).limitToLast(amt+1).on("value", async (snapshot)=>{
             var ret = snapshot.val();
             
             delete ret[ptr]
@@ -186,18 +186,21 @@ async function updateAllNotesListener(ptr, amt){
 
 async function setJournalSelectors(){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid);
-    
+
     var journalSelection = [];
     
-    var defaultJournalKey = await ref.child("data/defaultJournal").once("value");
+    var defaultJournalObject = await ref.child("data/defaultJournal").once("value");
+
+    var defaultJournalKey = defaultJournalObject.val();
     
-    if(defaultJournalKey.val() != null){
-        var defaultJournal = await ref.child("journals/"+defaultJournalKey.val()).once("value");
+    if(defaultJournalKey != null || defaultJournalKey != ""){
+        defaultJournal = await ref.child("journals/"+defaultJournalKey).once("value");
+        defaultJournal = defaultJournal.val();
         
-        if(defaultJournal.val().name != null){
+        if(defaultJournal != null){
             journalSelection.push({
-                name: await decrypt(defaultJournal.val().name),
-                id: defaultJournalKey.val()
+                name: await decrypt(defaultJournal.name),
+                id: defaultJournalKey
             });
         }
     }
@@ -211,7 +214,7 @@ async function setJournalSelectors(){
     
     if(allJournals.val() != null){
         for(let [key, val] of Object.entries(allJournals.val())){
-            if(key === defaultJournalKey.val()) continue;
+            if(key === defaultJournalKey) continue;
 
             journalSelection.push({
                 name: await decrypt(val.name),
@@ -234,7 +237,7 @@ async function setLastJournalID(){
     if(lastIDSnapshot.val() == null){
         journalsView.lastID = "";
     } else {
-        journalsView = Object.keys(lastIDSnapshot.val())[0];
+        journalsView.lastID = Object.keys(lastIDSnapshot.val())[0];
     }
 }
 

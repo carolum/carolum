@@ -61,8 +61,8 @@ var dashboard = new Vue({
 		display: function() { return nav.tabs === 'dash'; }
 	},
     methods: {
-        createJournal: function(){
-            newJournal(this.newJournalData.newJournalName, this.newJournalData.newJournalDefault);
+        createJournal: async function(){
+            await newJournal(this.newJournalData.newJournalName, this.newJournalData.newJournalDefault);
             
             this.nojournals = false;
             
