@@ -36,9 +36,6 @@ var editNote = new Vue({
             if(!this.showLoader) this.toggleLoader();
             
             this.autoSaveTimeoutID = setTimeout(this.update, 1000);
-        },
-        back: function(){
-            window.history.back();
         }
 	}
 });

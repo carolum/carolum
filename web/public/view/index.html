@@ -24,7 +24,7 @@
 </head>
 
 <body class="georgia vh-100">
-    <div class="content ph2 pt4 pb3 mid-gray center" style="height: 80vh;">
+    <div class="content pr2 pt4 pb3 mid-gray center">
         <div id="notes" class="h-100 w-100" v-if="display">
             <span class="b ora f3">Notes</span>
             
@@ -53,6 +53,11 @@
                 <p v-if="nojournals">Nothing here yet...</p>
             </div>
         </div>
+    </div>
+
+    <div class="back-arrow mid-gray" style="position: fixed; bottom: 0; left: 0; right: 0; height: 75px; background-color: white;">
+        <hr class="ma0" />
+        <i class="ml5-ns ml4 mt2-ns mt1 fas fa-long-arrow-alt-left f2-ns f1 pointer" onclick="window.history.back()"></i>
     </div>
     
     <script src="/js/firebase-app.js"></script>

@@ -45,7 +45,7 @@
 </head>
 <body class="georgia vh-100">
     <div class="content ph2 pt4 pb3 mid-gray center" style="height: 100vh;">
-        <div id="editNote" class="h-100" v-if="display" v-cloak>
+        <div id="editNote" class="h-100 relative" v-if="display" v-cloak>
             
             <input type="text" class="f2 f1-ns ph3 pt1 pb2 w-100" id="noteTitle" :placeholder="content.titlePlaceholder" @input="startAutoSave()" v-model="content.title">
             
@@ -54,9 +54,7 @@
                 <textarea class="w-100 f4 f3-ns ph3 h-100" id="noteText" :placeholder="content.textPlaceholder" @input="startAutoSave()" v-model="content.text">
                 </textarea>
             </div>
-            
-            <i class="fas fa-long-arrow-alt-left f2-ns f1 pointer" @click="back"></i>
-            
+
             <transition name="fade">
                 
                 <div id="save-loading" v-if="showLoader" class="loader">
@@ -69,7 +67,7 @@
             
         </div>
         
-        <div id="editJournal" class="h-100" v-if="display" v-cloak>
+        <div id="editJournal" class="h-100 relative" v-if="display" v-cloak>
             <span class="f3 ph2">
                 <input type="text" :value="title">
                 <i class="fas fa-plus ora fr pa2 pointer pt0" @click="showNewNoteModal = true"></i>
@@ -89,7 +87,7 @@
                 <span>⮟</span><br />
                 <span @click="loadmore()">Load more</span>
             </div>
-            
+
             <modal id="createNewNoteInJournal" v-if="showNewNoteModal" @close="showNewNoteModal = false">
                 <h3 slot="header" class="mb0">Create note</h3>
                 <div slot="body" class="pt0 mt0">
@@ -100,6 +98,11 @@
                     </button>
                 </div>
             </modal>
+        </div>
+
+        <div class="back-arrow mid-gray" style="position: fixed; bottom: 0; left: 0; right: 0; height: 75px; background-color: white;">
+            <hr class="ma0" />
+            <i class="ml5-ns ml4 mt2-ns mt1 fas fa-long-arrow-alt-left f2-ns f1 pointer" onclick="window.history.back()"></i>
         </div>
     </div>
     
