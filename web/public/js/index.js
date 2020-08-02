@@ -52,7 +52,7 @@ var dashboard = new Vue({
         },
         newJournalData:{
             newJournalName:"",
-            newJournalDefault:""
+            newJournalDefault: false
         },
         nojournals: false,
         nonotes: false
@@ -67,10 +67,14 @@ var dashboard = new Vue({
             this.nojournals = false;
             
             this.showJournalModal = false;
+
+            this.newJournalData.newJournalName = "";
             
-            setJournalSelectors();
+            this.newJournalData.newJournalDefault = false;
             
-            setTimeout(this.refreshJournalSelector, 250)
+            setJournalSelectors(this);
+            
+            setTimeout(this.refreshJournalSelector, 250);
         },
         createNote: async function(){
             var nameAndID = await newNote(this.newNoteData.newNoteName, this.newNoteData.journalID);
@@ -79,7 +83,7 @@ var dashboard = new Vue({
             
             this.showNoteModal = false;
             
-            //window.location.href = "/edit/?t=note&id="+nameAndID[1];
+            window.location.href = "/edit/?t=note&id="+nameAndID[1];
         },
         refreshJournalSelector: function(){
             $("#dash-journal-selector").select2({
@@ -121,7 +125,7 @@ firebase.auth().onAuthStateChanged(function(u){
         updateRecentNotesListener();
         updateRecentJournalsListener();
 
-        setJournalSelectors();
+        setJournalSelectors(dashboard);
 
         $(document).ready(function(){
             dashboard.refreshJournalSelector();

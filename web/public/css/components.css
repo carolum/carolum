@@ -38,3 +38,7 @@
         width: 45%;
     }
 }
+
+.overview-jurl:hover{
+    text-decoration: underline;
+}

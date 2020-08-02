@@ -133,10 +133,23 @@ async function updateRecentNotesListener(){
 		
 		for(let [key, val] of Object.entries(ret).reverse()){
 			var decText = await decrypt(val.text);
-			var decTitle = await decrypt(val.title);
+            var decTitle = await decrypt(val.title);
+            var decJournalId = await decrypt(val.journal);
+            var journalName = "";
+
+            if(decJournalId != null && decJournalId != ""){
+                var journalObj = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+decJournalId+"/name").once("value");
+                journalName = await decrypt(journalObj.val());
+            } else {
+                journalName = "No Journal";
+            }
+            
+
 			t[key]={
 				text: decText,
-				title: decTitle
+                title: decTitle,
+                journalId: decJournalId,
+                journalName: journalName
 			};
 		}
 		dashboard.notes=t;
@@ -184,7 +197,7 @@ async function updateAllNotesListener(ptr, amt){
 }
 
 
-async function setJournalSelectors(){
+async function setJournalSelectors(mod){
     var ref = firebase.database().ref('/users/'+firebase.auth().currentUser.uid);
 
     var journalSelection = [];
@@ -193,8 +206,8 @@ async function setJournalSelectors(){
 
     var defaultJournalKey = defaultJournalObject.val();
     
-    if(defaultJournalKey != null || defaultJournalKey != ""){
-        defaultJournal = await ref.child("journals/"+defaultJournalKey).once("value");
+    if(defaultJournalKey != null && defaultJournalKey != ""){
+        var defaultJournal = await ref.child("journals/"+defaultJournalKey).once("value");
         defaultJournal = defaultJournal.val();
         
         if(defaultJournal != null){
@@ -222,11 +235,12 @@ async function setJournalSelectors(){
             });
         }
     }
+    mod.newNoteData.journalSelection = journalSelection;
+    mod.newNoteData.journalID = journalSelection[0].id;
     
-    dashboard.newNoteData.journalSelection = journalSelection;
-    dashboard.newNoteData.journalID = journalSelection[0].id;
-    
-    dashboard.$forceUpdate();
+    mod.$forceUpdate();
+
+    setTimeout(mod.refreshJournalSelector, 250);
 }
 
 async function setLastJournalID(){

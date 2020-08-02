@@ -21,6 +21,33 @@
       integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
       crossorigin="anonymous">
     </script>
+
+    <script type="text/x-template" id="modal-template">
+        <transition name="modal">
+            <div class="modal-mask">
+                <div class="modal-wrapper" @click="$emit('close')">
+                    <div class="modal-container w-75 w-40-m w-30-l" @click.stop="">
+                        <div class="modal-header flex justify-between f3">
+                            <slot name="header">
+                                
+                            </slot>
+                            <i class="fas fa-times pointer" @click="$emit('close')" style="padding-top: 0.2rem"></i>
+                        </div>
+
+                        <div class="modal-body">
+                            <slot name="body">
+                            </slot>
+                        </div>
+
+                        <div class="modal-footer">
+                            <slot name="footer">
+                            </slot>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
+    </script>
 </head>
 
 <body class="georgia vh-100">
@@ -43,6 +70,7 @@
         
         <div id="journals" class="h-100 w-100" v-if="display">
             <span class="b ora f3">Journals</span>
+            <i class="fas fa-plus f3 ora fr pa2 pointer pt0" @click="showJournalModal = true; showNoteModal = false;"></i>
             <hr />
             
             <div class="flex flex-wrap flex-between mb5">
@@ -52,6 +80,23 @@
                 </journal-detailed>
                 <p v-if="nojournals">Nothing here yet...</p>
             </div>
+
+            <modal id="journalModal" v-show="showJournalModal" @close="showJournalModal = false">
+                <h3 slot="header" class="mb0">New journal</h3>
+                <div slot="body" class="pt0 mt0">
+                    <input type="text" class="w-100 pa2" id="newJournalName" placeholder="Journal Name" v-model="newJournalData.newJournalName"><br />
+                    
+                    <input class="mt3" type="checkbox" name="default-select" id="default-select" v-model="newJournalData.newJournalDefault">
+                    <label for="default-select">Set as default journal</label><br />
+                    
+                    <button class="mt4" @click="createJournal()">
+                        <p class="f4 mv2 ora">Create</p>
+                    </button>
+                    
+                    <br />
+                    <p id="error" class="red mt3"></p>
+                </div>
+            </modal>
         </div>
     </div>
 

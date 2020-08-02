@@ -33,7 +33,12 @@ var journalsView = new Vue({
         journalIDPointer:"",
         hasMore: true,
         lastID: "",
-        nojournals: false
+        nojournals: false,
+        showJournalModal: false,
+        newJournalData:{
+            newJournalName:"",
+            newJournalDefault: false
+        }
 	},
     computed:{
         display: function(){ return get("t") === "journal"}
@@ -41,6 +46,20 @@ var journalsView = new Vue({
     methods:{
         loadmore: function(){
             updateAllJournalsListener(this.journalIDPointer, 5);
+        },
+        createJournal: async function(){
+            await newJournal(this.newJournalData.newJournalName, this.newJournalData.newJournalDefault);
+            
+            this.nojournals = false;
+            
+            this.showJournalModal = false;
+
+            this.newJournalData.newJournalName = "";
+            
+            this.newJournalData.newJournalDefault = false;
+        },
+        refreshJournalSelector: function(){
+            return;
         }
     }
 });
