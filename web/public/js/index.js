@@ -1,7 +1,10 @@
+var loaded = false; // this keeps the weird race error from coming up when rendering
+
 var nav = new Vue({
-	el: "#nav",
+	el: "#footer",
 	data: {
-		tabs: ["new", "dash", "settings"].indexOf(location.hash.slice(1)) === -1 ? "new" : location.hash.slice(1)
+        tabs: ["new", "dash", "settings"].indexOf(location.hash.slice(1)) === -1 ? "new" : location.hash.slice(1),
+        display: false
 	},
 	methods: {
 		change: function(tab){
@@ -11,9 +14,12 @@ var nav = new Vue({
 });
 
 var newEntry = new Vue({
-	el: "#new",
+    el: "#new",
+    data: {
+        loaded: false
+    },
 	computed: {
-		display: function() { return nav.tabs === 'new'; },
+		display: function() { return nav.tabs === 'new';}
 	},
 	data: {
 		content: {
@@ -55,7 +61,8 @@ var dashboard = new Vue({
             newJournalDefault: false
         },
         nojournals: false,
-        nonotes: false
+        nonotes: false,
+        loaded: false
 	},
 	computed: {
 		display: function() { return nav.tabs === 'dash'; }
@@ -95,7 +102,10 @@ var dashboard = new Vue({
 });
 
 var settings = new Vue({
-	el: "#settings",
+    el: "#settings",
+    data: {
+        loaded: false
+    },
 	computed: {
 		display: function() { return nav.tabs === 'settings'; }
 	},
@@ -104,6 +114,13 @@ var settings = new Vue({
             await clearRSAKeys();
             firebase.auth().signOut();
         }
+    }
+});
+
+var content = new Vue({
+    el: "#content",
+    data: {
+        display: false
     }
 });
 
@@ -119,17 +136,28 @@ window.onhashchange = () => {
 	location.hash = nav.tabs;
 };
 
+async function ready(){
+    await updateRecentNotesListener();
+    await updateRecentJournalsListener();
+    await setJournalSelectors(dashboard);
+}
+
 firebase.auth().onAuthStateChanged(function(u){
     if(u){
-        // start listeners
-        updateRecentNotesListener();
-        updateRecentJournalsListener();
-
-        setJournalSelectors(dashboard);
-
-        $(document).ready(function(){
+        ready().then(()=>{
             dashboard.refreshJournalSelector();
-        });
+
+            spinner.display = false;
+            nav.display = true;
+
+            newEntry.loaded = true;
+            dashboard.loaded = true;
+            settings.loaded = true;
+
+            newEntry.$forceUpdate();
+            dashboard.$forceUpdate();
+            settings.$forceUpdate();
+        })
     } else {
         window.location.href = "/login";
     }

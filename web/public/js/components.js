@@ -62,7 +62,7 @@ Vue.component("note-overview", {
             return this.noteid;
 		},
 		journalurl: function(){
-			return "/edit/?t=journal&id="+this.note.journalId;
+			return this.note.journalId != "" ? "/edit/?t=journal&id="+this.note.journalId : "#dash";
 		}
 	},
 	template: '<li class="mv2 pv1 f4 note-overview" :id="getID()"><a :href="noteurl()">{{ note.title }}</a>&nbsp;&nbsp;--&nbsp;&nbsp;<a class="mid-gray overview-jurl" :href="journalurl()">{{ note.journalName }}</a><i class="fr f4 ph2 fas fa-trash pointer" onclick="deleteNote(this.parentNode.id)"></i></li>'

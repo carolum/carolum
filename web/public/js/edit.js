@@ -5,7 +5,8 @@ var editNote = new Vue({
 			title:"",
 			text:"",
             textPlaceholder:"Today...",
-			id_:get("id")
+            id_:get("id"),
+            journalId: ""
 		},
         autoSaveTimeoutID:"",
         showLoader: false,
@@ -16,7 +17,7 @@ var editNote = new Vue({
     },
 	methods: {
 		update: async function(){
-			await updateNote({title:this.content.title, text:this.content.text}, this.content.id_);
+			await updateNote({title:this.content.title, text:this.content.text, journal:this.content.journalId}, this.content.id_);
             
             this.toggleLoader();
             

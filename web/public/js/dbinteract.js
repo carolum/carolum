@@ -134,7 +134,7 @@ async function updateRecentNotesListener(){
 		for(let [key, val] of Object.entries(ret).reverse()){
 			var decText = await decrypt(val.text);
             var decTitle = await decrypt(val.title);
-            var decJournalId = await decrypt(val.journal);
+            var decJournalId = await decrypt(val.journal)
             var journalName = "";
 
             if(decJournalId != null && decJournalId != ""){
@@ -409,7 +409,8 @@ async function setNote(data){
 
 async function updateNote(data, noteID){
 	data["text"] = await encrypt(data["text"]);
-	data["title"] = await encrypt(data["title"]);
+    data["title"] = await encrypt(data["title"]);
+    data["journal"] = await encrypt(data["journal"]);
 	await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+noteID).set(data);
 }
 
