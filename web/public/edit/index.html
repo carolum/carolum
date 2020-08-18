@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/css/edit.css">
     <link rel="stylesheet" href="/css/modal.css">
     <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/spinner.css">
     
     <script type="text/x-template" id="modal-template">
         <transition name="modal">
@@ -45,7 +46,19 @@
 </head>
 <body class="georgia vh-100">
     <div class="content ph2 pt4 pb3 mid-gray center" style="height: 100vh;">
-        <div id="editNote" class="h-100 relative" v-if="display" v-cloak>
+
+        <div class="atom-spinner-parent center w-100 h-100" id="spinner" v-if="display">
+            <div class="atom-spinner absolute">
+                <div class="spinner-inner">
+                    <div class="spinner-line"></div>
+                    <div class="spinner-line"></div>
+                    <div class="spinner-line"></div>
+                    <div class="spinner-circle">&#9679;</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="editNote" class="h-100 relative" v-if="display && loaded" v-cloak>
             
             <input type="text" class="f2 f1-ns ph3 pt1 pb2 w-100" id="noteTitle" :placeholder="content.titlePlaceholder" @input="startAutoSave()" v-model="content.title">
             
@@ -55,19 +68,25 @@
                 </textarea>
             </div>
 
-            <transition name="fade">
+
+            <div class="back-arrow mid-gray" style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background-color: white; cursor:pointer"
+                onclick="window.history.back()">
+                <hr class="ma0" />
+                <i class="ml5-ns ml4 mt2-ns mt1 fas fa-long-arrow-alt-left f2-ns f1 pointer"></i>
                 
-                <div id="save-loading" v-if="showLoader" class="loader">
-                </div>
+                <transition name="fade">
                 
-                <div id="save-check" v-if="showCheck" class="fas fa-check green">
-                </div>
-                
-            </transition>
-            
+                    <div id="save-loading" v-if="showLoader" class="save loader fas absolute" style="top:1em; left: 8em">
+                    </div>
+                    
+                    <div id="save-check" v-if="showCheck" class="save fas fa-check green absolute" style="top: 0.5em; left: 4em">
+                    </div>
+                    
+                </transition>
+            </div>
         </div>
         
-        <div id="editJournal" class="h-100 relative" v-if="display" v-cloak>
+        <div id="editJournal" class="h-100 relative" v-if="display && loaded" v-cloak>
             <span class="f3 ph2">
                 <input type="text" :value="title">
                 <i class="fas fa-plus ora fr pa2 pointer pt0" @click="showNewNoteModal = true"></i>
@@ -98,11 +117,12 @@
                     </button>
                 </div>
             </modal>
-        </div>
 
-        <div class="back-arrow mid-gray" style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background-color: white;">
-            <hr class="ma0" />
-            <i class="ml5-ns ml4 mt2-ns mt1 fas fa-long-arrow-alt-left f2-ns f1 pointer" onclick="window.history.back()"></i>
+            <div class="back-arrow mid-gray" style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background-color: white; cursor:pointer"
+                onclick="window.history.back()">
+                <hr class="ma0" />
+                <i class="ml5-ns ml4 mt2-ns mt1 fas fa-long-arrow-alt-left f2-ns f1 pointer"></i>
+            </div>
         </div>
     </div>
     
@@ -124,6 +144,7 @@
         firebase.initializeApp(firebaseConfig);
     </script>
     
+    <script src="/js/spinner.js"></script>
     <script src="/js/secure.js"></script>
     <script src="/js/dbinteract.js"></script>
     <script src="/js/components.js"></script>

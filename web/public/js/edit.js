@@ -1,6 +1,10 @@
+var loaded = false;
+
+
 var editNote = new Vue({
 	el: "#editNote",
 	data: {
+        loaded: false,
 		content: {
 			title:"",
 			text:"",
@@ -46,6 +50,7 @@ var editNote = new Vue({
 var editJournal= new Vue({
 	el: "#editJournal",
 	data: {
+        loaded: false,
         title: "",
         id_: get("id"),
         notes:{},
@@ -73,15 +78,28 @@ var editJournal= new Vue({
 	}
 });
 
+
+async function ready(){
+    if(get("t") === "note"){
+        await loadNoteToEdit(editNote.content.id_);
+    }
+    else if(get("t") === "journal"){
+        await setLastNoteIDInJournal(get("id")).then();
+        await loadJournalToEdit(editJournal.id_, "", 5);
+    }
+}
+
 firebase.auth().onAuthStateChanged(function(u){
 	if(u){
-        if(get("t") === "note"){
-            loadNoteToEdit(editNote.content.id_);
-        }
-        else if(get("t") === "journal"){
-            setLastNoteIDInJournal(get("id"));
-            loadJournalToEdit(editJournal.id_, "", 5);
-        }
+        ready().then(()=>{
+           spinner.display = false;
+           
+           editNote.loaded = true;
+           editJournal.loaded = true;
+
+           editNote.$forceUpdate();
+           editJournal.$forceUpdate();
+        });
 	} else {
 		window.location.href = "/login";
 	}

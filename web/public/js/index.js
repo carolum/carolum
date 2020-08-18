@@ -38,8 +38,9 @@ var newEntry = new Vue({
 		},
 		update: async function(){
             if(this.getData().text === "") return;
-			var id = await setNote(this.getData());
-			window.location.href = "/edit/?t=note&id="+id;
+
+            var nameAndID = await newNoteWithData(this.getData().title, dashboard.defaultJournalId, this.getData().text);
+            window.location.href = "/edit/?t=note&id="+nameAndID[1];
 		}
 	}
 });
@@ -62,7 +63,8 @@ var dashboard = new Vue({
         },
         nojournals: false,
         nonotes: false,
-        loaded: false
+        loaded: false,
+        defaultJournalId: ""
 	},
 	computed: {
 		display: function() { return nav.tabs === 'dash'; }

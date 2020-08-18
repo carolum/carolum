@@ -76,7 +76,7 @@
             </div>
         </div>    
 
-        <div id="new" v-show="display && loaded" class="h-100 w-100">
+        <div id="new" v-show="display && loaded" class="h-100 w-100" v-cloak>
             <div class="h-100 w-100">
                 <input type="text" class="f2 f1-ns ph3 pt1 pb2 w-100" :placeholder="content.titlePlaceholder" v-model="content.title">
 
@@ -91,7 +91,7 @@
             </div>
         </div>
         
-        <div id="dash" v-show="display && loaded">            
+        <div id="dash" v-show="display && loaded" v-cloak>            
             <div class="w-100 f3">
                 <a href="/view/?t=journal" class="no-underline b ora">Recent Journals</a>
                 <i class="fas fa-plus ora fr pa2 pointer pt0" @click="showJournalModal = true; showNoteModal = false;"></i>
@@ -163,14 +163,14 @@
         
         <div id="push" class="push" v-show="display"></div>
         
-        <div id="settings" v-show="display && loaded">
+        <div id="settings" v-show="display && loaded" v-cloak>
             <div class="outline red pv2 ph3 pointer" @click="logout()">
                 <span class="f2">Logout</span><i class="fas fa-sign-out-alt fa-2x fr mt1"></i>
             </div>
         </div>
     </div>
 
-    <article class="footer ph2 fixed left-0 bottom-0 right-0 mid-gray f4" id="footer" v-if="display">
+    <article class="footer ph2 fixed left-0 bottom-0 right-0 mid-gray f4" id="footer" v-if="display" v-cloak>
         <div class="flex justify-center f5" id="nav">
             <span class="bl tc w-30 pt3 pb2 bt bb dim":class="{'oraborder': tabs === 'new'}" @click="nav.change('new')">
             <i class="fas fa-sticky-note fa-2x" :class="{'ora': tabs === 'new'}"></i>

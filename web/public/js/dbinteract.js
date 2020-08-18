@@ -207,6 +207,7 @@ async function setJournalSelectors(mod){
     var defaultJournalKey = defaultJournalObject.val();
     
     if(defaultJournalKey != null && defaultJournalKey != ""){
+        mod.defaultJournalId = defaultJournalKey;
         var defaultJournal = await ref.child("journals/"+defaultJournalKey).once("value");
         defaultJournal = defaultJournal.val();
         
@@ -332,8 +333,8 @@ async function deleteJournal(journalID){
 }
 
 
-function loadNoteToEdit(noteID){
-	firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+noteID).once("value", async (snapshot)=>{
+async function loadNoteToEdit(noteID){
+	await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes/'+noteID).once("value", async (snapshot)=>{
 		var ret = snapshot.val();
         
 		editNote.content.text = await decrypt(ret.text);
@@ -342,18 +343,18 @@ function loadNoteToEdit(noteID){
 }
 
 
-function loadJournalToEdit(journalID, ptr, amt){
+async function loadJournalToEdit(journalID, ptr, amt){
     var parentRef = firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID);
     
     var ref = ptr == "" ? parentRef.limitToLast(amt) : parentRef.limitToLast(amt+1)
     
     if (ptr == ""){
-        firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID).on("value", async (snapshot)=>{
+        await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID).on("value", async (snapshot)=>{
            await setNotesFromJournal(editJournal, snapshot.val(), true, 5);
         });
         
     } else {
-        firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID).on("value", async (snapshot)=>{
+        await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/journals/'+journalID).on("value", async (snapshot)=>{
             var ret = snapshot.val();
 
             delete ret[ptr];
@@ -386,6 +387,25 @@ async function newJournal(name, isDefault){
 async function newNote(name, journalID){
     var encName = await encrypt(name);
     var fillerText = await encrypt("");
+	var encryptedjournalID = await encrypt(journalID);
+    
+    var pushedObject = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').push({
+        title:encName,
+        text:fillerText,
+		journal:encryptedjournalID
+    });
+    
+    if(journalID != ""){
+        await addNoteToJournal(pushedObject.key, name, journalID);
+    }
+    
+    return [name, pushedObject.key];
+}
+
+
+async function newNoteWithData(name, journalID, data){
+    var encName = await encrypt(name);
+    var fillerText = await encrypt(data);
 	var encryptedjournalID = await encrypt(journalID);
     
     var pushedObject = await firebase.database().ref('/users/'+firebase.auth().currentUser.uid+'/notes').push({
