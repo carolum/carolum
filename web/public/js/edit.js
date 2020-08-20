@@ -92,13 +92,13 @@ async function ready(){
 firebase.auth().onAuthStateChanged(function(u){
 	if(u){
         ready().then(()=>{
-           spinner.display = false;
-           
-           editNote.loaded = true;
-           editJournal.loaded = true;
+            spinner.display = false;
+            
+            editNote.loaded = true;
+            editJournal.loaded = true;
 
-           editNote.$forceUpdate();
-           editJournal.$forceUpdate();
+            editNote.$forceUpdate();
+            editJournal.$forceUpdate();
         });
 	} else {
 		window.location.href = "/login";

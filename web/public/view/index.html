@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/css/view.css">
     <link rel="stylesheet" href="/css/modal.css">
     <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/spinner.css">
     
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -52,7 +53,18 @@
 
 <body class="georgia vh-100">
     <div class="content pr2 pt4 pb3 mid-gray center">
-        <div id="notes" class="h-100 w-100" v-if="display">
+        <div class="atom-spinner-parent center w-100 h-100" id="spinner" v-if="display">
+            <div class="atom-spinner absolute">
+                <div class="spinner-inner">
+                    <div class="spinner-line"></div>
+                    <div class="spinner-line"></div>
+                    <div class="spinner-line"></div>
+                    <div class="spinner-circle">&#9679;</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="notes" class="h-100 w-100" v-if="display && loaded" v-cloak>
             <span class="b ora f3">Notes</span>
             
             <hr />
@@ -65,10 +77,16 @@
                 
                 <p v-if="nonotes">Nothing here yet...</p>
             </div>
+
+            <div class="back-arrow mid-gray" style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background-color: white; cursor:pointer"
+                onclick="window.history.back()">
+                <hr class="ma0" />
+                <i class="ml5-ns ml4 mt2-ns mt1 fas fa-long-arrow-alt-left f2-ns f1 pointer"></i>
+            </div>
         </div>
         
         
-        <div id="journals" class="h-100 w-100" v-if="display">
+        <div id="journals" class="h-100 w-100" v-if="display && loaded" v-cloak>
             <span class="b ora f3">Journals</span>
             <i class="fas fa-plus f3 ora fr pa2 pointer pt0" @click="showJournalModal = true; showNoteModal = false;"></i>
             <hr />
@@ -97,13 +115,13 @@
                     <p id="error" class="red mt3"></p>
                 </div>
             </modal>
-        </div>
-    </div>
 
-    <div class="back-arrow mid-gray" style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background-color: white; cursor:pointer"
-        onclick="window.history.back()">
-        <hr class="ma0" />
-        <i class="ml5-ns ml4 mt2-ns mt1 fas fa-long-arrow-alt-left f2-ns f1 pointer"></i>
+            <div class="back-arrow mid-gray" style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background-color: white; cursor:pointer"
+                onclick="window.history.back()">
+                <hr class="ma0" />
+                <i class="ml5-ns ml4 mt2-ns mt1 fas fa-long-arrow-alt-left f2-ns f1 pointer"></i>
+            </div>
+        </div>
     </div>
     
     <script src="/js/firebase-app.js"></script>
@@ -127,6 +145,7 @@
     <script src="/js/secure.js"></script>
     <script src="/js/dbinteract.js"></script>
     <script src="/js/components.js"></script>
+    <script src="/js/spinner.js"></script>
     <script src="/js/view.js"></script>
 </body>
 </html>

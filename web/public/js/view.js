@@ -1,3 +1,5 @@
+var loaded = false;
+
 function setScrollListener(mod){
     $(window).scroll(function(){
        if($(window).scrollTop()+50 >= $(document).height() - $(window).height() && mod.hasMore){
@@ -10,6 +12,7 @@ function setScrollListener(mod){
 var notesView = new Vue({
 	el: "#notes",
 	data: {
+        loaded: false,
 		notes:{},
         noteIDPointer:"",
         hasMore: true,
@@ -29,6 +32,7 @@ var notesView = new Vue({
 var journalsView = new Vue({
 	el: "#journals",
 	data: {
+        loaded: false,
 		journals:{},
         journalIDPointer:"",
         hasMore: true,
@@ -64,21 +68,34 @@ var journalsView = new Vue({
     }
 });
 
+
+async function ready(){
+    if(get("t") === "note"){
+        await setLastNoteID();
+        await updateAllNotesListener("", 15);
+        
+        setScrollListener(notesView);
+        
+    } else if (get("t") === "journal"){
+        await setLastJournalID();
+        await updateAllJournalsListener("", 10);
+        
+        setScrollListener(journalsView);
+    }
+}
+
+
 firebase.auth().onAuthStateChanged(function(u){
 	if(u){
-        if(get("t") === "note"){
-            setLastNoteID();
-            updateAllNotesListener("", 15);
-            
-            setScrollListener(notesView);
-            
-        } else if (get("t") === "journal"){
-            setLastJournalID();
-            updateAllJournalsListener("", 10);
-            
-            setScrollListener(journalsView);
-            
-        }
+        ready().then(()=>{
+            spinner.display = false;
+
+            notesView.loaded = true;
+            journalsView.loaded = true;
+
+            notesView.$forceUpdate();
+            journalsView.$forceUpdate();
+        });
 	} else {
 		window.location.href = "/login";
 	}
