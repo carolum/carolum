@@ -1,6 +1,6 @@
 var spinner = new Vue({
-    el: "#spinner",
+    el: '#spinner',
     data: {
-        display: true
-    }
-});
+        display: true,
+    },
+})

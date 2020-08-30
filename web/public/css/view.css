@@ -1,21 +1,21 @@
-.ora{
-	color: #F88379;
+.ora {
+    color: #f88379;
 }
 
-.content{
+.content {
     width: 90%;
     height: 100vh;
 }
 
-#load-more{
-    background-image: linear-gradient(#F88379 0%, rgba(0,0,0,0) 50%);
+#load-more {
+    background-image: linear-gradient(#f88379 0%, rgba(0, 0, 0, 0) 50%);
 }
 
-a{
+a {
     text-decoration: none;
     color: black;
 }
 
-a:visited{
+a:visited {
     color: black;
 }

@@ -1,4 +1,5 @@
-.atom-spinner, .atom-spinner * {
+.atom-spinner,
+.atom-spinner * {
     box-sizing: border-box;
 }
 
@@ -20,7 +21,7 @@
 .atom-spinner .spinner-circle {
     display: block;
     position: absolute;
-    color: #F88379;
+    color: #f88379;
     font-size: calc(60px * 0.24);
     top: 50%;
     left: 50%;
@@ -35,7 +36,7 @@
     animation-duration: 1s;
     border-left-width: calc(60px / 25);
     border-top-width: calc(60px / 25);
-    border-left-color: #F88379;
+    border-left-color: #f88379;
     border-left-style: solid;
     border-top-style: solid;
     border-top-color: transparent;
