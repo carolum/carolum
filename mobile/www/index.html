@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>Carolum</title>
+
+        <link rel="shortcut icon" href="/ico/128.ico" type="image/x-icon" />
+
+        <script src="/dep/vue/vue.js"></script>
+        <script src="/dep/argon2-browser/lib/argon2.js"></script>
+        <script src="/dep/idb/index.js"></script>
+
+        <link rel="stylesheet" href="/dep/tachyons/tachyons.min.css" />
+
+        <link rel="stylesheet" href="/css/index.css" />
+        <link rel="stylesheet" href="/css/modal.css" />
+        <link rel="stylesheet" href="/css/components.css" />
+        <link rel="stylesheet" href="/css/spinner.css" />
+
+        <script
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+            crossorigin="anonymous"
+        ></script>
+
+        <script src="/js/secure.js"></script>
+        <script src="/js/dbinteract.js"></script>
+        <script src="/js/components.js"></script>
+
+        <link
+            href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css"
+            rel="stylesheet"
+        />
+
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+        <script type="text/x-template" id="modal-template">
+            <transition name="modal">
+                <div class="modal-mask">
+                    <div class="modal-wrapper" @click="$emit('close')">
+                        <div class="modal-container w-75 w-40-m w-30-l" @click.stop="">
+                            <div class="modal-header flex justify-between f3">
+                                <slot name="header">
+
+                                </slot>
+                                <i class="fas fa-times pointer" @click="$emit('close')" style="padding-top: 0.2rem"></i>
+                            </div>
+
+                            <div class="modal-body">
+                                <slot name="body">
+                                </slot>
+                            </div>
+
+                            <div class="modal-footer">
+                                <slot name="footer">
+                                </slot>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+        </script>
+    </head>
+    <body class="georgia vh-100">
+        <div class="content ph2 pt4 pb3 mid-gray center" style="height: 80vh">
+            <div
+                class="atom-spinner-parent center w-100 h-100"
+                id="spinner"
+                v-if="display"
+            >
+                <div class="atom-spinner absolute">
+                    <div class="spinner-inner">
+                        <div class="spinner-line"></div>
+                        <div class="spinner-line"></div>
+                        <div class="spinner-line"></div>
+                        <div class="spinner-circle">&#9679;</div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                id="new"
+                v-show="display && loaded"
+                class="h-100 w-100"
+                v-cloak
+            >
+                <div class="h-100 w-100">
+                    <input
+                        type="text"
+                        class="f2 f1-ns ph3 pt1 pb2 w-100"
+                        :placeholder="content.titlePlaceholder"
+                        v-model="content.title"
+                    />
+
+                    <div class="userinput pt2">
+                        <textarea
+                            class="w-100 f4 f3-ns ph3 h-100"
+                            :placeholder="content.textPlaceholder"
+                            v-model="content.text"
+                        >
+                        </textarea>
+                    </div>
+
+                    <div class="bottombar fr pa0 ma0">
+                        <i class="fas fa-save save-icon" @click="update()"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dash" v-show="display && loaded" v-cloak>
+                <div class="w-100 f3">
+                    <a href="/view/?t=journal" class="no-underline b ora"
+                        >Recent Journals</a
+                    >
+                    <i
+                        class="fas fa-plus ora fr pa2 pointer pt0"
+                        @click="showJournalModal = true; showNoteModal = false;"
+                    ></i>
+                    <hr />
+                </div>
+
+                <div class="flex flex-wrap">
+                    <journal-overview
+                        v-for="(details, journalname) in journals"
+                        :details="details"
+                        :journalname="journalname"
+                    >
+                    </journal-overview>
+
+                    <p v-if="nojournals">Nothing here yet...</p>
+                </div>
+
+                <br />
+
+                <div class="w-100 f3">
+                    <a href="/view/?t=note" class="no-underline b ora"
+                        >Recent Notes</a
+                    >
+                    <i
+                        class="fas fa-plus ora fr click pa2 pointer pt0"
+                        @click="showNoteModal = true; showJournalModal = false"
+                    ></i>
+                    <hr />
+                </div>
+
+                <ul class="list pl0">
+                    <note-overview
+                        v-for="(note, noteid) in notes"
+                        :noteid="noteid"
+                        :note="note"
+                    >
+                    </note-overview>
+
+                    <p v-if="nonotes">Nothing here yet...</p>
+                </ul>
+
+                <modal
+                    id="journalModal"
+                    v-show="showJournalModal"
+                    @close="showJournalModal = false"
+                >
+                    <h3 slot="header" class="mb0">New journal</h3>
+                    <div slot="body" class="pt0 mt0">
+                        <input
+                            type="text"
+                            class="w-100 pa2"
+                            id="newJournalName"
+                            placeholder="Journal Name"
+                            v-model="newJournalData.newJournalName"
+                        /><br />
+
+                        <input
+                            class="mt3"
+                            type="checkbox"
+                            name="default-select"
+                            id="default-select"
+                            v-model="newJournalData.newJournalDefault"
+                        />
+                        <label for="default-select"
+                            >Set as default journal</label
+                        ><br />
+
+                        <button class="mt4" @click="createJournal()">
+                            <p class="f4 mv2 ora">Create</p>
+                        </button>
+
+                        <br />
+                        <p id="error" class="red mt3"></p>
+                    </div>
+                </modal>
+
+                <modal
+                    id="noteModal"
+                    v-show="showNoteModal"
+                    @close="showNoteModal = false"
+                >
+                    <h3 slot="header" class="mb0">New note</h3>
+                    <div slot="body" class="pt0 mt0">
+                        <input
+                            type="text"
+                            class="w-100 pa2"
+                            id="newNoteName"
+                            placeholder="Note Name"
+                            v-model="newNoteData.newNoteName"
+                        /><br /><br />
+
+                        <select
+                            id="dash-journal-selector"
+                            style="width: 100%"
+                            onchange="dashboard.newNoteData.journalID=this.value"
+                        >
+                            <option
+                                v-for="journal in newNoteData.journalSelection"
+                                :value="journal.id"
+                            >
+                                {{ journal.name }}
+                            </option>
+                        </select>
+
+                        <br />
+
+                        <button class="mt4" @click="createNote()">
+                            <p class="f4 mv2 ora">Create</p>
+                        </button>
+                    </div>
+                </modal>
+            </div>
+
+            <div id="push" class="push" v-show="display"></div>
+
+            <div id="settings" v-show="display && loaded" v-cloak>
+                <div class="outline red pv2 ph3 pointer" @click="logout()">
+                    <span class="f2">Logout</span
+                    ><i class="fas fa-sign-out-alt fa-2x fr mt1"></i>
+                </div>
+            </div>
+        </div>
+
+        <article
+            class="footer ph2 fixed left-0 bottom-0 right-0 mid-gray f4"
+            id="footer"
+            v-if="display"
+            v-cloak
+        >
+            <div class="flex justify-center f5" id="nav">
+                <span
+                    class="bl tc w-30 pt3 pb2 bt bb dim"
+                    :class="{'oraborder': tabs === 'new'}"
+                    @click="nav.change('new')"
+                >
+                    <i
+                        class="fas fa-sticky-note fa-2x"
+                        :class="{'ora': tabs === 'new'}"
+                    ></i>
+                </span>
+
+                <span
+                    class="tc w-30 pt3 pb2 bt bb dim"
+                    :class="{'oraborder': tabs === 'dash'}"
+                    @click="nav.change('dash')"
+                >
+                    <i
+                        class="fas fa-home fa-2x"
+                        :class="{'ora': tabs === 'dash'}"
+                    ></i>
+                </span>
+
+                <span
+                    class="br tc w-30 pt3 pb2 bt bb dim"
+                    :class="{'oraborder': tabs === 'settings'}"
+                    @click="nav.change('settings')"
+                >
+                    <i
+                        class="fas fa-user-cog fa-2x"
+                        :class="{'ora': tabs === 'settings'}"
+                    ></i>
+                </span>
+            </div>
+        </article>
+
+        <script
+            src="https://kit.fontawesome.com/afa150793f.js"
+            crossorigin="anonymous"
+        ></script>
+
+        <script src="/js/firebase-app.js"></script>
+        <script src="/js/firebase-auth.js"></script>
+        <script src="/js/firebase-database.js"></script>
+
+        <script>
+            const firebaseConfig = {
+                apiKey: 'AIzaSyDVnVkuM-Q5gQuZ8vdCU2g58PF2Mg5poNo',
+                authDomain: 'carolum-301eb.firebaseapp.com',
+                databaseURL: 'https://carolum-301eb.firebaseio.com',
+                projectId: 'carolum-301eb',
+                storageBucket: 'carolum-301eb.appspot.com',
+                messagingSenderId: '710478813831',
+            }
+            firebase.initializeApp(firebaseConfig)
+        </script>
+
+        <script src="/js/spinner.js"></script>
+        <script src="/js/index.js"></script>
+    </body>
+</html>

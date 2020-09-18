@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Web | Carolum</title>
+
+        <link rel="shortcut icon" href="/ico/128.ico" type="image/x-icon" />
+        <script src="/dep/vue/vue.js"></script>
+
+        <script src="/dep/argon2-browser/lib/argon2.js"></script>
+        <script src="/dep/idb/index.js"></script>
+
+        <script src="/js/dbinteract.js"></script>
+        <script src="/js/secure.js"></script>
+
+        <link rel="stylesheet" href="/dep/tachyons/tachyons.min.css" />
+        <link rel="stylesheet" href="/signup/css/signup.css" />
+
+        <script
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body class="georgia">
+        <article class="vh-100 dt w-100">
+            <div class="dtc v-mid tc black">
+                <div
+                    class="tc center w-75-ns w-90 flex flex-column ba bw2 ph4-ns ph3 pt4 pb2"
+                >
+                    <div class="f2 bb bl ora-b">
+                        <span class="fl w-100 ph2"
+                            ><span class="fl mb1 f2">Carolum</span></span
+                        >
+                    </div>
+
+                    <div class="f5 flex flex-column fl ph2 w-100" id="signup">
+                        <form>
+                            <label class="db f4 tl mt3 fw5" for="e"
+                                >Email</label
+                            >
+                            <input
+                                type="email"
+                                class="pl1 db mt1 h2 f4 w-100"
+                                v-model="e"
+                                name="e"
+                                required
+                            />
+                            <label class="db f4 tl mt3 fw5" for="p"
+                                >Password</label
+                            >
+                            <input
+                                type="password"
+                                class="pl1 db mt1 h2 f4 w-100"
+                                @keyup="validate"
+                                v-model="p"
+                                name="p"
+                                required
+                            />
+                            <label class="db f4 tl mt3 fw5" for="p2"
+                                >Confirm Password</label
+                            >
+                            <input
+                                type="password"
+                                class="pl1 db mt1 mb4 h2 f4 w-100"
+                                @keyup="validate"
+                                v-model="p2"
+                                name="p2"
+                                required
+                            />
+                            <small v-if="nomatch" class="red mt3 pa0 f4"
+                                >Passwords don't match!</small
+                            >
+                            <span
+                                class="link ba ph0 pv0 mv0 dib black w-100 pointer f3 clicky"
+                                @click="signup"
+                                :class="{ 'dis': nomatch }"
+                            >
+                                <p>Sign Up</p>
+                            </span>
+                        </form>
+
+                        <span class="mb3"></span>
+
+                        <span id="error" class="red"></span>
+
+                        <span class="mb3"></span>
+
+                        <span class="f5"
+                            >Have an account?
+                            <a href="/login" class="dim ora link"
+                                >Log in</a
+                            ></span
+                        >
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <script src="/js/firebase-app.js"></script>
+        <script src="/js/firebase-auth.js"></script>
+        <script src="/js/firebase-database.js"></script>
+
+        <script>
+            const firebaseConfig = {
+                apiKey: 'AIzaSyDVnVkuM-Q5gQuZ8vdCU2g58PF2Mg5poNo',
+                authDomain: 'carolum-301eb.firebaseapp.com',
+                databaseURL: 'https://carolum-301eb.firebaseio.com',
+                projectId: 'carolum-301eb',
+                storageBucket: 'carolum-301eb.appspot.com',
+                messagingSenderId: '710478813831',
+            }
+            firebase.initializeApp(firebaseConfig)
+        </script>
+
+        <script src="/signup/js/signup.js"></script>
+    </body>
+</html>
