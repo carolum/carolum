@@ -1,1 +1,4 @@
+desktop/linux filter=lfs diff=lfs merge=lfs -text
+desktop/mac filter=lfs diff=lfs merge=lfs -text
+desktop/windows filter=lfs diff=lfs merge=lfs -text
 *.xz filter=lfs diff=lfs merge=lfs -text
