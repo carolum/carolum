@@ -1,7 +1,5 @@
 .DS_STORE
 
-desktop/*
-
 # Logs
 logs
 *.log
