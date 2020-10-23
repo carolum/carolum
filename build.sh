@@ -20,12 +20,20 @@ mkdir ../desktop/windows/
 mkdir ../desktop/linux/
 mkdir ../desktop/mac/
 
+echo "[+] Finished building desktop apps"
+echo "[+] Compressing desktop apps"
 
 zip -rT ../desktop/windows/carolum.zip carolum-win32-x64/
 zip -rT ../desktop/linux/carolum.zip carolum-linux-x64/
 zip -rT ../desktop/mac/carolum.zip carolum-darwin-x64/
-echo "[+] Finished building desktop apps"
+
+xz ../desktop/windows/carolum.zip
+xz ../desktop/linux/carolum.zip
+xz ../desktop/mac/carolum.zip
+
+echo "[+] Cleaning up build"
 
 cd ../
-
 rm -rf build
+
+echo "[+] Finished building"

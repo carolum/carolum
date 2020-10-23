@@ -55,6 +55,9 @@ firebase.auth().onAuthStateChanged(async function (u) {
     if (u) {
         await setSalt(signup.salt)
 
+        await clearRSAKeys()
+        firebase.auth().signOut()
+
         window.location.href = '/'
     }
 })
